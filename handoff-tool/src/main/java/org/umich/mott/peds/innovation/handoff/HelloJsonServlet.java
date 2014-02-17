@@ -31,8 +31,11 @@ public class HelloJsonServlet extends JsonServlet {
 		JsonObjectBuilder b = Json.createObjectBuilder();
 		logger.info("Received request for JSON response");
 		b.add("name", request.getParameter("name"));
-
+		b.add("class", "eecs481");
 		b.add("sessionId", request.getSession().getId());
+		b.add("programmingLangs",
+				Json.createArrayBuilder().add(Json.createObjectBuilder().add("type", "backend").add("name", "java"))
+						.add(Json.createObjectBuilder().add("type", "frontend").add("name", "JavaScript")));
 		setResponse(b.build(), response);
 	}
 

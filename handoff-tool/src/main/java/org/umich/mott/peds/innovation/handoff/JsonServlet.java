@@ -17,21 +17,30 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class JsonServlet extends SimpleServlet {
 
+	private boolean responseSet = false;
+
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		handleGet(request, response);
+		if (!responseSet) {
+			throw new RuntimeException("No JSON response was ever set.");
+		}
 	}
 
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		handlePost(request, response);
+		if (!responseSet) {
+			throw new RuntimeException("No JSON response was ever set.");
+		}
 	}
 
 	protected void setResponse(final JsonObject json, HttpServletResponse response) throws IOException {
 		response.getOutputStream().print(json.toString());
 		response.getOutputStream().close();
+		responseSet = true;
 	}
 
 	public abstract void handleGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
