@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
  * @date Feb 17, 2014
  * 
  */
-@WebServlet(name = "Hello Json Servlet", description = "This is a simple hello world servlet with annotations", urlPatterns = "/helloJson")
+@WebServlet(name = "Hello Json Servlet", description = "This is a simple Json servlet with annotations", urlPatterns = "/helloJson")
 public class HelloJsonServlet extends JsonServlet {
 
 	protected static final Logger logger = Logger.getLogger(HelloJsonServlet.class);

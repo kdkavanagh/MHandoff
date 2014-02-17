@@ -20,7 +20,7 @@ public abstract class JsonServlet extends SimpleServlet {
 	private boolean responseSet = false;
 
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public final void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		handleGet(request, response);
 		if (!responseSet) {
@@ -29,7 +29,7 @@ public abstract class JsonServlet extends SimpleServlet {
 	}
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public final void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		handlePost(request, response);
 		if (!responseSet) {

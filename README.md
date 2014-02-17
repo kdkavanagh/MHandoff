@@ -34,9 +34,9 @@ Setup Eclipse/IntelliJ
 2. Run this configuration to start up the server.  This starts a server at localhost:8080 and will continue to run until you kill it from the eclipse console
 
 * The server checks for code updates every 10 seconds and will hotswap in your new code.
-Servlets can be access at localhost:8080/<servletname>.
---To test the hello world servlet, call localhost:8080/hello?name=<yournamehere>
---To test the hello Json servlet, call localhost:8080/helloJson?name=<yournamehere>
+Servlets can be access at https://localhost:8443/<servletname>.
+--To test the hello world servlet, call https://localhost:8443/hello?name=<yournamehere>
+--To test the hello Json servlet, call https://localhost:8443/helloJson?name=<yournamehere>
 
 
 
