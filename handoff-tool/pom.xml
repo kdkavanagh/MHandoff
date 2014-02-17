@@ -28,25 +28,17 @@
 		<finalName>handoff-tool</finalName>
 		<plugins>
 			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
+				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${jettyVersion}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
 				<configuration>
-					<mainClass>MAINCLASSHERE</mainClass>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
 				</configuration>
 			</plugin>
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>exec-maven-plugin</artifactId> 
+				<version>1.1</version> <executions> <execution> <goals> <goal>java</goal> 
+				</goals> </execution> </executions> <configuration> <mainClass>MAINCLASSHERE</mainClass> 
+				</configuration> </plugin> -->
 		</plugins>
 	</build>
 

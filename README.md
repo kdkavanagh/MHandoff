@@ -17,6 +17,16 @@ Setup Eclipse/IntelliJ
 Install the IDE, install the maven plugin (m2e) if using eclipse. (This may be already installed if you have the most recent version of eclipse).
 If using eclipse, to import the project, go to File->import->maven project, then navigate to the handoff-tool folder in the repo.
 
+To run the server:
+1. From eclipse, create a new maven build configuration with the goals "clean install jetty:run"
+2. Run this configuration to start up the server.  This starts a server at localhost:8080 and will continue to run until you kill it from the eclipse console
+
+The server checks for code updates every 10 seconds and will hotswap in your new code.
+Servlets can be access at localhost:8080/<servletname>.
+To test the hello world servlet, call localhost:8080/hello?name=<yournamehere>
+
+
+
 ## Documentation
 Please leave links to useful documentation and any other information relevant to the project
 

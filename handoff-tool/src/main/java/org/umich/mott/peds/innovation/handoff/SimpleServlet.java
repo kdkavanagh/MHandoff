@@ -3,8 +3,11 @@
  */
 package org.umich.mott.peds.innovation.handoff;
 
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
@@ -16,7 +19,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class SimpleServlet extends HttpServlet {
 
-	public void storeOnInSession(String key, Object value, HttpServletRequest request) {
+	public void storeInSession(String key, Object value, HttpServletRequest request) {
 		request.getSession().setAttribute(key, value);
 	}
+	
 }
