@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Servlet that facilitates returning a JSON response to the client. JSON
+ * Response must be set using setResponse()
+ * 
  * @author Kyle D. Kavanagh
  * @date Feb 17, 2014
  * 

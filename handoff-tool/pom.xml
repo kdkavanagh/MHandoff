@@ -57,10 +57,6 @@
 					<jettyXml>src/main/resources/jettyResources/jetty.xml,src/main/resources/jettyResources/jetty-ssl.xml,src/main/resources/jettyResources/jetty-https.xml</jettyXml>
 				</configuration>
 			</plugin>
-			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>exec-maven-plugin</artifactId> 
-				<version>1.1</version> <executions> <execution> <goals> <goal>java</goal> 
-				</goals> </execution> </executions> <configuration> <mainClass>MAINCLASSHERE</mainClass> 
-				</configuration> </plugin> -->
 		</plugins>
 	</build>
 
