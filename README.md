@@ -23,7 +23,8 @@ To run the server:
 
 The server checks for code updates every 10 seconds and will hotswap in your new code.
 Servlets can be access at localhost:8080/<servletname>.
-To test the hello world servlet, call localhost:8080/hello?name=<yournamehere>
+--To test the hello world servlet, call localhost:8080/hello?name=<yournamehere>
+--To test the hello Json servlet, call localhost:8080/helloJson?name=<yournamehere>
 
 
 
