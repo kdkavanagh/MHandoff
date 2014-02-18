@@ -10,7 +10,7 @@ import org.umich.mott.peds.innovation.handoff.common.Patient;
 import org.umich.mott.peds.innovation.handoff.common.Patient.AllergyInfo;
 import org.umich.mott.peds.innovation.handoff.common.Patient.BasicInfo;
 import org.umich.mott.peds.innovation.handoff.common.Patient.LabInfo;
-import org.umich.mott.peds.innovation.handoff.common.Patient.MedsInfo;
+import org.umich.mott.peds.innovation.handoff.common.Patient.MedInfo;
 import org.umich.mott.peds.innovation.handoff.common.PriorityLevel;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 
@@ -36,29 +36,35 @@ public class DummyPersistenceService implements PersistenceService {
     }
   }
 
+  private final List<BaseNote> notes = new ArrayList<BaseNote>();
+
+  private final List<Task> tasks = new ArrayList<Task>();
+
   @Inject
   public DummyPersistenceService() {
+
+    notes.add(new BaseNote("1", "This is important", "Kyle Kavanagh", "02/18/14", "02/20/14", PriorityLevel.ONE));
+    notes.add(new BaseNote("2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "02/10/14",
+        "02/20/14", PriorityLevel.TWO));
+    notes.add(new BaseNote("3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "02/19/14", "02/20/14", PriorityLevel.TWO));
+    notes.add(new BaseNote("4", "Aliquam in magna urna", "Kyle Kavanagh", "02/18/14", "02/20/14", PriorityLevel.ONE));
+    notes.add(new BaseNote("5", "Class aptent taciti sociosqu ad litora torquent per conubia nostra", "Kyle Kavanagh", "02/11/14", "02/21/14",
+        PriorityLevel.THREE));
+
+    tasks.add(new Task("T1", "This is an important task", "Kyle Kavanagh", "Minchan Kim", "02/18/14", "02/20/14", PriorityLevel.ONE));
+    tasks.add(new Task("T2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "Minchan Kim", "02/10/14",
+        "02/20/14", PriorityLevel.TWO));
+    tasks
+        .add(new Task("T3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "Minchan Kim", "02/19/14", "02/20/14", PriorityLevel.TWO));
+
   }
 
   public List<BaseNote> getNotesForPatient(String id) {
-    List<BaseNote> tbr = new ArrayList<BaseNote>();
-    tbr.add(new BaseNote("1", "This is important", "Kyle Kavanagh", "02/18/14", "02/20/14", PriorityLevel.ONE));
-    tbr.add(new BaseNote("2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "02/10/14",
-        "02/20/14", PriorityLevel.TWO));
-    tbr.add(new BaseNote("3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "02/19/14", "02/20/14", PriorityLevel.TWO));
-    tbr.add(new BaseNote("4", "Aliquam in magna urna", "Kyle Kavanagh", "02/18/14", "02/20/14", PriorityLevel.ONE));
-    tbr.add(new BaseNote("5", "Class aptent taciti sociosqu ad litora torquent per conubia nostra", "Kyle Kavanagh", "02/11/14", "02/21/14",
-        PriorityLevel.THREE));
-    return tbr;
+    return notes;
   }
 
   public List<Task> getTasksForPatient(String id) {
-    List<Task> tbr = new ArrayList<Task>();
-    tbr.add(new Task("T1", "This is an important task", "Kyle Kavanagh", "Minchan Kim", "02/18/14", "02/20/14", PriorityLevel.ONE));
-    tbr.add(new Task("T2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "Minchan Kim", "02/10/14",
-        "02/20/14", PriorityLevel.TWO));
-    tbr.add(new Task("T3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "Minchan Kim", "02/19/14", "02/20/14", PriorityLevel.TWO));
-    return tbr;
+    return tasks;
   }
 
   public Patient getPatient(String id) {
@@ -70,18 +76,20 @@ public class DummyPersistenceService implements PersistenceService {
     allergyInfo.add("Allergy z");
     p.setAllergies(allergyInfo);
     LabInfo l = new LabInfo();
-    l.put("ValueX", 0.2);
-    l.put("ValueY", 12.2);
-    l.put("ValueS", 10.0);
-    l.put("ValueQ", 98.4);
-    l.put("ValueW", 30.6);
+    l.put("Na", 0.2);
+    l.put("Cl", 12.2);
+    l.put("BUN", 10.0);
+    l.put("Glucose", 98.4);
+    l.put("K", 30.6);
+    l.put("HCO", 3.6);
+    l.put("Cret", 12.1);
     p.setLabs(l);
+    List<MedInfo> meds = new ArrayList<MedInfo>();
+    meds.add(new MedInfo("MedX", 43.2));
+    meds.add(new MedInfo("MedY", 1.0));
+    meds.add(new MedInfo("MedZ", 23.2));
 
-    MedsInfo m = new MedsInfo();
-    m.put("MedX", 43.2);
-    m.put("MedY", 1.0);
-    m.put("MedZ", 23.0);
-    p.setMeds(m);
+    p.setMeds(meds);
 
     return p;
   }
@@ -90,6 +98,12 @@ public class DummyPersistenceService implements PersistenceService {
     Gson gson = new Gson();
     String res = gson.toJson(note);
     logger.info("Writing Object " + res);
+    note.setNoteId("123");
+    if (note instanceof Task) {
+      tasks.add((Task) note);
+    } else {
+      notes.add(note);
+    }
     return result();
   }
 

@@ -11,7 +11,7 @@ import org.umich.mott.peds.innovation.handoff.ActionContext;
  */
 public class BaseNote {
 
-  private final String noteId;
+  private String noteId;
 
   private final String text, reporter, reportedDate, expiration;
 
@@ -39,5 +39,13 @@ public class BaseNote {
     reportedDate = context.getParameterOrFail("reportedDate");
     expiration = context.getParameterOrFail("expiration");
     priority = PriorityLevel.valueOf(context.getParameterOrFail("priority"));
+  }
+
+  public String getNoteId() {
+    return noteId;
+  }
+
+  public void setNoteId(String noteId) {
+    this.noteId = noteId;
   }
 }

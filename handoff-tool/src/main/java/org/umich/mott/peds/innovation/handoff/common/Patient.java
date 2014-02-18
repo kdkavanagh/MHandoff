@@ -2,6 +2,7 @@ package org.umich.mott.peds.innovation.handoff.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 
@@ -15,7 +16,7 @@ public class Patient {
 
   private LabInfo labs;
 
-  private MedsInfo meds;
+  private List<MedInfo> meds;
 
   private AllergyInfo allergies;
 
@@ -35,11 +36,11 @@ public class Patient {
     this.labs = labs;
   }
 
-  public MedsInfo getMeds() {
+  public List<MedInfo> getMeds() {
     return meds;
   }
 
-  public void setMeds(MedsInfo meds) {
+  public void setMeds(List<MedInfo> meds) {
     this.meds = meds;
   }
 
@@ -67,7 +68,16 @@ public class Patient {
   public static class LabInfo extends HashMap<String, Double> {
   }
 
-  public static class MedsInfo extends HashMap<String, Double> {
+  public static class MedInfo {
+
+    public MedInfo(String name, double amnt) {
+      this.name = name;
+      this.amnt = amnt;
+    }
+
+    String name;
+
+    double amnt;
   }
 
   public static class AllergyInfo extends ArrayList<String> {
