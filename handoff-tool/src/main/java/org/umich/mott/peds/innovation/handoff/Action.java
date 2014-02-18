@@ -1,5 +1,7 @@
 package org.umich.mott.peds.innovation.handoff;
 
+import com.google.gson.Gson;
+
 /**
  * Actions are provide code that runs when an associated request is received by
  * the ActionDispatcher
@@ -10,11 +12,13 @@ package org.umich.mott.peds.innovation.handoff;
  */
 public interface Action {
 
-	/**
-	 * 
-	 * @param context
-	 * @return the JSON response
-	 * @throws Exception
-	 */
-	public String execute(ActionContext context) throws Exception;
+  /**
+   * 
+   * @param context
+   * @return the JSON response
+   * @throws Exception
+   */
+  public String execute(ActionContext context) throws Exception;
+
+  public static final Gson gson = new Gson();
 }

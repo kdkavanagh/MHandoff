@@ -17,6 +17,8 @@ import org.umich.mott.peds.innovation.handoff.RequestMethod;
 public class AddPatientAction implements Action {
 
   public String execute(ActionContext context) throws Exception {
+    String id = context.getParameterOrFail("patientid");
+    // go to db and find id and delete
     return null;
   }
 
