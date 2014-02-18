@@ -5,11 +5,10 @@ package org.umich.mott.peds.innovation.handoff.dashboard.actions;
 
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.umich.mott.peds.innovation.handoff.Action;
 import org.umich.mott.peds.innovation.handoff.ActionMapping;
-import org.umich.mott.peds.innovation.handoff.ServletAction;
+import org.umich.mott.peds.innovation.handoff.ActionContext;
 
 /**
  * Get all the necessary info for a individual patient tile on the homepage
@@ -24,11 +23,11 @@ import org.umich.mott.peds.innovation.handoff.ServletAction;
  * 
  */
 @ActionMapping(method = "GET", path = "dashboard/patientInfo.do")
-public class GetTileAction extends ServletAction {
+public class GetTileAction implements Action {
 
-	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String id = getParameterOrFail("patient", request);
-		int detailLevel = Integer.parseInt(getParameterOrFail("level", request));
+	public String execute(ActionContext request) throws Exception {
+		String id = request.getParameterOrFail("patient");
+		int detailLevel = Integer.parseInt(request.getParameterOrFail("level"));
 		// Go to the database
 		// format the data and return
 		JsonObjectBuilder b = Json.createObjectBuilder();

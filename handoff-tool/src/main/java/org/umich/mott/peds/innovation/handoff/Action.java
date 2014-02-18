@@ -1,14 +1,21 @@
 package org.umich.mott.peds.innovation.handoff;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Actions are provide code that runs when an associated request is received by
+ * the ActionDispatcher
  * 
  * @author Kyle D. Kavanagh
  * @date Feb 17, 2014
  * 
  */
 public interface Action {
-	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+	/**
+	 * 
+	 * @param request
+	 * @return the JSON response
+	 * @throws Exception
+	 */
+	public String execute(ActionContext request) throws Exception;
 }
