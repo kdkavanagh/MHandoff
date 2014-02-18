@@ -1,6 +1,5 @@
 package org.umich.mott.peds.innovation.handoff;
 
-
 /**
  * Actions are provide code that runs when an associated request is received by
  * the ActionDispatcher
@@ -13,9 +12,9 @@ public interface Action {
 
 	/**
 	 * 
-	 * @param request
+	 * @param context
 	 * @return the JSON response
 	 * @throws Exception
 	 */
-	public String execute(ActionContext request) throws Exception;
+	public String execute(ActionContext context) throws Exception;
 }

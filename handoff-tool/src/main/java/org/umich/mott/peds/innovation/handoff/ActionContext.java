@@ -20,7 +20,7 @@ public class ActionContext {
 	private final HttpServletRequest request;
 	private final HttpServletResponse response;
 
-	public ActionContext(HttpServletRequest req, HttpServletResponse resp) {
+	public ActionContext(final HttpServletRequest req, final HttpServletResponse resp) {
 		request = req;
 		response = resp;
 	}

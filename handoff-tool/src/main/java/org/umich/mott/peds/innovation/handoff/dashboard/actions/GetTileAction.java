@@ -25,9 +25,9 @@ import org.umich.mott.peds.innovation.handoff.ActionContext;
 @ActionMapping(method = "GET", path = "dashboard/patientInfo.do")
 public class GetTileAction implements Action {
 
-	public String execute(ActionContext request) throws Exception {
-		String id = request.getParameterOrFail("patient");
-		int detailLevel = Integer.parseInt(request.getParameterOrFail("level"));
+	public String execute(ActionContext context) throws Exception {
+		String id = context.getParameterOrFail("patient");
+		int detailLevel = Integer.parseInt(context.getParameterOrFail("level"));
 		// Go to the database
 		// format the data and return
 		JsonObjectBuilder b = Json.createObjectBuilder();

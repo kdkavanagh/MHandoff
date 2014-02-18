@@ -15,7 +15,7 @@ import org.umich.mott.peds.innovation.handoff.ActionContext;
 @ActionMapping(method = "POST", path = "dashboard/addPatient.do")
 public class AddPatientAction implements Action {
 
-	public String execute(ActionContext request) throws Exception {
+	public String execute(ActionContext context) throws Exception {
 		return null;
 	}
 
