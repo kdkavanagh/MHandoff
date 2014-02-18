@@ -25,13 +25,13 @@ public class ActionFactory {
 	private static final Logger logger = Logger.getLogger(ActionFactory.class);
 
 	static {
-		createMapping("GET", "dashboard/patientInfo", new GetTileAction());
-		createMapping("POST", "dashboard/addPatient", new AddPatientAction());
-		createMapping("POST", "dashboard/deletePatient", new DeletePatientAction());
+		createMapping(new GetTileAction());
+		createMapping(new AddPatientAction());
+		createMapping(new DeletePatientAction());
 	}
 
 	public static Action getAction(HttpServletRequest request) {
-		String req = request.getMethod() + request.getServletPath() + request.getPathInfo();
+		String req = request.getMethod() + request.getServletPath();
 		Action a = mappings.get(req);
 		if (a == null) {
 			throw new RuntimeException("No action available for request " + req);
@@ -39,8 +39,13 @@ public class ActionFactory {
 		return a;
 	}
 
-	private static void createMapping(String method, String path, Action action) {
-		String key = method + "/action/" + path;
+	private static void createMapping(Action action) {
+		String method = action.getClass().getAnnotation(ActionMapping.class).method();
+		String path = action.getClass().getAnnotation(ActionMapping.class).path();
+		String key = method + "/" + path;
+		if (!key.endsWith(".do")) {
+			key += ".do";
+		}
 		logger.debug("Mapping URL " + key + " to action " + action.getClass().getCanonicalName());
 		mappings.put(key, action);
 	}

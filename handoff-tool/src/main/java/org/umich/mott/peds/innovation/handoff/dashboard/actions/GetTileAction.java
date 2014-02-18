@@ -8,6 +8,7 @@ import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.umich.mott.peds.innovation.handoff.ActionMapping;
 import org.umich.mott.peds.innovation.handoff.ServletAction;
 
 /**
@@ -22,6 +23,7 @@ import org.umich.mott.peds.innovation.handoff.ServletAction;
  *            - the amount of information to get from the server
  * 
  */
+@ActionMapping(method = "GET", path = "dashboard/patientInfo.do")
 public class GetTileAction extends ServletAction {
 
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {

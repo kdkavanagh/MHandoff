@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
  * @date Feb 17, 2014
  * 
  */
-@WebServlet(name = "Dispatcher Servlet", description = "Servlet to provide communication with the client", urlPatterns = "/action/*")
+@WebServlet(name = "Dispatcher Servlet", description = "Servlet to provide communication with the client", urlPatterns = "*.do")
 public class ActionDispatcher extends JsonServlet {
 
 	private static final Logger logger = Logger.getLogger(ActionDispatcher.class);
