@@ -24,6 +24,19 @@ public interface PersistenceService {
 
   public Patient getPatient(String id);
 
-  public void writeItem(String patientId, BaseNote note);
+  /**
+   * 
+   * @param patientId
+   * @param note
+   * @return true if write was successful
+   */
+  public boolean writeItem(String patientId, BaseNote note);
+
+  /**
+   * 
+   * @param noteId
+   * @return true if delete was successful
+   */
+  public boolean deleteItem(String noteId);
 
 }

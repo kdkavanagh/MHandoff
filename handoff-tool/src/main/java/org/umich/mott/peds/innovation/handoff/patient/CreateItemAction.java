@@ -1,15 +1,13 @@
 package org.umich.mott.peds.innovation.handoff.patient;
 
-import javax.servlet.ServletException;
-
 import org.apache.log4j.Logger;
 import org.umich.mott.peds.innovation.handoff.Action;
 import org.umich.mott.peds.innovation.handoff.ActionContext;
 import org.umich.mott.peds.innovation.handoff.ActionMapping;
 import org.umich.mott.peds.innovation.handoff.RequestMethod;
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
+import org.umich.mott.peds.innovation.handoff.common.ErrorCode;
 import org.umich.mott.peds.innovation.handoff.common.Task;
-import org.umich.mott.peds.innovation.handoff.common.WriteResult;
 
 /**
  * Create an item in the patient's record
@@ -18,7 +16,7 @@ import org.umich.mott.peds.innovation.handoff.common.WriteResult;
  * @date Feb 18, 2014
  * 
  */
-@ActionMapping(method = RequestMethod.POST, path = "patient/create.do")
+@ActionMapping(method = RequestMethod.POST, path = "patient/createItem.do")
 public class CreateItemAction implements Action {
 
   private static final Logger logger = Logger.getLogger(CreateItemAction.class);
@@ -36,10 +34,14 @@ public class CreateItemAction implements Action {
       // Assemble task
       note = new Task(context);
     } else {
-      throw new ServletException("Unknown type " + type);
+      return new ErrorCode(1, "Failure: Unknown type " + type).json();
     }
-    persistenceService.writeItem(id, note);
-    return gson.toJson(new WriteResult("success"));
+    boolean result = persistenceService.writeItem(id, note);
+    if (result) {
+      return ErrorCode.NO_ERROR.json();
+    } else {
+      return ErrorCode.UNABLE_TO_WRITE_ITEM.json();
+    }
   }
 
 }

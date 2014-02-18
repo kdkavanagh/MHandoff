@@ -17,58 +17,70 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ActionContext {
 
-	private final HttpServletRequest request;
-	private final HttpServletResponse response;
+  private final HttpServletRequest request;
 
-	public ActionContext(final HttpServletRequest req, final HttpServletResponse resp) {
-		request = req;
-		response = resp;
-	}
+  private final HttpServletResponse response;
 
-	public HttpServletRequest getRequest() {
-		return request;
-	}
+  public ActionContext(final HttpServletRequest req, final HttpServletResponse resp) {
+    request = req;
+    response = resp;
+  }
 
-	public HttpServletResponse getResponse() {
-		return response;
-	}
+  public HttpServletRequest getRequest() {
+    return request;
+  }
 
-	/**
-	 * Store a object in a user's session
-	 * 
-	 * @param key
-	 * @param value
-	 * @param request
-	 */
-	public void storeInSession(String key, Object value) {
-		request.getSession().setAttribute(key, value);
-	}
+  public HttpServletResponse getResponse() {
+    return response;
+  }
 
-	/**
-	 * Get an object from a user's session
-	 * 
-	 * @param key
-	 * @param request
-	 * @return
-	 */
-	public Object getFromSession(String key) {
-		return request.getSession().getAttribute(key);
-	}
+  /**
+   * Store a object in a user's session
+   * 
+   * @param key
+   * @param value
+   * @param request
+   */
+  public void storeInSession(String key, Object value) {
+    request.getSession().setAttribute(key, value);
+  }
 
-	/**
-	 * Attempt to get a parameter from the http request
-	 * 
-	 * @param key
-	 * @param request
-	 * @return the value associated with this parameter
-	 * @throws ServletException
-	 *             if parameter is not found in the request
-	 */
-	public String getParameterOrFail(String key) throws ServletException {
-		String result = request.getParameter(key);
-		if (result == null) {
-			throw new ServletException("Request does not contain parameter " + key);
-		}
-		return result;
-	}
+  /**
+   * Get an object from a user's session
+   * 
+   * @param key
+   * @param request
+   * @return
+   */
+  public Object getFromSession(String key) {
+    return request.getSession().getAttribute(key);
+  }
+
+  /**
+   * Attempt to get a parameter from the http request
+   * 
+   * @param key
+   * @param request
+   * @return the value associated with this parameter
+   * @throws ServletException
+   *           if parameter is not found in the request
+   */
+  public String getParameterOrFail(String key) throws ServletException {
+    String result = request.getParameter(key);
+    if (result == null) {
+      throw new ServletException("Request does not contain parameter " + key);
+    }
+    return result;
+  }
+
+  /**
+   * Attempt to get a parameter from the http request
+   * 
+   * @param key
+   * @param request
+   * @return the value associated with this parameter or null
+   */
+  public String getParameter(String key) {
+    return request.getParameter(key);
+  }
 }

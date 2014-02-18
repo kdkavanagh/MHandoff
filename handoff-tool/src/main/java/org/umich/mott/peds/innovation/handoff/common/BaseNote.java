@@ -11,16 +11,19 @@ import org.umich.mott.peds.innovation.handoff.ActionContext;
  */
 public class BaseNote {
 
+  private final String noteId;
+
   private final String text, reporter, reportedDate, expiration;
 
   private final PriorityLevel priority;
 
-  public BaseNote(String text, String reporter, String reportedDate, String expiration, PriorityLevel priority) {
+  public BaseNote(String noteId, String text, String reporter, String reportedDate, String expiration, PriorityLevel priority) {
     this.text = text;
     this.reporter = reporter;
     this.reportedDate = reportedDate;
     this.expiration = expiration;
     this.priority = priority;
+    this.noteId = noteId;
   }
 
   /**
@@ -30,6 +33,7 @@ public class BaseNote {
    * @throws ServletException
    */
   public BaseNote(ActionContext context) throws ServletException {
+    noteId = context.getParameter("noteId");
     text = context.getParameterOrFail("text");
     reporter = context.getParameterOrFail("reporter");
     reportedDate = context.getParameterOrFail("reportedDate");
