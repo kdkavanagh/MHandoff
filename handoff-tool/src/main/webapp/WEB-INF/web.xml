@@ -7,11 +7,11 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	id="WebApp_ID" version="3.0">
-	<display-name>C.S. Mott Children's Hospital MHandoff</display-name>
+	<display-name>MHandoff | C.S. Mott Children's Hospital</display-name>
 
 	<security-constraint>
 		<web-resource-collection>
-			<web-resource-name>Wildcard means whole app requires authentication</web-resource-name>
+			<web-resource-name>SSL Authentication</web-resource-name>
 			<url-pattern>/*</url-pattern>
 			<http-method>GET</http-method>
 			<http-method>POST</http-method>
