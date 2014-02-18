@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
+import org.umich.mott.peds.innovation.handoff.common.Patient;
+import org.umich.mott.peds.innovation.handoff.common.Patient.AllergyInfo;
+import org.umich.mott.peds.innovation.handoff.common.Patient.BasicInfo;
+import org.umich.mott.peds.innovation.handoff.common.Patient.LabInfo;
+import org.umich.mott.peds.innovation.handoff.common.Patient.MedsInfo;
 import org.umich.mott.peds.innovation.handoff.common.PriorityLevel;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 
@@ -37,4 +42,28 @@ public class DummyPersistenceService implements PersistenceService {
     return tbr;
   }
 
+  public Patient getPatient(String id) {
+    Patient p = new Patient();
+    p.setBasicInfo(new BasicInfo(id, "Kyle Kavanagh", "06/20/1992", "Bed 1234"));
+    AllergyInfo allergyInfo = new AllergyInfo();
+    allergyInfo.add("Allergy x");
+    allergyInfo.add("Allergy y");
+    allergyInfo.add("Allergy z");
+    p.setAllergies(allergyInfo);
+    LabInfo l = new LabInfo();
+    l.put("ValueX", 0.2);
+    l.put("ValueY", 12.2);
+    l.put("ValueS", 10.0);
+    l.put("ValueQ", 98.4);
+    l.put("ValueW", 30.6);
+    p.setLabs(l);
+
+    MedsInfo m = new MedsInfo();
+    m.put("MedX", 43.2);
+    m.put("MedY", 1.0);
+    m.put("MedZ", 23.0);
+    p.setMeds(m);
+
+    return p;
+  }
 }

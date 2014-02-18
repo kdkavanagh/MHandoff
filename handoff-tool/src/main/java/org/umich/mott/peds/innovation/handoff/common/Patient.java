@@ -2,8 +2,6 @@ package org.umich.mott.peds.innovation.handoff.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 
@@ -12,27 +10,67 @@ import java.util.Map;
  * 
  */
 public class Patient {
+
   private BasicInfo basicInfo;
+
   private LabInfo labs;
+
   private MedsInfo meds;
+
   private AllergyInfo allergies;
-  private final List<BaseNote> notes = new ArrayList<BaseNote>();
-  private final List<Task> tasks = new ArrayList<Task>();
+
+  public BasicInfo getBasicInfo() {
+    return basicInfo;
+  }
+
+  public void setBasicInfo(BasicInfo basicInfo) {
+    this.basicInfo = basicInfo;
+  }
+
+  public LabInfo getLabs() {
+    return labs;
+  }
+
+  public void setLabs(LabInfo labs) {
+    this.labs = labs;
+  }
+
+  public MedsInfo getMeds() {
+    return meds;
+  }
+
+  public void setMeds(MedsInfo meds) {
+    this.meds = meds;
+  }
+
+  public AllergyInfo getAllergies() {
+    return allergies;
+  }
+
+  public void setAllergies(AllergyInfo allergies) {
+    this.allergies = allergies;
+  }
 
   public static class BasicInfo {
-    private String idNum, name, dateOfBirth, location;
+
+    public final String idNum, name, dateOfBirth, location;
+
+    public BasicInfo(String idNum, String name, String dateOfBirth, String location) {
+      this.idNum = idNum;
+      this.name = name;
+      this.dateOfBirth = dateOfBirth;
+      this.location = location;
+    }
+
   }
 
-  public static class LabInfo {
-    private final Map<String, Double> labs = new HashMap<String, Double>();
+  public static class LabInfo extends HashMap<String, Double> {
   }
 
-  public static class MedsInfo {
-    private final Map<String, Double> meds = new HashMap<String, Double>();
+  public static class MedsInfo extends HashMap<String, Double> {
   }
 
-  public static class AllergyInfo {
-    private final List<String> allergies = new ArrayList<String>();
+  public static class AllergyInfo extends ArrayList<String> {
   }
 
 }
