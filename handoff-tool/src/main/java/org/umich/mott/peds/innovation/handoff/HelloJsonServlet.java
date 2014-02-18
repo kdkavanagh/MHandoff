@@ -24,23 +24,28 @@ import org.apache.log4j.Logger;
 @WebServlet(name = "Hello Json Servlet", description = "This is a simple Json servlet with annotations", urlPatterns = "/helloJson")
 public class HelloJsonServlet extends JsonServlet {
 
-	protected static final Logger logger = Logger.getLogger(HelloJsonServlet.class);
+  protected static final Logger logger = Logger.getLogger(HelloJsonServlet.class);
 
-	@Override
-	public void handleGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		JsonObjectBuilder b = Json.createObjectBuilder();
-		logger.info("Received request for JSON response");
-		b.add("name", request.getParameter("name"));
-		b.add("class", "eecs481");
-		b.add("sessionId", request.getSession().getId());
-		b.add("programmingLangs",
-				Json.createArrayBuilder().add(Json.createObjectBuilder().add("type", "backend").add("name", "java"))
-						.add(Json.createObjectBuilder().add("type", "frontend").add("name", "JavaScript")));
-		setResponse(b.build(), response);
-	}
+  @Override
+  public void handleGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    JsonObjectBuilder b = Json.createObjectBuilder();
+    logger.info("Received request for JSON response");
+    b.add("name", request.getParameter("name"));
+    b.add("class", "eecs481");
+    b.add("sessionId", request.getSession().getId());
+    b.add("programmingLangs",
+        Json.createArrayBuilder()
+            .add(Json.createObjectBuilder()
+                .add("type", "backend")
+                .add("name", "java"))
+            .add(Json.createObjectBuilder()
+                .add("type", "frontend")
+                .add("name", "JavaScript")));
+    setResponse(b.build(), response);
+  }
 
-	@Override
-	public void handlePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	}
+  @Override
+  public void handlePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  }
 
 }
