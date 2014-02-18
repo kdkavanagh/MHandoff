@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 /**
  * Servlet that facilitates returning a JSON response to the client. JSON
  * Response must be set using setResponse()
@@ -22,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class JsonServlet extends HttpServlet {
 
 	private boolean responseSet = false;
+
+	private static final Logger logger = Logger.getLogger(JsonServlet.class);
 
 	@Override
 	public final void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,8 +46,13 @@ public abstract class JsonServlet extends HttpServlet {
 	}
 
 	protected void setResponse(final JsonObject json, HttpServletResponse response) throws IOException {
-		response.getOutputStream().print(json.toString());
+		setResponse(json.toString(), response);
+	}
+
+	protected void setResponse(final String json, HttpServletResponse response) throws IOException {
+		response.getOutputStream().print(json);
 		response.getOutputStream().close();
+		logger.debug("JSON Response set.");
 		responseSet = true;
 	}
 
