@@ -3,6 +3,7 @@ package org.umich.mott.peds.innovation.handoff.persistence;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
 import org.umich.mott.peds.innovation.handoff.common.Patient;
 import org.umich.mott.peds.innovation.handoff.common.Patient.AllergyInfo;
@@ -12,11 +13,14 @@ import org.umich.mott.peds.innovation.handoff.common.Patient.MedsInfo;
 import org.umich.mott.peds.innovation.handoff.common.PriorityLevel;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
 public class DummyPersistenceService implements PersistenceService {
+
+  private static final Logger logger = Logger.getLogger(DummyPersistenceService.class);
 
   @Inject
   public DummyPersistenceService() {
@@ -65,5 +69,11 @@ public class DummyPersistenceService implements PersistenceService {
     p.setMeds(m);
 
     return p;
+  }
+
+  public void writeItem(String patientId, BaseNote note) {
+    Gson gson = new Gson();
+    String res = gson.toJson(note);
+    logger.info("Writing Object " + res);
   }
 }

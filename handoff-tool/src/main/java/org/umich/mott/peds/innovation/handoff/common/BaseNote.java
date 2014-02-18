@@ -1,5 +1,9 @@
 package org.umich.mott.peds.innovation.handoff.common;
 
+import javax.servlet.ServletException;
+
+import org.umich.mott.peds.innovation.handoff.ActionContext;
+
 /**
  * @author Kyle D. Kavanagh
  * @date Feb 18, 2014
@@ -19,4 +23,17 @@ public class BaseNote {
     this.priority = priority;
   }
 
+  /**
+   * Generate note from context
+   * 
+   * @param context
+   * @throws ServletException
+   */
+  public BaseNote(ActionContext context) throws ServletException {
+    text = context.getParameterOrFail("text");
+    reporter = context.getParameterOrFail("reporter");
+    reportedDate = context.getParameterOrFail("reportedDate");
+    expiration = context.getParameterOrFail("expiration");
+    priority = PriorityLevel.valueOf(context.getParameterOrFail("priority"));
+  }
 }

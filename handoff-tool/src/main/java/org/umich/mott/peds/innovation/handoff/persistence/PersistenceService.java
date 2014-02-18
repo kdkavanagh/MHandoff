@@ -23,4 +23,7 @@ public interface PersistenceService {
   public List<Task> getTasksForPatient(String id);
 
   public Patient getPatient(String id);
+
+  public void writeItem(String patientId, BaseNote note);
+
 }

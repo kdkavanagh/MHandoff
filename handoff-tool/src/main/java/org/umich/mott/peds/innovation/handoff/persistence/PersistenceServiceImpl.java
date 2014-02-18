@@ -36,4 +36,9 @@ public class PersistenceServiceImpl implements PersistenceService {
     // TODO Auto-generated method stub
     return null;
   }
+
+  public void writeItem(String patientId, BaseNote note) {
+    // TODO Auto-generated method stub
+
+  }
 }
