@@ -3,6 +3,8 @@
  */
 package org.umich.mott.peds.innovation.handoff.dashboard.actions;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,7 +29,10 @@ public class GetTileAction extends ServletAction {
 		int detailLevel = Integer.parseInt(getParameterOrFail("level", request));
 		// Go to the database
 		// format the data and return
-		return null;
+		JsonObjectBuilder b = Json.createObjectBuilder();
+		b.add("PatientID", id);
+		b.add("detail", detailLevel);
+		return b.build().toString();
 
 	}
 

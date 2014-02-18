@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.umich.mott.peds.innovation.handoff.dashboard;
+package org.umich.mott.peds.innovation.handoff;
 
 import java.io.IOException;
 
@@ -11,28 +11,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.umich.mott.peds.innovation.handoff.ActionFactory;
-import org.umich.mott.peds.innovation.handoff.JsonServlet;
 
 /**
+ * The primary servlet to communicate with the client
+ * 
  * @author Kyle D. Kavanagh
  * @date Feb 17, 2014
  * 
  */
-@WebServlet(name = "Dashboard Servlet", description = "Servlet to provide communication for the homepage dashboard", urlPatterns = "/dashboard/*")
-public class DashboardServlet extends JsonServlet {
+@WebServlet(name = "Dispatcher Servlet", description = "Servlet to provide communication with the client", urlPatterns = "/action/*")
+public class ActionDispatcher extends JsonServlet {
 
-	private static final ActionFactory actionFactory = new DashboardActionFactory();
-
-	private static final long serialVersionUID = 1L;
-
-	private static final Logger logger = Logger.getLogger(DashboardServlet.class);
+	private static final Logger logger = Logger.getLogger(ActionDispatcher.class);
 
 	@Override
 	public void handleGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		logger.info("New dashboard servlet request");
+		logger.info("Received new action request");
 		try {
-			String resp = actionFactory.getAction(request).execute(request, response);
+			String resp = ActionFactory.getAction(request).execute(request, response);
 			setResponse(resp, response);
 		} catch (Exception e) {
 			throw new ServletException("Executing action failed.", e);

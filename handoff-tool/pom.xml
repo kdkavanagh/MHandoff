@@ -5,7 +5,47 @@
 	<artifactId>handoff-tool</artifactId>
 	<packaging>war</packaging>
 	<version>0.1</version>
-	<name>MHandoff Webapp</name>
+	<name>MHandoff</name>
+	<description>Web application designed for C.S. Mott Children's Hospital to digitize the handoff process</description>
+	<inceptionYear>2014</inceptionYear>
+	<organization>
+		<name>C.S. Mott Children's Hospital</name>
+		<url>http://www.mottchildren.org/</url>
+	</organization>
+	<developers>
+		<developer>
+			<name>Kyle D. Kavanagh</name>
+			<email>kdkav@umich.edu</email>
+		</developer>
+		<developer>
+			<name>Minchan Kim</name>
+			<email>kminchan@umich.edu</email>
+		</developer>
+		<developer>
+			<name>Colleen Sain</name>
+			<email>collsain@umich.edu</email>
+		</developer>
+		<developer>
+			<name>Matthew Speakman</name>
+			<email>mcspeak@umich.edu</email>
+		</developer>
+		<developer>
+			<name>John T. Yu</name>
+			<email>johntyu@umich.edu</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:johntyu/EECS481_EPIC.git</connection>
+		<url>scm:git:git@github.com:johntyu/EECS481_EPIC.git</url>
+		<developerConnection>scm:git:git@github.com:johntyu/EECS481_EPIC.git</developerConnection>
+	</scm>
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/johntyu/EECS481_EPIC/issues</url>
+	</issueManagement>
+
 	<repositories>
 		<repository>
 			<id>repo2</id>
@@ -39,6 +79,11 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
@@ -53,7 +98,7 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${jettyVersion}</version>
 				<configuration>
-					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<scanIntervalSeconds>5</scanIntervalSeconds>
 					<jettyXml>src/main/resources/jettyResources/jetty.xml,src/main/resources/jettyResources/jetty-ssl.xml,src/main/resources/jettyResources/jetty-https.xml</jettyXml>
 				</configuration>
 			</plugin>
