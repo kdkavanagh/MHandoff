@@ -1,5 +1,7 @@
 package org.umich.mott.peds.innovation.handoff;
 
+import org.umich.mott.peds.innovation.handoff.persistence.PersistenceService;
+
 import com.google.gson.Gson;
 
 /**
@@ -21,4 +23,7 @@ public interface Action {
   public String execute(ActionContext context) throws Exception;
 
   public static final Gson gson = new Gson();
+
+  public static final PersistenceService persistenceService = GuiceInjectorContainer.injector.getInstance(PersistenceService.class);
+
 }

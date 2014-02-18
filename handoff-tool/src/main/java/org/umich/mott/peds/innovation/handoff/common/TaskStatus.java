@@ -1,22 +1,18 @@
 package org.umich.mott.peds.innovation.handoff.common;
 
 public enum TaskStatus {
-  NOTSTARTED {
-    @Override
-    public String toString() {
-      return "Not Started";
-    }
-  },
-  INPROGRESS {
-    @Override
-    public String toString() {
-      return "In Progress";
-    }
-  },
-  COMPLETED {
-    @Override
-    public String toString() {
-      return "Completed";
-    }
-  };
+  NOTSTARTED("Not Started"),
+  INPROGRESS("In Progress"),
+  COMPLETED("Completed");
+
+  private final String text;
+
+  private TaskStatus(String s) {
+    text = s;
+  }
+
+  @Override
+  public String toString() {
+    return text;
+  }
 }

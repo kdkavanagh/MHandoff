@@ -6,7 +6,16 @@ package org.umich.mott.peds.innovation.handoff.common;
  * 
  */
 public class Task extends BaseNote {
-  private String assignee;
-  private TaskStatus status;
+
+  public Task(String text, String reporter, String assignee, String reportedDate, String expiration, PriorityLevel priority) {
+    super(text, reporter, reportedDate, expiration, priority);
+    this.assignee = assignee;
+    status = TaskStatus.NOTSTARTED;
+
+  }
+
+  private final String assignee;
+
+  private final TaskStatus status;
 
 }

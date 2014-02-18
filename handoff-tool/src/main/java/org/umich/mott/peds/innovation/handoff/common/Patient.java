@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 
+ * @author Kyle D. Kavanagh
+ * @date Feb 18, 2014
+ * 
+ */
 public class Patient {
   private BasicInfo basicInfo;
   private LabInfo labs;
