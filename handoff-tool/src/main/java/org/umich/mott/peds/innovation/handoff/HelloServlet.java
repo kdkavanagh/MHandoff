@@ -17,13 +17,12 @@ import javax.servlet.http.HttpServletResponse;
  * 
  */
 @WebServlet(name = "Hello World Servlet", description = "This is a simple hello world servlet with annotations", urlPatterns = "/hello")
-public class HelloServlet extends SimpleServlet {
+public class HelloServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		String name = request.getParameter("name");
-		storeInSession("Request Name", name, request);
 		// Write the response
 		out.println("Hello  " + name);
 		out.close();

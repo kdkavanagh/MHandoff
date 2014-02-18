@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.json.JsonObject;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date Feb 17, 2014
  * 
  */
-public abstract class JsonServlet extends SimpleServlet {
+public abstract class JsonServlet extends HttpServlet {
 
 	private boolean responseSet = false;
 
