@@ -10,6 +10,8 @@ import org.umich.mott.peds.innovation.handoff.common.ErrorCode;
  * @author Kyle D. Kavanagh
  * @date Feb 18, 2014
  * 
+ * @request.param noteId - The noteID of the note to delete
+ * 
  */
 @ActionMapping(method = RequestMethod.POST, path = "patient/deleteItem.do")
 public class DeleteItemAction implements Action {

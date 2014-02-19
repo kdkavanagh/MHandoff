@@ -9,6 +9,8 @@ import org.umich.mott.peds.innovation.handoff.RequestMethod;
  * @author Kyle D. Kavanagh
  * @date Feb 18, 2014
  * 
+ * @request.param patient - patient id
+ * 
  */
 @ActionMapping(method = RequestMethod.GET, path = "patient/info.do")
 public class GetPatientInfoAction implements Action {

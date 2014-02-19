@@ -15,6 +15,10 @@ import org.umich.mott.peds.innovation.handoff.common.Task;
  * @author Kyle D. Kavanagh
  * @date Feb 18, 2014
  * 
+ * @request.param patient - the patient to create this item for
+ * @request.param type - the type of note to create, note or task
+ * 
+ * 
  */
 @ActionMapping(method = RequestMethod.POST, path = "patient/createItem.do")
 public class CreateItemAction implements Action {
@@ -34,8 +38,9 @@ public class CreateItemAction implements Action {
       // Assemble task
       note = new Task(context);
     } else {
-      return new ErrorCode(1, "Failure: Unknown type " + type).json();
+      throw new RuntimeException("Failure: Unknown type " + type);
     }
+
     boolean result = persistenceService.writeItem(id, note);
     if (result) {
       return ErrorCode.NO_ERROR.json();

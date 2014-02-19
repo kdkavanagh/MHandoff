@@ -10,6 +10,9 @@ import org.umich.mott.peds.innovation.handoff.RequestMethod;
  * @author Kyle D. Kavanagh
  * @date Feb 18, 2014
  * 
+ * @request.param type - note or task
+ * @request.param patient - patient id
+ * 
  */
 @ActionMapping(method = RequestMethod.GET, path = "patient/items.do")
 public class GetNotesAndTasksAction implements Action {
