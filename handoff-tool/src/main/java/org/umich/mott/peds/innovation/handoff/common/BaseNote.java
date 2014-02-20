@@ -48,4 +48,11 @@ public class BaseNote {
   public void setNoteId(String noteId) {
     this.noteId = noteId;
   }
+
+  public boolean equals(BaseNote n) {
+    if (noteId == null && n.noteId == null) {
+      return true;
+    }
+    return noteId.equals(n.noteId);
+  }
 }

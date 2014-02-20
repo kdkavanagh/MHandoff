@@ -109,6 +109,9 @@ public class DummyPersistenceService implements PersistenceService {
 
   public boolean deleteItem(String noteId) {
     logger.info("Deleting note " + noteId);
+    BaseNote n = new BaseNote(noteId, null, null, null, null, null);
+    tasks.remove(n);
+    notes.remove(n);
     return result();
   }
 }
