@@ -9,7 +9,7 @@ $(function() {
 
 	var noteCollection = Backbone.Collection.extend({
 		model : Note,
-		url : '/patient/items.do?patient=kyle&type=note',
+		url : '/patient/items.do?type=note',
 	});
 
 	var theView = Backbone.View.extend({
@@ -33,22 +33,25 @@ $(function() {
 
 		addItem: function() {
 			console.log("Adding item");
-			this.notes.fetch({reset:true});
+			this.notes.fetch({ data: $.param({ patient: "kyle"}) 
+				,reset:true});
 			
 		},
 
 			render: function(){
 				console.log("go for Loadme");
-				var row = 1;
+				var gridster = $(".gridster ul").gridster().data('gridster');
+				var row = 0;
 				this.notes.each(function(note, index) { // iterate through the collection
 					console.log("Adding "+note.get("noteId"));
 					col = index % 4;
 					if(col == 0) {
 						row += 1;
 					}
-					
-					$("#notesList").append("<li data-row=\""+row+"\" data-col=\""+col+"\" data-sizex=\"1\" data-sizey=\"1\">"+note.get("text")+"</li>"
-							);
+					 gridster.add_widget("<li data-row=\""+row+"\" data-col=\""+col+"\" data-sizex=\"1\" data-sizey=\"1\">"+note.get("text")+"</li>");
+					console.log("Adding item to grid at "+row+","+col);
+//					$("#notesList").append("<li data-row=\""+row+"\" data-col=\""+col+"\" data-sizex=\"1\" data-sizey=\"1\">"+note.get("text")+"</li>"
+//							);
 				});
 
 				return this;
