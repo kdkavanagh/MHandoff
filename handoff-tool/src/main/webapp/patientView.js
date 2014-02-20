@@ -4,6 +4,14 @@ $(function() {
 		url:"",
 		initialize: function(){
 			alert("New Note model init");
+		},
+	
+		toListItem: function(row, col) {
+			var str ="<li data-row=\""+row+"\" data-col=\""+col+"\" data-sizex=\"1\" data-sizey=\"1\">";
+			str += "Text: ";
+			str+= this.get("text");
+			str += "</li>";
+			return str;
 		}
 	});
 
@@ -17,8 +25,8 @@ $(function() {
 		el: 'body',
 
 		events: {
-			'click #buttonPress': "render",
-			'click #buttonPress': "addItem",
+			'click #buttonPress': "getItems",
+			'click #addDummyButton': "addItem",
 		},
 
 		initialize: function () {
@@ -29,29 +37,34 @@ $(function() {
 
 			this.notes.on('reset', this.render, this);
 			this.notes.on('change', this.render);
+			this.notes.on('add', this.render);
 		},
 
+		getItems: function() {
+			console.log("Getting all items");
+			this.notes.fetch({ data: $.param({ patient: "kyle",}) 
+				,reset:true,});
+			
+		},
 		addItem: function() {
 			console.log("Adding item");
-			this.notes.fetch({ data: $.param({ patient: "kyle"}) 
-				,reset:true});
-			
+			 var note = new Note({text:"My dummy note",});
+			 this.notes.add(note);
 		},
 
 			render: function(){
 				console.log("go for Loadme");
-				var gridster = $(".gridster ul").gridster().data('gridster');
+				var ele = $("#noteGrid ul");
+				var gridster = ele.gridster().data('gridster');
+				gridster.remove_all_widgets();
 				var row = 0;
-				this.notes.each(function(note, index) { // iterate through the collection
-					console.log("Adding "+note.get("noteId"));
+				this.notes.each(function(note, index) { 
 					col = index % 4;
 					if(col == 0) {
 						row += 1;
 					}
-					 gridster.add_widget("<li data-row=\""+row+"\" data-col=\""+col+"\" data-sizex=\"1\" data-sizey=\"1\">"+note.get("text")+"</li>");
-					console.log("Adding item to grid at "+row+","+col);
-//					$("#notesList").append("<li data-row=\""+row+"\" data-col=\""+col+"\" data-sizex=\"1\" data-sizey=\"1\">"+note.get("text")+"</li>"
-//							);
+					//console.log("Adding item to grid at "+row+","+col);
+					gridster.add_widget(note.toListItem(row,col));
 				});
 
 				return this;
