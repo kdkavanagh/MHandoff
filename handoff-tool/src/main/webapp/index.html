@@ -24,26 +24,30 @@
 <script src="js/backbone.js"></script>
 <script src="js/gridster.js"></script>
 <script type="text/javascript">
-     var gridster;
+	var gridster;
 
-          $(function() {
-              gridtster = $(".gridster > ul").gridster({
-                  widget_margins: [10, 10],
-                  widget_base_dimensions: [140, 140],
-                  min_cols: 6
-              }).data('gridster');
-          });
-    </script>
+	$(function() {
+		gridtster = $(".gridster > ul").gridster({
+			widget_margins : [ 10, 10 ],
+			widget_base_dimensions : [ 140, 140 ],
+			min_cols : 6
+		}).data('gridster');
+	});
+</script>
 
 <script src="js/helloworld.js" type="text/javascript"></script>
 
-
+<script id="indivNoteTemplate" type="text/javascript">
+<li id="<%= noteId%>"><div>Text: <%= text%></div> 
+ <button class="removeItem">Remove</button></li>
+</script>
 <script src="patientView.js"></script>
 </head>
 <body>
-	<div class="gridster" id="noteGrid">
-		<ul >
-		<!-- 
+	<div class="base">
+		<div class="gridster" id="noteGrid">
+			<ul>
+				<!-- 
 			<li data-row="1" data-col="1" data-sizex="1" data-sizey="1">Patient</li>
 			<li data-row="2" data-col="1" data-sizex="1" data-sizey="1">Doctor</li>
 			<li data-row="3" data-col="1" data-sizex="1" data-sizey="1">Chesney</li>
@@ -60,17 +64,21 @@
 
 			<li data-row="1" data-col="6" data-sizex="1" data-sizey="1">Peach</li>
 			<li data-row="2" data-col="6" data-sizex="1" data-sizey="2">Skittles</li>
-		 --></ul>
-	</div>
+		 -->
+			</ul>
 
+		</div>
+		<div class="button1" , id=myButtons>
+			<button class="first" id="buttonPress">Refresh</button>
+			<button class="second" id="addDummyButton">Create Notes</button>
+			<button class="second" id="removeButton">Remove Last Note</button>
+
+		</div>
+	</div>
 	<ul id="patientList">
 	</ul>
 
-	<div class="button1" , id=myButtons>
-		<button class="first" id="buttonPress">Get Notes</button>
-	<button class="second" id="addDummyButton">Create Notes</button>
-	
-	</div>
+
 
 
 
