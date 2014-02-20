@@ -1,4 +1,4 @@
-
+$(function() {
 
 var Patient = Backbone.Model.extend({
 	initialize: function(){
@@ -21,38 +21,36 @@ var noteCollection = Backbone.Collection.extend({
 });
 
 var theView = Backbone.View.extend({
-	el: $("test"),
+	tagName: 'li',
+	el: 'body',
 
 	events: {
-		'click button#add': "loadMe",
+		'click #buttonPress': "render",
 	},
 
 	initialize: function () {
-		
+
 		console.log("Creating new view");
-		  _.bindAll(this, 'render', 'loadMe');
+		_.bindAll(this, 'render');
 		this.collection = new noteCollection();
 		this.collection.fetch({reset:true});
 		this.collection.on('reset', this.render, this);
 		this.render();
-		console.log("Done rendering")
+		console.log("Done rendering");
 	},
 
 	render: function(){
-		$(this.el).append("<button id='add'>Add list item</button>");
-		$(this.el).append("<ul></ul>");
-	},
+		console.log("go for Loadme");
 
-	loadMe : function () {
-		console.log("go for Loadme")
-		
 		this.collection.each(function(patient) { // iterate through the collection
 			console.log(patient.get("name"));
-			$('ul', this.el).append("<li>"+patient.get("name")+"</li>")
+			$("#patientList").append("<li>"+patient.get("name")+"</li>");
 		});
 
 		return this;
 	}
 });
 
-var view = new theView({ el: $('#myButtons') });
+var view = new theView();
+
+});
