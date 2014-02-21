@@ -1,0 +1,21 @@
+#noteGrid {
+	position:relative;
+}
+.note {
+	position:relative;
+	box-shadow: 5px 5px 10px #888888;
+}
+
+.noteMetaInfo {
+	height:60px;
+	width:100%;
+	position:absolute; 
+	bottom:0;
+	background-color:#E3E3E3;
+}
+
+.noteTextArea {
+	height:100px;
+	position:absolute; 
+	top:0;
+}
