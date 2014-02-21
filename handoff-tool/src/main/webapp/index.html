@@ -39,9 +39,16 @@
 <script src="js/helloworld.js" type="text/javascript"></script>
 
 <script id="indivNoteTemplate" type="text/javascript">
-<li class="note" id="<%= noteId%>"><div class="noteTextArea">Text: <%= text%>
- <button class="removeItem">Remove</button></div>
- <div class="noteMetaInfo" ><div style="float:left">Priority <%= priority%></div><div style="float:right"> Reported by: <%= reporter%></div></div>
+<li class="note" id="<%= noteId%>"><div class="panel panel-default" style="height:100%">
+<div class="panel-heading">
+<h3 class="panel-title">Note <span class="badge pull-right">Priority <%= priority%></span></h3>
+</div>
+<div class="panel-body" >
+Text: <%= text%>
+<button class="removeItem">Remove</button></div>
+
+<div class="panel-footer">
+ Reported by: <%= reporter%></div></div>
  </li>
 </script>
 <script src="patientView.js"></script>
@@ -65,7 +72,14 @@
 
 
 
-
+ <div class="portlet box grey tabbable">
+        <div class="portlet-title">
+            asdfasdf
+        </div>
+        <div class="portlet-body">
+        </div>
+        </div>
+        
 
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

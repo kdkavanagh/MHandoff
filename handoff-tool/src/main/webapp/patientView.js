@@ -29,7 +29,6 @@ $(function() {
 			this.noteModel = this.options.noteModel;
 			this.row = this.options.row;
 			this.col = this.options.col;
-			this.noteModel.on('remove', this.destroy_view);
 		},
 
 		render: function(){
@@ -54,7 +53,7 @@ $(function() {
 		},
 
 		destroy_full: function(event) {
-			console.log("Destorying item");
+			console.log("Destroying item");
 			this.unbind(); // Unbind all local event bindings
 			this.noteModel.unbind( 'change', this.render, this ); // Unbind reference to the model
 			this.noteModel.destroy();
@@ -90,8 +89,10 @@ $(function() {
 			this.notes.on('reset', this.generateViews, this);
 			this.notes.on('change', this.render);
 			this.notes.on('add', this.render);
+			this.noteViews = new Array();
+			this.garbageViews = new Array();
 		},
-		
+
 		createView: function(note, row, col, self) {
 			var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
 			var noteView = new IndividualNoteView({parent : self, noteModel:note, row:row, col:col, gridster : gridsterObj});
@@ -101,8 +102,12 @@ $(function() {
 		},
 
 		generateViews: function() {
+			//Destroy existing views
+			while (this.noteViews.length > 0) {
+				this.garbageViews.push(this.noteViews.pop());
+			}
+
 			var row = 0;
-			this.noteViews = new Array();
 			var self = this;
 			this.notes.each(function(note, index) { 
 				col = index % 4;
@@ -158,6 +163,11 @@ $(function() {
 
 			for (var i = 0; i < this.noteViews.length; i++) {
 				this.noteViews[i].render();
+			}
+			
+			//delete any garbage we have (must be done after remove_all_widgets()
+			while(this.garbageViews.length > 0) {
+				this.garbageViews.pop().destroy_full(null);
 			}
 
 			return this;
