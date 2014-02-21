@@ -44,13 +44,13 @@ $(function() {
 
 		buttonClickHandler : function(event){
 			console.log("Removing...");
-			this.noteModel.destroy();
+			//this.noteModel.destroy();
 			this.gridster.remove_widget(this.$el);
 			this.remove();
 
 			return false;
 		},
-		
+
 		remove: function() {
 			Backbone.View.prototype.remove.apply(this, arguments);
 			this.trigger('remove', this);
@@ -61,6 +61,7 @@ $(function() {
 			console.log("Destorying item");
 			this.unbind(); // Unbind all local event bindings
 			this.noteModel.unbind( 'change', this.render, this ); // Unbind reference to the model
+			this.noteModel.destroy();
 			this.options.parent.unbind( 'close:all', this.close, this ); // Unbind reference to the parent view
 
 			this.remove(); // Remove view from DOM
@@ -74,12 +75,12 @@ $(function() {
 	var theView = Backbone.View.extend({
 
 		el: '.base',
-
+		mostRecentlyDeletedView : null,
 
 		events: {
 			'click #buttonPress': "getItems",
 			'click #addDummyButton': "addItem",
-			'click #removeButton': "removeLast",
+			'click #undoButton' : "undoRemove",
 		},
 
 		initialize: function () {
@@ -98,20 +99,25 @@ $(function() {
 
 
 		},
+		
+		createView: function(note, row, col, self) {
+			var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
+			var noteView = new IndividualNoteView({noteModel:note, row:row, col:col, gridster : gridsterObj});
+			this.noteViews.push(noteView);
+			noteView.on('remove', self.noteRemoved, self);
+
+		},
 
 		generateViews: function() {
 			var row = 0;
 			this.noteViews = new Array();
-			var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
 			var self = this;
 			this.notes.each(function(note, index) { 
 				col = index % 4;
 				if(col == 0) {
 					row += 1;
 				}
-				var noteView = new IndividualNoteView({el:$("#"+note.get("noteId")), noteModel:note, row:row, col:col, gridster : gridsterObj});
-				self.noteViews.push(noteView);
-				noteView.on('remove', self.noteRemoved, self);
+				self.createView(note, row, col, self);
 			});
 			this.render();
 		},
@@ -126,19 +132,30 @@ $(function() {
 			console.log("Adding item");
 			//create the note
 			var note = new Note({text:"My dummy note",});
-			var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
-			var noteView = new IndividualNoteView({noteModel:note, row:0, col:0, gridster : gridsterObj});
-			this.noteViews.push(noteView);
+			this.createView(note, 0, 0, this);
 			this.notes.add(note);
 		},
-		
+
+
+		undoRemove:function() {
+			console.log("undoing remove");
+			if(this.mostRecentlyDeletedView != null) {
+				this.noteViews.push(this.mostRecentlyDeletedView);
+				this.mostRecentlyDeletedView.render();
+				this.mostRecentlyDeletedView = null;
+			}
+		},
+
 		noteRemoved:function(event) {
-			console.log("here");
-			console.log(this);
+			if(this.mostRecentlyDeletedView != null) {
+				//There was a previously deleted note, lets get rid of it for good
+			}
+			//remove the view from our list of views to render
 			var index = this.noteViews.indexOf(event);
 			if (index > -1) {
-			    this.noteViews.splice(index, 1);
+				this.noteViews.splice(index, 1);
 			}
+			this.mostRecentlyDeletedView = event;
 		},
 
 		render: function(){
