@@ -16,7 +16,7 @@ $(function() {
 	});
 
 	var IndividualNoteView = Backbone.View.extend({
-
+		tagName: 'li',
 		template:$("#indivNoteTemplate").html(),
 		
 		events: {
@@ -25,43 +25,44 @@ $(function() {
 
 		initialize : function (options) {
 			console.log("Creating new indiv note view");
-			
 			this.options = options || {};
 			this.gridster = this.options.gridster;
 			this.noteModel = this.options.noteModel;
 			this.row = this.options.row;
 			this.col = this.options.col;
-			this.el = $("#"+this.noteModel.get("noteId"));
-			console.log("my domain- "+this.el.selector);
 			this.noteModel.on('remove', this.destroy_view);
 		},
 
 		render: function(){
 			var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
 			 
-	        //this.$el.html();
-			//this.el = tmpl(this.noteModel.toJSON());
-			this.gridster.add_widget(tmpl(this.noteModel.toJSON()));
+			this.setElement(tmpl(this.noteModel.toJSON()));
+			//console.log(this.el);
+			this.gridster.add_widget(this.el);
+			//console.log(this.$el.children);
 		},
 
 		buttonClickHandler : function(event){
-			alert( $(event.currentTarget).text());
+			console.log("Removing...");
+			this.noteModel.destroy();
+	        this.gridster.remove_widget(this.$el);
+			//this.remove();
 
 			return false;
 		},
 
-		destroy_view: function(event) {
-			console.log("Destorying item");
-			//COMPLETELY UNBIND THE VIEW
-			this.undelegateEvents();
-
-			this.$el.removeData().unbind(); 
-
-			//Remove view from DOM
-			this.remove();  
-			Backbone.View.prototype.remove.call(this);
-
-		}
+//		destroy_view: function(event) {
+//			console.log("Destorying item");
+//			//COMPLETELY UNBIND THE VIEW
+//			//this.undelegateEvents();
+//
+//			this.$el.removeData().unbind(); 
+//
+//			//Remove view from DOM
+//			this.remove();  
+//			Backbone.View.prototype.remove.call(this);
+//
+//		}
 	});
 
 	var theView = Backbone.View.extend({
@@ -102,7 +103,7 @@ $(function() {
 				if(col == 0) {
 					row += 1;
 				}
-				var noteView = new IndividualNoteView({noteModel:note, row:row, col:col, gridster : gridsterObj});
+				var noteView = new IndividualNoteView({el:$("#"+note.get("noteId")), noteModel:note, row:row, col:col, gridster : gridsterObj});
 				thisHelper.noteViews.push(noteView);
 			});
 			this.render();
