@@ -26,11 +26,11 @@
 <script src="js/gridster.js"></script>
 <script type="text/javascript">
 	var gridster;
-
+	
 	$(function() {
 		gridtster = $(".gridster > ul").gridster({
 			widget_margins : [ 7, 7 ],
-			widget_base_dimensions : [ 200, 200 ],
+			widget_base_dimensions : [ 250, 150 ],
 			min_cols : 6
 		}).data('gridster');
 	});
@@ -43,8 +43,8 @@
 <div class="panel-heading">
 <h3 class="panel-title">Note <span class="badge pull-right">Priority <%= priority%></span></h3>
 </div>
-<div class="panel-body" >
-Text: <%= text%>
+<div class="panel-body noteTextArea" >
+<p>Text: <%= text%><a href="#more" class="more grad">More...</a></p>
 <button class="removeItem">Remove</button></div>
 
 <div class="panel-footer">

@@ -34,7 +34,23 @@ $(function() {
 		render: function(){
 			var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
 			this.setElement(tmpl(this.noteModel.toJSON()));
+			this.check();
 			this.gridster.add_widget(this.el);
+		},
+
+		check: function() {
+			var checker = new checkLength();
+			checker.check();
+			var moreThis = this.$el.find('.more');
+			moreThis.on('click', function (e) {
+				moreThis.closest('.noteTextArea').toggleClass('active');
+				checker.check();
+			});
+
+
+			$(window).resize(function() {
+				checker.check()
+			});
 		},
 
 		buttonClickHandler : function(event){
@@ -164,7 +180,7 @@ $(function() {
 			for (var i = 0; i < this.noteViews.length; i++) {
 				this.noteViews[i].render();
 			}
-			
+
 			//delete any garbage we have (must be done after remove_all_widgets()
 			while(this.garbageViews.length > 0) {
 				this.garbageViews.pop().destroy_full(null);
@@ -173,6 +189,35 @@ $(function() {
 			return this;
 		}
 	});
+
+
+	function checkLength() {
+		this.showing = new Array();
+	}
+
+	checkLength.prototype.check = function() {
+		//Check to see if we need the "more" text
+		var that = this;
+		$('.noteTextArea').each(function (index) {
+			var article = $(this);
+			var theP = article.find('p');
+			var theMore = article.find('.more');
+			 if(theP[0].scrollHeight >= $(this).height()) {
+				theMore.show();
+				that.showing[index] = true;
+			} else {
+				if (!article.hasClass('active')) {
+					theMore.hide();
+					that.showing[index] = false;
+				} else {
+					that.showing[index] = false;
+				}
+			}
+			theMore.text(that.showing[index] ? "More..." : "Less...");
+		});
+	};
+
+
 
 	var view = new NoteGridView();
 
