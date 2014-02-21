@@ -9,6 +9,7 @@
 
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/gridster.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -28,8 +29,8 @@
 
 	$(function() {
 		gridtster = $(".gridster > ul").gridster({
-			widget_margins : [ 10, 10 ],
-			widget_base_dimensions : [ 140, 140 ],
+			widget_margins : [ 7, 7 ],
+			widget_base_dimensions : [ 200, 200 ],
 			min_cols : 6
 		}).data('gridster');
 	});
@@ -38,8 +39,10 @@
 <script src="js/helloworld.js" type="text/javascript"></script>
 
 <script id="indivNoteTemplate" type="text/javascript">
-<li id="<%= noteId%>"><div>Text: <%= text%>
- <button class="removeItem">Remove</button></div> </li>
+<li class="note" id="<%= noteId%>"><div class="noteTextArea">Text: <%= text%>
+ <button class="removeItem">Remove</button></div>
+ <div class="noteMetaInfo" ><div style="float:left">Priority <%= priority%></div><div style="float:right"> Reported by: <%= reporter%></div></div>
+ </li>
 </script>
 <script src="patientView.js"></script>
 </head>

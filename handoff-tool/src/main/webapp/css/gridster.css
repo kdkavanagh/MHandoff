@@ -20,7 +20,7 @@
     -o-transition: height .4s, width .4s;
     -ms-transition: height .4s, width .4s;
     transition: height .4s, width .4s;
-    background-color: #3366FF;
+    background-color: #FFFFFF;
 }
 
 .gridster .gs-w {

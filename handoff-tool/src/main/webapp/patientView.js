@@ -4,9 +4,8 @@ $(function() {
 		url:"",
 		defaults : {
 			noteId : "0",
-		},
-		initialize: function(){
-			alert("New Note model init");
+			priority :"1",
+			reporter:"N/A",
 		},
 	});
 
@@ -35,11 +34,8 @@ $(function() {
 
 		render: function(){
 			var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
-
 			this.setElement(tmpl(this.noteModel.toJSON()));
-			//console.log(this.el);
 			this.gridster.add_widget(this.el);
-			//console.log(this.$el.children);
 		},
 
 		buttonClickHandler : function(event){
@@ -72,7 +68,7 @@ $(function() {
 		}
 	});
 
-	var theView = Backbone.View.extend({
+	var NoteGridView = Backbone.View.extend({
 
 		el: '.base',
 		mostRecentlyDeletedView : null,
@@ -91,19 +87,15 @@ $(function() {
 			this.notes = new NoteCollection();
 			this.notes.fetch({ data: $.param({ patient: "kyle",}) 
 				,reset:true,});
-
-
 			this.notes.on('reset', this.generateViews, this);
 			this.notes.on('change', this.render);
 			this.notes.on('add', this.render);
-
-
 		},
 		
 		createView: function(note, row, col, self) {
 			var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
 			var noteView = new IndividualNoteView({parent : self, noteModel:note, row:row, col:col, gridster : gridsterObj});
-			this.noteViews.push(noteView);
+			self.noteViews.push(noteView);
 			noteView.on('remove', self.noteRemoved, self);
 
 		},
@@ -138,7 +130,6 @@ $(function() {
 
 
 		undoRemove:function() {
-			console.log("undoing remove");
 			if(this.mostRecentlyDeletedView != null) {
 				this.noteViews.push(this.mostRecentlyDeletedView);
 				this.mostRecentlyDeletedView.render();
@@ -173,6 +164,6 @@ $(function() {
 		}
 	});
 
-	var view = new theView();
+	var view = new NoteGridView();
 
 });
