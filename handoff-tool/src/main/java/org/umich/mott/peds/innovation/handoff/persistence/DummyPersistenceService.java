@@ -46,6 +46,13 @@ public class DummyPersistenceService implements PersistenceService {
     notes.add(new BaseNote("1", "This is important", "Kyle Kavanagh", "02/18/14", "02/20/14", PriorityLevel.ONE));
     notes.add(new BaseNote("2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "02/10/14",
         "02/20/14", PriorityLevel.TWO));
+    notes
+        .add(new BaseNote(
+            "6",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent malesuada fringilla enim et eleifend. Nam vitae leo dignissim, porta justo ut, scelerisque tortor. Duis lacus leo, malesuada in malesuada et, lacinia ac est. Duis a metus sit amet felis vehicula iaculis ut a enim. Nulla facilisis consectetur risus a adipiscing. Quisque eget elit in neque facilisis vulputate vel eget urna. In hac habitasse platea dictumst. Cras ac blandit nisi. Suspendisse id laoreet ante, nec facilisis purus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec faucibus tristique urna, non tristique sem ultrices ut. Suspendisse sit amet nulla sed diam cursus euismod id et nunc.",
+            "Kyle Kavanagh", "02/11/14", "02/21/14",
+            PriorityLevel.THREE));
+
     notes.add(new BaseNote("3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "02/19/14", "02/20/14", PriorityLevel.TWO));
     notes.add(new BaseNote("4", "Aliquam in magna urna", "Kyle Kavanagh", "02/18/14", "02/20/14", PriorityLevel.ONE));
     notes.add(new BaseNote("5", "Class aptent taciti sociosqu ad litora torquent per conubia nostra", "Kyle Kavanagh", "02/11/14", "02/21/14",

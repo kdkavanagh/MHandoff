@@ -17,21 +17,24 @@
 }
 
 .noteTextArea {
-	position: relative;
-    overflow:normal;
+	
  }
 
 
 .more {
     position: absolute;
     right:0;
+    bottom:5px;
     padding-left:2em;
 }
+
 .noteTextArea p {
     padding:0;
     margin:0;
     float:left;
-    max-height:90px;
+    max-height:60px;
+    overflow:hidden;
+    
 }
 .active.noteTextArea p {
     white-space:normal;

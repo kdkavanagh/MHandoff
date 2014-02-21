@@ -29,6 +29,7 @@ $(function() {
 			this.noteModel = this.options.noteModel;
 			this.row = this.options.row;
 			this.col = this.options.col;
+			return this;
 		},
 
 		render: function(){
@@ -41,16 +42,9 @@ $(function() {
 		check: function() {
 			var checker = new checkLength();
 			checker.check();
-			var moreThis = this.$el.find('.more');
-			moreThis.on('click', function (e) {
-				moreThis.closest('.noteTextArea').toggleClass('active');
-				checker.check();
-			});
-
-
-			$(window).resize(function() {
-				checker.check()
-			});
+			//maybe set the vertical height of the gridster obj here??
+			//var moreThis = this.$el.find('.more');
+			//moreThis.popover({content:this.noteModel.get("text")});
 		},
 
 		buttonClickHandler : function(event){
@@ -104,7 +98,7 @@ $(function() {
 				,reset:true,});
 			this.notes.on('reset', this.generateViews, this);
 			this.notes.on('change', this.render);
-			this.notes.on('add', this.render);
+			this.notes.on('add', this.newItemAdded, this);
 			this.noteViews = new Array();
 			this.garbageViews = new Array();
 		},
@@ -114,6 +108,7 @@ $(function() {
 			var noteView = new IndividualNoteView({parent : self, noteModel:note, row:row, col:col, gridster : gridsterObj});
 			self.noteViews.push(noteView);
 			noteView.on('remove', self.noteRemoved, self);
+			return noteView;
 
 		},
 
@@ -145,8 +140,11 @@ $(function() {
 			console.log("Adding item");
 			//create the note
 			var note = new Note({text:"My dummy note",});
-			this.createView(note, 0, 0, this);
 			this.notes.add(note);
+		},
+		
+		newItemAdded:function(note) {
+			this.createView(note, 0, 0, this).render();
 		},
 
 
@@ -202,15 +200,18 @@ $(function() {
 			var article = $(this);
 			var theP = article.find('p');
 			var theMore = article.find('.more');
+			//Attach a popover to theMore
 			 if(theP[0].scrollHeight >= $(this).height()) {
 				theMore.show();
 				that.showing[index] = true;
 			} else {
 				if (!article.hasClass('active')) {
 					theMore.hide();
+					
 					that.showing[index] = false;
 				} else {
 					that.showing[index] = false;
+					
 				}
 			}
 			theMore.text(that.showing[index] ? "More..." : "Less...");

@@ -31,7 +31,7 @@
 		gridtster = $(".gridster > ul").gridster({
 			widget_margins : [ 7, 7 ],
 			widget_base_dimensions : [ 250, 150 ],
-			min_cols : 6
+			min_cols : 3
 		}).data('gridster');
 	});
 </script>
@@ -44,11 +44,10 @@
 <h3 class="panel-title">Note <span class="badge pull-right">Priority <%= priority%></span></h3>
 </div>
 <div class="panel-body noteTextArea" >
-<p>Text: <%= text%><a href="#more" class="more grad">More...</a></p>
+<p style="text-overflow:ellipsis;">Text: <%= text%></p><a href="#more" class="more grad">More...</a>
 <button class="removeItem">Remove</button></div>
 
-<div class="panel-footer">
- Reported by: <%= reporter%></div></div>
+<div class="panel-footer"></div></div>
  </li>
 </script>
 <script src="patientView.js"></script>
@@ -72,19 +71,9 @@
 
 
 
- <div class="portlet box grey tabbable">
-        <div class="portlet-title">
-            asdfasdf
-        </div>
-        <div class="portlet-body">
-        </div>
         </div>
         
 
-
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-
-
-
+s
 </body>
 </html>
