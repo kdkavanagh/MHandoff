@@ -2,18 +2,17 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-// javac db/JDBCExample.java
-// java -cp "/Users/colleensain/Desktop/eecs481_handoff/db/postgresql-9.3-1100-jdbc41.jar" JDBCExample
-
 // export CLASSPATH=/Users/colleensain/Desktop/eecs481_handoff/db/postgresql-9.3-1100-jdbc41.jar:.
-// export CLASSPATH=/usr/local/lib/myapp.jar:/usr/local/pgsql/share/java/postgresql.jar:.
+// export CLASSPATH=/Users/colleensain/Desktop/eecs481_handoff/db/postgresql.jar:.
+// javac db/JDBCExample.java
+// java -cp JDBCExample
  
 public class JDBCExample {
  
 	public static void main(String[] argv) {
  
-		System.out.println("-------- PostgreSQL "
-				+ "JDBC Connection Testing ------------");
+		System.out.println("---------------------- PostgreSQL "
+				+ "JDBC Connection Testing ----------------------");
  
 		try {
  
@@ -25,7 +24,6 @@ public class JDBCExample {
 					+ "Include in your library path!");
 			e.printStackTrace();
 			return;
- 
 		}
  
 		System.out.println("PostgreSQL JDBC Driver Registered!");
@@ -35,8 +33,8 @@ public class JDBCExample {
 		try {
  
 			connection = DriverManager.getConnection(
-					"jdbc:postgresql-9.3-1100-jdbc41://127.0.0.1:5432/testdb", "mkyong",
-					"123456");
+					"jdbc:postgresql://127.0.0.1:5432/handoff", "colleensain",
+					"");
  
 		} catch (SQLException e) {
  
