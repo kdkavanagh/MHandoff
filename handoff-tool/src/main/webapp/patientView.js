@@ -6,6 +6,7 @@ $(function() {
 			noteId : "0",
 			priority :"1",
 			reporter:"N/A",
+			badgeLevel:"",
 		},
 	});
 
@@ -29,10 +30,17 @@ $(function() {
 			this.noteModel = this.options.noteModel;
 			this.row = this.options.row;
 			this.col = this.options.col;
+			console.log(this.noteModel.get("priority"));
+			if(this.noteModel.get("priority") == 1) {
+				console.log("setting");
+				this.noteModel.set("badgeLevel", "badge-error");
+			}
+			this.noteModel.on('change', this.render, this);
 			return this;
 		},
 
 		render: function(){
+			
 			var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
 			this.setElement(tmpl(this.noteModel.toJSON()));
 			this.check();
@@ -97,7 +105,7 @@ $(function() {
 			this.notes.fetch({ data: $.param({ patient: "kyle",}) 
 				,reset:true,});
 			this.notes.on('reset', this.generateViews, this);
-			this.notes.on('change', this.render);
+			//this.notes.on('change', this.render);
 			this.notes.on('add', this.newItemAdded, this);
 			this.noteViews = new Array();
 			this.garbageViews = new Array();
@@ -171,7 +179,6 @@ $(function() {
 		},
 
 		render: function(){
-			console.log("Rendering now");
 			var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
 			gridsterObj.remove_all_widgets();
 

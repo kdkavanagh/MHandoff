@@ -15,14 +15,17 @@ public class BaseNote {
 
   private final String text, reporter, reportedDate, expiration;
 
-  private final PriorityLevel priority;
+  private final int priority;
+
+  private transient final PriorityLevel priorityLevel;
 
   public BaseNote(String noteId, String text, String reporter, String reportedDate, String expiration, PriorityLevel priority) {
     this.text = text;
     this.reporter = reporter;
     this.reportedDate = reportedDate;
     this.expiration = expiration;
-    this.priority = priority;
+    this.priorityLevel = priority;
+    this.priority = priority.toInt();
     this.noteId = noteId;
   }
 
@@ -38,7 +41,8 @@ public class BaseNote {
     reporter = context.getParameterOrFail("reporter");
     reportedDate = context.getParameterOrFail("reportedDate");
     expiration = context.getParameterOrFail("expiration");
-    priority = PriorityLevel.valueOf(context.getParameterOrFail("priority"));
+    priorityLevel = PriorityLevel.fromInt(Integer.parseInt(context.getParameterOrFail("priority")));
+    this.priority = priorityLevel.toInt();
   }
 
   public String getNoteId() {

@@ -19,7 +19,9 @@
 .noteTextArea {
 	
  }
-
+.badge-error {
+  background-color: #b94a48;
+}
 
 .more {
     position: absolute;
