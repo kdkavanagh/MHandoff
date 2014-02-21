@@ -18,7 +18,7 @@ $(function() {
 	var IndividualNoteView = Backbone.View.extend({
 		tagName: 'li',
 		template:$("#indivNoteTemplate").html(),
-		
+
 		events: {
 			'click .removeItem': "buttonClickHandler",
 		},
@@ -35,7 +35,7 @@ $(function() {
 
 		render: function(){
 			var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
-			 
+
 			this.setElement(tmpl(this.noteModel.toJSON()));
 			//console.log(this.el);
 			this.gridster.add_widget(this.el);
@@ -45,24 +45,30 @@ $(function() {
 		buttonClickHandler : function(event){
 			console.log("Removing...");
 			this.noteModel.destroy();
-	        this.gridster.remove_widget(this.$el);
-			//this.remove();
+			this.gridster.remove_widget(this.$el);
+			this.remove();
 
 			return false;
 		},
+		
+		remove: function() {
+			Backbone.View.prototype.remove.apply(this, arguments);
+			this.trigger('remove', this);
+			return this;
+		},
 
-//		destroy_view: function(event) {
-//			console.log("Destorying item");
-//			//COMPLETELY UNBIND THE VIEW
-//			//this.undelegateEvents();
-//
-//			this.$el.removeData().unbind(); 
-//
-//			//Remove view from DOM
-//			this.remove();  
-//			Backbone.View.prototype.remove.call(this);
-//
-//		}
+		destroy_full: function(event) {
+			console.log("Destorying item");
+			this.unbind(); // Unbind all local event bindings
+			this.noteModel.unbind( 'change', this.render, this ); // Unbind reference to the model
+			this.options.parent.unbind( 'close:all', this.close, this ); // Unbind reference to the parent view
+
+			this.remove(); // Remove view from DOM
+
+			delete this.$el; // Delete the jQuery wrapped object variable
+			delete this.el; // Delete the variable reference to this node
+
+		}
 	});
 
 	var theView = Backbone.View.extend({
@@ -97,14 +103,15 @@ $(function() {
 			var row = 0;
 			this.noteViews = new Array();
 			var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
-			var thisHelper = this;
+			var self = this;
 			this.notes.each(function(note, index) { 
 				col = index % 4;
 				if(col == 0) {
 					row += 1;
 				}
 				var noteView = new IndividualNoteView({el:$("#"+note.get("noteId")), noteModel:note, row:row, col:col, gridster : gridsterObj});
-				thisHelper.noteViews.push(noteView);
+				self.noteViews.push(noteView);
+				noteView.on('remove', self.noteRemoved, self);
 			});
 			this.render();
 		},
@@ -124,18 +131,21 @@ $(function() {
 			this.noteViews.push(noteView);
 			this.notes.add(note);
 		},
-
-
-		removeLast: function() {
-			console.log("Remove last length="+this.notes.length);
-			this.notes.remove(this.notes.at(this.notes.length-1));
+		
+		noteRemoved:function(event) {
+			console.log("here");
+			console.log(this);
+			var index = this.noteViews.indexOf(event);
+			if (index > -1) {
+			    this.noteViews.splice(index, 1);
+			}
 		},
 
 		render: function(){
 			console.log("Rendering now");
 			var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
 			gridsterObj.remove_all_widgets();
-			
+
 			for (var i = 0; i < this.noteViews.length; i++) {
 				this.noteViews[i].render();
 			}
