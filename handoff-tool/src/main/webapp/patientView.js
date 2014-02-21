@@ -102,7 +102,7 @@ $(function() {
 		
 		createView: function(note, row, col, self) {
 			var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
-			var noteView = new IndividualNoteView({noteModel:note, row:row, col:col, gridster : gridsterObj});
+			var noteView = new IndividualNoteView({parent : self, noteModel:note, row:row, col:col, gridster : gridsterObj});
 			this.noteViews.push(noteView);
 			noteView.on('remove', self.noteRemoved, self);
 
@@ -149,6 +149,8 @@ $(function() {
 		noteRemoved:function(event) {
 			if(this.mostRecentlyDeletedView != null) {
 				//There was a previously deleted note, lets get rid of it for good
+				console.log("Permanently deleting note");
+				this.mostRecentlyDeletedView.destroy_full(null);
 			}
 			//remove the view from our list of views to render
 			var index = this.noteViews.indexOf(event);
