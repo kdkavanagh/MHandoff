@@ -20,7 +20,7 @@ $(function() {
 		template:$("#indivNoteTemplate").html(),
 
 		events: {
-			'click .removeItem': "buttonClickHandler",
+			'click span#closeIcon': "buttonClickHandler",
 		},
 
 		initialize : function (options) {

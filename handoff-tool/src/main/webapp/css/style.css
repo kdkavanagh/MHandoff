@@ -6,21 +6,27 @@
 	box-shadow: 5px 5px 10px #888888;
 	max-width:250px;
 	max-height:150px;
-}
-
-.noteMetaInfo {
-	height:60px;
-	width:100%;
-	position:absolute; 
-	bottom:0;
-	background-color:#E3E3E3;
+	overflow:hidden;
 }
 
 .noteTextArea {
 	
  }
+ 
 .badge-error {
   background-color: #b94a48;
+}
+
+.closeIcon, .closeIcon a {
+  color: #999999;
+}
+
+.closeIcon, .closeIcon a {
+  color: #999999;
+}
+
+.closeIcon:hover {
+	color: #000000;
 }
 
 .more {
