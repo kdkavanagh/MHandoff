@@ -52,3 +52,12 @@ Please leave links to useful documentation and any other information relevant to
 * [Backbone Tutorials](http://backbonetutorials.com/)
 * [Backbone Overview](http://documentcloud.github.io/backbone/docs/backbone.html)
 * [Learn Backbone.js Completely](http://javascriptissexy.com/learn-backbone-js-completely/)
+
+
+### PostgreSQL
+* Set username and password in the java file and create a database in postgres called "handoff"
+* Make sure to export the path for the postgresql.jar file
+  * `export CLASSPATH=/Users/colleensain/Desktop/eecs481_handoff/db/postgresql-9.3-1100-jdbc41.jar:.`
+  * `export CLASSPATH=/Users/colleensain/Desktop/eecs481_handoff/db/postgresql.jar:.`
+*  Compile `javac db/CreateTablesInitial.java`
+*  Then run `java -cp CreateTablesInitial`

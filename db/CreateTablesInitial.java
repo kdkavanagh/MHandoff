@@ -2,11 +2,6 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-// export CLASSPATH=/Users/colleensain/Desktop/eecs481_handoff/db/postgresql-9.3-1100-jdbc41.jar:.
-// export CLASSPATH=/Users/colleensain/Desktop/eecs481_handoff/db/postgresql.jar:.
-// javac db/CreateTablesInitial.java
-// java -cp CreateTablesInitial
  
 public class CreateTablesInitial {
  
@@ -14,7 +9,6 @@ public class CreateTablesInitial {
  
 		System.out.println("---------------------- Creating Initial Tables ----------------------");
 
- 		//STEP 2: Register JDBC driver
 		try {
 
 			Class.forName("org.postgresql.Driver");
@@ -25,7 +19,6 @@ public class CreateTablesInitial {
 			return;
 		}
  
-		//STEP 3: Open a connection
 		Connection connection = null;
 		try {
  

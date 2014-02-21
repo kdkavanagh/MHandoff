@@ -24,5 +24,4 @@ public class PatientTile {
     this.numAlerts = numAlerts;
     this.level = level;
   }
-
 }
