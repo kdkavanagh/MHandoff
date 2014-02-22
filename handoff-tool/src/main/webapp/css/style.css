@@ -29,6 +29,11 @@
 	color: #000000;
 }
 
+.noteReporter {
+	font-size:8pt;
+	width:50%;
+}
+
 .more {
     position: absolute;
     right:0;
