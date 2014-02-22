@@ -15,12 +15,22 @@ $(function() {
         url : '/patient/items.do?type=note',
     });
 
+    //Make text inline editable
+    $.fn.editable.defaults.mode = 'inline';
+    
     var NoteModalView = Backbone.View.extend({
 
         template:$("#modalNoteTemplate").html(),
+        editing :false,
+        $editButton:null,
+        $editables:null,
         
+        events : {
+            'hidden.bs.modal':'destroy_full',
+            'click button#editButton' : 'toggleEditing',
+        },
+
         initialize : function (options) {
-            console.log("Creating new modal note view");
             this.options = options || {};
             this.noteModel = this.options.noteModel;
             this.noteModel.on('change', this.render, this);
@@ -29,10 +39,47 @@ $(function() {
         
         render:function() {
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
-            console.log(tmpl(this.noteModel.toJSON()));
             this.setElement(tmpl(this.noteModel.toJSON()));
+            
             this.$el.modal('show');
+
+            this.$el.find("#noteText").editable({
+                type: 'text',
+                pk: 1,
+                title: 'Note Text',
+                disabled : true,
+            });
+            this.$editButton = this.$el.find("button#editButton");
+            this.$editables = this.$el.find(".editable");
+           
+        },
+        
+        toggleEditing:function() {
+            this.$editables.editable('toggleDisabled');
+            if(this.editing) {
+                //we were editing, set the text back to edit
+                this.$editButton.html("Edit");
+            } else {
+                //we were not editing, change text to done
+                this.$editButton.html("Done");
+            }
+            this.editing = !this.editing;
+        },
+        
+        destroy_full: function(event) {
+            console.log("Destroying item");
+            this.unbind(); // Unbind all local event bindings
+            this.noteModel.unbind( 'change', this.render, this ); // Unbind reference to the model
+            this.noteModel.destroy();
+            this.options.parent.unbind( 'close:all', this.close, this ); // Unbind reference to the parent view
+
+            this.remove(); // Remove view from DOM
+            
+            delete this.$el; // Delete the jQuery wrapped object variable
+            delete this.el; // Delete the variable reference to this node
+
         }
+        
 
     });
 
@@ -78,7 +125,7 @@ $(function() {
         
         openNote: function() {
             console.log("opening note");
-            var modal = new NoteModalView({el:$("modalContainer"), noteModel:this.noteModel});
+            var modal = new NoteModalView({parent:this,el:$("modalContainer"), noteModel:this.noteModel});
             modal.render();
         },
 
@@ -98,7 +145,8 @@ $(function() {
         },
 
         destroy_full: function(event) {
-            console.log("Destroying item");
+            console.log("Destroying item" );
+            
             this.unbind(); // Unbind all local event bindings
             this.noteModel.unbind( 'change', this.render, this ); // Unbind reference to the model
             this.noteModel.destroy();
