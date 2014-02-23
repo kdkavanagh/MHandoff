@@ -25,6 +25,32 @@
 
         return false;
     };
+    
+    fn.swap_widgets = function(widget1, widget2) {
+        
+        
+        var wdg1Data = this.get_widget_grid_data(widget1);
+        var wdg2Data = this.get_widget_grid_data(widget2);
+        console.log("Swapping widgets");
+        this.mutate_widget_in_gridmap(widget2, wdg2Data, wdg1Data);
+        this.mutate_widget_in_gridmap(widget1, wdg2Data, wdg2Data);
+        
+//        console.log(this.get_widget_grid_data(widget1));
+//        widget1.attr("data-row", widget2.attr("data-row"));
+//        widget1.attr("data-col", widget2.attr("data-col"));
+//        widget2.attr("data-row", one_row);
+//        widget2.attr("data-col", one_col);
+    },
+    
+    fn.get_widget_grid_data=function(widget) {
+        var obj = {
+                row:widget.attr("data-row"),
+                col:widget.attr("data-col"),
+                size_x:widget.attr("data-sizex"),
+                size_y : widget.attr("data-sizey"),
+        };
+        return obj;
+    },
 
 
     fn.widgets_in_range = function(col1, row1, col2, row2) {

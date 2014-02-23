@@ -55,11 +55,11 @@ $(function() {
                 },
             });
             this.$el.find("#expiration").editable({
-               type:'combodate',
-               value: this.noteModel.get("expiration"),
-               template:"MM / D / YYYY",
-               format:"MM / D / YYYY",
-               viewformat:"MM / D / YYYY",
+                type:'combodate',
+                value: this.noteModel.get("expiration"),
+                template:"MM / D / YYYY",
+                format:"MM / D / YYYY",
+                viewformat:"MM / D / YYYY",
                 success: function (response, newValue) {
                     console.log("Updating model "+newValue);
                     self.noteModel.set("expiration", newValue);
@@ -71,22 +71,22 @@ $(function() {
                          {value: 1, text: 'Priority 1'},
                          {value: 2, text: 'Priority 2'},
                          {value: 3, text: 'Priority 3'},
-                      ],
-                 success: function (response, newValue) {
-                     self.noteModel.set("priority", newValue);
-                     if(self.noteModel.get("priority") == 1) {
-                         self.noteModel.set("badgeLevel", "badge-error");
-                     } else {
-                         self.noteModel.set("badgeLevel","");
-                     }
-                     if(self.$priorityBadge == null) {
-                         self.$priorityBadge = self.$el.find("#priorityBadge");
-                     }
-                     self.$priorityBadge.html("Priority "+newValue);
-                     self.$priorityBadge.attr("class", "badge "+self.noteModel.get("badgeLevel")+" pull-right");
-                     
-                 },
-             });
+                         ],
+                         success: function (response, newValue) {
+                             self.noteModel.set("priority", newValue);
+                             if(self.noteModel.get("priority") == 1) {
+                                 self.noteModel.set("badgeLevel", "badge-error");
+                             } else {
+                                 self.noteModel.set("badgeLevel","");
+                             }
+                             if(self.$priorityBadge == null) {
+                                 self.$priorityBadge = self.$el.find("#priorityBadge");
+                             }
+                             self.$priorityBadge.html("Priority "+newValue);
+                             self.$priorityBadge.attr("class", "badge "+self.noteModel.get("badgeLevel")+" pull-right");
+
+                         },
+            });
             this.$editButton = this.$el.find("button#editButton");
             this.$editables = this.$el.find(".editable");
 
@@ -126,7 +126,7 @@ $(function() {
         template:$("#indivNoteTemplate").html(),
         $noteText:null,
         $notePriorityBadge:null,
-        
+
         events: {
             'click span#closeIcon': "buttonClickHandler",
             'click button#openNoteButton' : "openNote",
@@ -167,6 +167,7 @@ $(function() {
             this.check();
             this.updateView();
             this.gridster.add_widget(this.el);
+            return this;
         },
 
         check: function() {
@@ -285,15 +286,21 @@ $(function() {
         newItemAdded:function(note) {
             //get the next free position
             var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
-            var next = gridsterObj.get_right_most_occupied_cell();
+
+            //Move the add new note item to the next free position
+            //This is safe because the space is guarenteed to be empty
+            var newView = this.createView(note, 0, 0, this).render();
+            var next = gridsterObj.get_bottom_most_occupied_cell();
             console.log(next);
             //Move the add new note item to the next free position
             //This is safe because the space is guarenteed to be empty
-            //gridsterObj.set_player(next.row, next.col, true);
-           // gridsterObj.manage_movements(this.$addNewNoteWidget, next.row, next.col );
-            //gridsterObj.move_widget_to(this.$addNewNoteWidget, next.row);
-            
-            this.createView(note, 0, 0, this).render();
+            //this.$addNewNoteWidget.attr("data-col", next.col);
+            //this.$addNewNoteWidget.attr("data-row", next.row);
+            var target = gridsterObj.widgets_in_range(next.col, next.row, next.col, next.row);
+            if(target.attr("data-col") === newView.$el.attr("data-col") && target.attr("data-row") === newView.$el.attr("data-row")) {
+                gridsterObj.swap_widgets(target, this.$addNewNoteWidget);
+            }
+            //gridsterObj.manage_movements(this.$addNewNoteWidget, next.col, next.row);
         },
 
 
@@ -333,7 +340,7 @@ $(function() {
                 this.noteViews[i].render();
             }
             this.$addNewNoteWidget= gridsterObj.add_widget(addNewItemHtml);
-            
+
             //delete any garbage we have (must be done after remove_all_widgets()
             while(this.garbageViews.length > 0) {
                 this.garbageViews.pop().destroy_full(null);
