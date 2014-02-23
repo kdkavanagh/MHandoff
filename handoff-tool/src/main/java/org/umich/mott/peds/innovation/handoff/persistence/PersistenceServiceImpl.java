@@ -10,6 +10,10 @@ import org.umich.mott.peds.innovation.handoff.common.BaseNote;
 import org.umich.mott.peds.innovation.handoff.common.Patient;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
+@Singleton
 public class PersistenceServiceImpl implements PersistenceService {
 
   private static Connection connection;
@@ -22,9 +26,9 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   private static final String dbPass = "";
 
+  @Inject
   public PersistenceServiceImpl() {
     try {
-
       Class.forName("org.postgresql.Driver");
     } catch (ClassNotFoundException e) {
       logger.fatal("Dont have Postgre Drivers");
@@ -32,10 +36,8 @@ public class PersistenceServiceImpl implements PersistenceService {
     }
 
     try {
-
       this.connection = DriverManager.getConnection(
           JDBC, dbUser, dbPass);
-
     } catch (SQLException e) {
       logger.fatal("Cant connection to db");
       throw new RuntimeException(e);
@@ -44,7 +46,6 @@ public class PersistenceServiceImpl implements PersistenceService {
   }
 
   public List<BaseNote> getNotesForPatient(String id) {
-    // TODO Auto-generated method stub
     return null;
   }
 
