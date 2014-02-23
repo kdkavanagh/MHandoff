@@ -17,6 +17,7 @@ $(function() {
 
     //Make text inline editable
     $.fn.editable.defaults.mode = 'inline';
+    $.fn.editable.defaults.disabled = true;
     
     var NoteModalView = Backbone.View.extend({
 
@@ -33,7 +34,6 @@ $(function() {
         initialize : function (options) {
             this.options = options || {};
             this.noteModel = this.options.noteModel;
-            this.noteModel.on('change', this.render, this);
             return this;
         },
         
@@ -42,12 +42,15 @@ $(function() {
             this.setElement(tmpl(this.noteModel.toJSON()));
             
             this.$el.modal('show');
-
+            var self = this;
             this.$el.find("#noteText").editable({
                 type: 'text',
                 pk: 1,
                 title: 'Note Text',
-                disabled : true,
+                success: function (response, newValue) {
+                    console.log("Updating model");
+                    self.noteModel.set("text", newValue);
+                },
             });
             this.$editButton = this.$el.find("button#editButton");
             this.$editables = this.$el.find(".editable");
@@ -86,6 +89,7 @@ $(function() {
     var IndividualNoteView = Backbone.View.extend({
         tagName: 'li',
         template:$("#indivNoteTemplate").html(),
+        $noteText:null,
 
         events: {
             'click span#closeIcon': "buttonClickHandler",
@@ -103,15 +107,25 @@ $(function() {
                 console.log("setting");
                 this.noteModel.set("badgeLevel", "badge-error");
             }
-            this.noteModel.on('change', this.render, this);
+            this.noteModel.on('change', this.updateView, this);
             return this;
+        },
+        
+        updateView:function() {
+            console.log("updating view");
+            if(this.$noteText == null) {
+                this.$noteText = this.$el.find("p#noteText");
+            }
+            this.$noteText.html(this.noteModel.get("text"));
+           
         },
 
         render: function(){
-
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
+            console.log(this.noteModel.toJSON());
             this.setElement(tmpl(this.noteModel.toJSON()));
             this.check();
+            this.updateView();
             this.gridster.add_widget(this.el);
         },
 
