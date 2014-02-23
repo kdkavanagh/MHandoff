@@ -1,13 +1,25 @@
 $(function() {
 
+    function getTodaysDate(plusDays) {
+        var today = new Date();
+        var dd = today.getDate()+plusDays;
+        var mm = today.getMonth()+1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = mm+'/'+dd+'/'+yyyy;
+        return today;
+    }
+
     var Note = Backbone.Model.extend({
         url:"",
         defaults : {
             noteId : "0",
             priority :"1",
             reporter:"N/A",
-            reportedDate:"01/01/1901",
+            reportedDate:getTodaysDate(0),
+            expiration:getTodaysDate(1),
             badgeLevel:"",
+            text:"Note text",
         },
     });
 
@@ -19,6 +31,7 @@ $(function() {
     //Make text inline editable
     $.fn.editable.defaults.mode = 'inline';
     $.fn.editable.defaults.disabled = true;
+    $.fn.editable.defaults.onblur='submit';
 
     var NoteModalView = Backbone.View.extend({
 
@@ -49,8 +62,9 @@ $(function() {
                 type: 'textarea',
                 pk: 1,
                 title: 'Note Text',
+                //inputclass:"editable-wysihtml5 input-large",
                 success: function (response, newValue) {
-                    console.log("Updating model");
+                    console.log(newValue);
                     self.noteModel.set("text", newValue);
                 },
             });
@@ -61,7 +75,6 @@ $(function() {
                 format:"MM / D / YYYY",
                 viewformat:"MM / D / YYYY",
                 success: function (response, newValue) {
-                    console.log("Updating model "+newValue);
                     self.noteModel.set("expiration", newValue);
                 },
             });
@@ -96,10 +109,12 @@ $(function() {
             this.$editables.editable('toggleDisabled');
             if(this.editing) {
                 //we were editing, set the text back to edit
+
                 this.$editButton.html("Edit");
             } else {
                 //we were not editing, change text to done
-                this.$editButton.html("Done");
+
+                this.$editButton.html("Done editing");
             }
             this.editing = !this.editing;
         },
@@ -126,6 +141,7 @@ $(function() {
         template:$("#indivNoteTemplate").html(),
         $noteText:null,
         $notePriorityBadge:null,
+        $closeIcon:null,
 
         events: {
             'click span#closeIcon': "buttonClickHandler",
@@ -149,13 +165,13 @@ $(function() {
         },
 
         updateView:function() {
-            if(this.$noteText == null) {
-                //init our cached selectors
-                this.$noteText = this.$el.find("p#noteText");
-                this.$notePriorityBadge = this.$el.find("#priorityBadge");
+            //init our cached selectors
+            this.$noteText = this.$el.find("p#noteText");
+            this.$notePriorityBadge = this.$el.find("#priorityBadge");
 
-            }
+
             this.$noteText.html(this.noteModel.get("text"));
+            console.log("Updating");
             this.$notePriorityBadge.html("Priority "+this.noteModel.get("priority"));
             this.$notePriorityBadge.attr("class", "badge "+this.noteModel.get("badgeLevel")+" pull-right");
 
@@ -167,6 +183,8 @@ $(function() {
             this.check();
             this.updateView();
             this.gridster.add_widget(this.el);
+            this.$closeIcon = this.$el.find("span.closeIcon");
+            this.$closeIcon.tooltip({ container: 'body'});
             return this;
         },
 
@@ -182,11 +200,13 @@ $(function() {
             console.log("opening note");
             var modal = new NoteModalView({parent:this,el:$("modalContainer"), noteModel:this.noteModel});
             modal.render();
+            return modal;
         },
 
         buttonClickHandler : function(event){
             console.log("Removing...");
             //this.noteModel.destroy();
+            this.$closeIcon.tooltip('hide');
             this.gridster.remove_widget(this.$el);
             this.remove();
 
@@ -201,7 +221,10 @@ $(function() {
 
         destroy_full: function(event) {
             console.log("Destroying item" );
-
+            this.$closeIcon.tooltip('destroy');
+            delete this.$closeIcon;
+            delete this.$notePriorityBadge;
+            delete this.$noteText;
             this.unbind(); // Unbind all local event bindings
             this.noteModel.unbind( 'change', this.render, this ); // Unbind reference to the model
             this.noteModel.destroy();
@@ -279,7 +302,7 @@ $(function() {
         addItem: function() {
             console.log("Adding item");
             //create the note
-            var note = new Note({text:"My dummy note",});
+            var note = new Note();
             this.notes.add(note);
         },
 
@@ -290,12 +313,15 @@ $(function() {
             //Move the add new note item to the next free position
             //This is safe because the space is guarenteed to be empty
             var newView = this.createView(note, 0, 0, this).render();
-            var next = gridsterObj.get_bottom_most_occupied_cell();
-            console.log(next);
+            newView.openNote().toggleEditing();
+//          var next = gridsterObj.get_bottom_most_occupied_cell();
+//          console.log(next);
             //Move the add new note item to the next free position
             //This is safe because the space is guarenteed to be empty
             //this.$addNewNoteWidget.attr("data-col", next.col);
-            //this.$addNewNoteWidget.attr("data-row", next.row);
+            //this.$addNewNoteWidget.attr("data-row", next.row);\
+
+            // gridsterObj.mutate_widget_in_gridmap(this.$addNewNoteWidget, next.col, next.row);
 //          var target = gridsterObj.widgets_in_range(next.col, next.row, next.col, next.row);
 //          if(target.attr("data-col") === newView.$el.attr("data-col") && target.attr("data-row") === newView.$el.attr("data-row")) {
 //          gridsterObj.swap_widgets(target, this.$addNewNoteWidget);

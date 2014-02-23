@@ -26,15 +26,50 @@
         return false;
     };
     
+    fn.move_widget_to = function($widget, row, col) {
+        var self = this;
+        var widget_grid_data = $widget.coords().grid;
+        var diffY = row - widget_grid_data.row;
+        var diffX = col - widget_grid_data.col;
+        var $next_widgets = this.widgets_below($widget);
+ 
+        var can_move_to_new_cell = this.can_move_to(
+            widget_grid_data, col, row, $widget);
+ 
+        if (can_move_to_new_cell === false) {
+            return false;
+        }
+ 
+        this.remove_from_gridmap(widget_grid_data);
+        widget_grid_data.row = row;
+        widget_grid_data.col = col;
+        this.add_to_gridmap(widget_grid_data);
+        $widget.attr('data-row', row);
+        $widget.attr('data-col', col);
+        this.$changed = this.$changed.add($widget);
+        console.log("her");
+
+ 
+        return this;
+    };
+    
     fn.swap_widgets = function(widget1, widget2) {
         
         
-        var wdg1Data = this.get_widget_grid_data(widget1);
-        var wdg2Data = this.get_widget_grid_data(widget2);
+        var wdg1Data = widget1.coords().grid;
+        var wdg2Data = widget2.coords().grid;
         console.log("Swapping widgets");
-        this.mutate_widget_in_gridmap(widget2, wdg2Data, wdg1Data);
-        this.mutate_widget_in_gridmap(widget1, wdg2Data, wdg2Data);
-        
+//        this.remove_from_gridmap(wdg1Data);
+//        this.remove_from_gridmap(wdg2Data);
+//        this.add_to_gridmap(wdg1Data, widget2);
+//        this.add_to_gridmap(wdg2Data, widget1);
+        var wdg2new = jQuery.extend(true, {}, wdg2Data);
+        var wdg1new = jQuery.extend(true, {}, wdg1Data);
+        this.move_widget_to(widget1, wdg2Data.row, wdg2Data.col);
+        this.move_widget_to(widget2, wdg1Data.row, wdg1Data.col);
+//        this.mutate_widget_in_gridmap(widget2, wdg2Data, wdg1Data);
+//       this.mutate_widget_in_gridmap(widget1, wdg1Data, wdg2new);
+//        
 //        console.log(this.get_widget_grid_data(widget1));
 //        widget1.attr("data-row", widget2.attr("data-row"));
 //        widget1.attr("data-col", widget2.attr("data-col"));
