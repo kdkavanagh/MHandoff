@@ -50,12 +50,11 @@
    Note<span id="closeIcon"
     class="glyphicon glyphicon-remove-circle closeIcon pull-right"
     style="padding-left: 5px;"></span> <span
-    class="badge <%=badgeLevel%> pull-right">Priority <%=
-    priority%></span>&nbsp
+    id="priorityBadge" class="badge <%=badgeLevel%> pull-right"></span>&nbsp
   </h3>
  </div>
  <div class="panel-body noteTextArea">
-  <p id="noteText" style="text-overflow: ellipsis;"><%= text%></p>
+  <p id="noteText" style="text-overflow: ellipsis;"></p>
  </div>
  <div class="panel-footer">
   <div class="pull-right">
@@ -78,7 +77,7 @@
     <button type="button" class="close" data-dismiss="modal"
      aria-hidden="true">&times;</button>
     <h4 class="modal-title" id="myModalLabel">
-     Note Details <span class="badge <%=badgeLevel%> pull-right"
+     Note Details <span id="priorityBadge" class="badge <%=badgeLevel%> pull-right"
       style="font-size: inherit; margin-right: 5px;">Priority
       <%=priority%></span>
     </h4>
@@ -87,6 +86,9 @@
     <p>
      Note Text: <a id="noteText"><%=text%></a>
     </p>
+    <p>
+    Priority: <a id="priority"><%=priority%></a>
+   </p>
     <p>
     Valid Thru: <a id="expiration"></a>
    </p>

@@ -25,6 +25,7 @@ $(function() {
         editing :false,
         $editButton:null,
         $editables:null,
+        $priorityBadge:null,
 
         events : {
             'hidden.bs.modal':'destroy_full',
@@ -63,6 +64,28 @@ $(function() {
                     self.noteModel.set("expiration", newValue);
                 },
             });
+            this.$el.find("#priority").editable({
+                type:'select',
+                source: [
+                         {value: 1, text: 'Priority 1'},
+                         {value: 2, text: 'Priority 2'},
+                         {value: 3, text: 'Priority 3'},
+                      ],
+                 success: function (response, newValue) {
+                     self.noteModel.set("priority", newValue);
+                     if(self.noteModel.get("priority") == 1) {
+                         self.noteModel.set("badgeLevel", "badge-error");
+                     } else {
+                         self.noteModel.set("badgeLevel","");
+                     }
+                     if(self.$priorityBadge == null) {
+                         self.$priorityBadge = self.$el.find("#priorityBadge");
+                     }
+                     self.$priorityBadge.html("Priority "+newValue);
+                     self.$priorityBadge.attr("class", "badge "+self.noteModel.get("badgeLevel")+" pull-right");
+                     
+                 },
+             });
             this.$editButton = this.$el.find("button#editButton");
             this.$editables = this.$el.find(".editable");
 
@@ -101,8 +124,8 @@ $(function() {
         tagName: 'li',
         template:$("#indivNoteTemplate").html(),
         $noteText:null,
-
-
+        $notePriorityBadge:null,
+        
         events: {
             'click span#closeIcon': "buttonClickHandler",
             'click button#openNoteButton' : "openNote",
@@ -116,8 +139,9 @@ $(function() {
             this.row = this.options.row;
             this.col = this.options.col;
             if(this.noteModel.get("priority") == 1) {
-                console.log("setting");
                 this.noteModel.set("badgeLevel", "badge-error");
+            } else {
+                this.noteModel.set("badgeLevel","");
             }
             this.noteModel.on('change', this.updateView, this);
             return this;
@@ -125,10 +149,14 @@ $(function() {
 
         updateView:function() {
             if(this.$noteText == null) {
+                //init our cached selectors
                 this.$noteText = this.$el.find("p#noteText");
+                this.$notePriorityBadge = this.$el.find("#priorityBadge");
 
             }
             this.$noteText.html(this.noteModel.get("text"));
+            this.$notePriorityBadge.html("Priority "+this.noteModel.get("priority"));
+            this.$notePriorityBadge.attr("class", "badge "+this.noteModel.get("badgeLevel")+" pull-right");
 
         },
 
