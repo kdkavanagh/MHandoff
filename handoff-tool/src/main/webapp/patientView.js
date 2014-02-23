@@ -18,14 +18,14 @@ $(function() {
     //Make text inline editable
     $.fn.editable.defaults.mode = 'inline';
     $.fn.editable.defaults.disabled = true;
-    
+
     var NoteModalView = Backbone.View.extend({
 
         template:$("#modalNoteTemplate").html(),
         editing :false,
         $editButton:null,
         $editables:null,
-        
+
         events : {
             'hidden.bs.modal':'destroy_full',
             'click button#editButton' : 'toggleEditing',
@@ -36,11 +36,11 @@ $(function() {
             this.noteModel = this.options.noteModel;
             return this;
         },
-        
+
         render:function() {
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             this.setElement(tmpl(this.noteModel.toJSON()));
-            
+
             this.$el.modal('show');
             var self = this;
             this.$el.find("#noteText").editable({
@@ -52,11 +52,22 @@ $(function() {
                     self.noteModel.set("text", newValue);
                 },
             });
+            this.$el.find("#expiration").editable({
+               type:'combodate',
+               value: this.noteModel.get("expiration"),
+               template:"MM / D / YYYY",
+               format:"MM / D / YYYY",
+               viewformat:"MM / D / YYYY",
+                success: function (response, newValue) {
+                    console.log("Updating model "+newValue);
+                    self.noteModel.set("expiration", newValue);
+                },
+            });
             this.$editButton = this.$el.find("button#editButton");
             this.$editables = this.$el.find(".editable");
-           
+
         },
-        
+
         toggleEditing:function() {
             this.$editables.editable('toggleDisabled');
             if(this.editing) {
@@ -68,7 +79,7 @@ $(function() {
             }
             this.editing = !this.editing;
         },
-        
+
         destroy_full: function(event) {
             console.log("Destroying item");
             this.unbind(); // Unbind all local event bindings
@@ -77,12 +88,12 @@ $(function() {
             this.options.parent.unbind( 'close:all', this.close, this ); // Unbind reference to the parent view
 
             this.remove(); // Remove view from DOM
-            
+
             delete this.$el; // Delete the jQuery wrapped object variable
             delete this.el; // Delete the variable reference to this node
 
         }
-        
+
 
     });
 
@@ -90,6 +101,7 @@ $(function() {
         tagName: 'li',
         template:$("#indivNoteTemplate").html(),
         $noteText:null,
+
 
         events: {
             'click span#closeIcon': "buttonClickHandler",
@@ -110,19 +122,18 @@ $(function() {
             this.noteModel.on('change', this.updateView, this);
             return this;
         },
-        
+
         updateView:function() {
-            console.log("updating view");
             if(this.$noteText == null) {
                 this.$noteText = this.$el.find("p#noteText");
+
             }
             this.$noteText.html(this.noteModel.get("text"));
-           
+
         },
 
         render: function(){
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
-            console.log(this.noteModel.toJSON());
             this.setElement(tmpl(this.noteModel.toJSON()));
             this.check();
             this.updateView();
@@ -136,7 +147,7 @@ $(function() {
             //var moreThis = this.$el.find('.more');
             //moreThis.popover({content:this.noteModel.get("text")});
         },
-        
+
         openNote: function() {
             console.log("opening note");
             var modal = new NoteModalView({parent:this,el:$("modalContainer"), noteModel:this.noteModel});
@@ -160,7 +171,7 @@ $(function() {
 
         destroy_full: function(event) {
             console.log("Destroying item" );
-            
+
             this.unbind(); // Unbind all local event bindings
             this.noteModel.unbind( 'change', this.render, this ); // Unbind reference to the model
             this.noteModel.destroy();
