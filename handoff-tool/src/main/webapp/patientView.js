@@ -296,10 +296,10 @@ $(function() {
             //This is safe because the space is guarenteed to be empty
             //this.$addNewNoteWidget.attr("data-col", next.col);
             //this.$addNewNoteWidget.attr("data-row", next.row);
-            var target = gridsterObj.widgets_in_range(next.col, next.row, next.col, next.row);
-            if(target.attr("data-col") === newView.$el.attr("data-col") && target.attr("data-row") === newView.$el.attr("data-row")) {
-                gridsterObj.swap_widgets(target, this.$addNewNoteWidget);
-            }
+//          var target = gridsterObj.widgets_in_range(next.col, next.row, next.col, next.row);
+//          if(target.attr("data-col") === newView.$el.attr("data-col") && target.attr("data-row") === newView.$el.attr("data-row")) {
+//          gridsterObj.swap_widgets(target, this.$addNewNoteWidget);
+//          }
             //gridsterObj.manage_movements(this.$addNewNoteWidget, next.col, next.row);
         },
 
