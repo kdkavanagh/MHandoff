@@ -1,28 +1,53 @@
 #noteGrid {
-	position:relative;
+	position: relative;
 }
+
 .note {
-	position:relative;
+	position: relative;
 	box-shadow: 5px 5px 10px #888888;
-	max-width:250px;
-	max-height:150px;
-	overflow:hidden;
+	max-width: 250px;
+	max-height: 150px;
+	overflow: hidden;
 }
 
 .noteTextArea {
 	
- }
- 
+}
+
+.addNewTile {
+	background-color: #f5f5f5;;
+}
+
+#addNewTileInner {
+	width: 50%;
+    margin: 0 auto;
+	text-align: center;
+	display: block;
+	margin-top:15%;
+	color: #999999;
+}
+
+#addNewTileInner:hover {
+   color:#000000;
+   
+
+}
+
+.addNewTileIcon {
+	width:100%;
+	font-size: 30pt;
+}
+
 .badge-error {
-  background-color: #b94a48;
+	background-color: #b94a48;
 }
 
-.closeIcon, .closeIcon a {
-  color: #999999;
+.closeIcon,.closeIcon a {
+	color: #999999;
 }
 
-.closeIcon, .closeIcon a {
-  color: #999999;
+.closeIcon,.closeIcon a {
+	color: #999999;
 }
 
 .closeIcon:hover {
@@ -30,46 +55,55 @@
 }
 
 .noteReporter {
-	font-size:8pt;
-	width:50%;
+	font-size: 8pt;
+	width: 50%;
 }
 
 .more {
-    position: absolute;
-    right:0;
-    bottom:5px;
-    padding-left:2em;
+	position: absolute;
+	right: 0;
+	bottom: 5px;
+	padding-left: 2em;
 }
 
 .noteTextArea p {
-    padding:0;
-    margin:0;
-    float:left;
-    max-height:60px;
-    overflow:hidden;
-    
+	padding: 0;
+	margin: 0;
+	float: left;
+	max-height: 60px;
+	overflow: hidden;
 }
+
 .active.noteTextArea p {
-    white-space:normal;
+	white-space: normal;
 }
+
 .active.noteTextArea .more {
-    position: static;
-    padding:0;
+	position: static;
+	padding: 0;
 }
 /* long messy gradient background code */
- .grad {
-    background: -moz-linear-gradient(left, rgba(241, 241, 241, 0) 0%, rgba(241, 241, 241, 0.53) 19%, rgba(241, 241, 241, 1) 36%);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(241, 241, 241, 0)), color-stop(19%, rgba(241, 241, 241, 0.53)), color-stop(36%, rgba(241, 241, 241, 1)));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(left, rgba(241, 241, 241, 0) 0%, rgba(241, 241, 241, 0.53) 19%, rgba(241, 241, 241, 1) 36%);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(left, rgba(241, 241, 241, 0) 0%, rgba(241, 241, 241, 0.53) 19%, rgba(241, 241, 241, 1) 36%);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient(left, rgba(241, 241, 241, 0) 0%, rgba(241, 241, 241, 0.53) 19%, rgba(241, 241, 241, 1) 36%);
-    /* IE10+ */
-    background: linear-gradient(to right, rgba(241, 241, 241, 0) 0%, rgba(241, 241, 241, 0.53) 19%, rgba(241, 241, 241, 1) 36%);
-    /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00f1f1f1', endColorstr='#f1f1f1', GradientType=1);
-    /* IE6-9 */
+.grad {
+	background: -moz-linear-gradient(left, rgba(241, 241, 241, 0) 0%,
+		rgba(241, 241, 241, 0.53) 19%, rgba(241, 241, 241, 1) 36%);
+	/* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(241,
+		241, 241, 0)), color-stop(19%, rgba(241, 241, 241, 0.53)),
+		color-stop(36%, rgba(241, 241, 241, 1)));
+	/* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left, rgba(241, 241, 241, 0) 0%,
+		rgba(241, 241, 241, 0.53) 19%, rgba(241, 241, 241, 1) 36%);
+	/* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left, rgba(241, 241, 241, 0) 0%,
+		rgba(241, 241, 241, 0.53) 19%, rgba(241, 241, 241, 1) 36%);
+	/* Opera 11.10+ */
+	background: -ms-linear-gradient(left, rgba(241, 241, 241, 0) 0%,
+		rgba(241, 241, 241, 0.53) 19%, rgba(241, 241, 241, 1) 36%);
+	/* IE10+ */
+	background: linear-gradient(to right, rgba(241, 241, 241, 0) 0%,
+		rgba(241, 241, 241, 0.53) 19%, rgba(241, 241, 241, 1) 36%);
+	/* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00f1f1f1',
+		endColorstr='#f1f1f1', GradientType=1);
+	/* IE6-9 */
 }

@@ -45,7 +45,7 @@ $(function() {
             this.$el.modal('show');
             var self = this;
             this.$el.find("#noteText").editable({
-                type: 'text',
+                type: 'textarea',
                 pk: 1,
                 title: 'Note Text',
                 success: function (response, newValue) {
@@ -217,11 +217,13 @@ $(function() {
 
         el: '.base',
         mostRecentlyDeletedView : null,
+        $addNewNoteWidget:null,
 
         events: {
             'click #buttonPress': "getItems",
             'click #addDummyButton': "addItem",
             'click #undoButton' : "undoRemove",
+            'click #addNewTileInner' :"addItem",
         },
 
         initialize: function () {
@@ -280,6 +282,13 @@ $(function() {
         },
 
         newItemAdded:function(note) {
+            //get the next free position
+            var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
+            var next = gridsterObj.get_highest_occupied_cell();
+            console.log(next);
+            //Move the add new note item to the next free position
+            //This is safe because the space is guarenteed to be empty
+            //gridsterObj.manage_movements(this.$addNewNoteWidget, next.row, next.col );
             this.createView(note, 0, 0, this).render();
         },
 
@@ -313,12 +322,14 @@ $(function() {
 
         render: function(){
             var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
+            var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\"><span class=\"glyphicon glyphicon-plus addNewTileIcon\"></span>Add New Item</div><div>";
             gridsterObj.remove_all_widgets();
 
             for (var i = 0; i < this.noteViews.length; i++) {
                 this.noteViews[i].render();
             }
-
+            this.$addNewNoteWidget= gridsterObj.add_widget(addNewItemHtml);
+           
             //delete any garbage we have (must be done after remove_all_widgets()
             while(this.garbageViews.length > 0) {
                 this.garbageViews.pop().destroy_full(null);

@@ -625,6 +625,12 @@ a.editable-click.editable-disabled:hover {
   cursor: default;
   background-color: transparent;
 }
+
+.input-large {
+	text-color:red;
+	width:450px !important;
+}
+
 .input-append.date .add-on i,
 .input-prepend.date .add-on i {
   display: block;
