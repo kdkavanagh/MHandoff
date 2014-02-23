@@ -6,6 +6,7 @@ $(function() {
             noteId : "0",
             priority :"1",
             reporter:"N/A",
+            reportedDate:"01/01/1901",
             badgeLevel:"",
         },
     });
@@ -284,11 +285,14 @@ $(function() {
         newItemAdded:function(note) {
             //get the next free position
             var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
-            var next = gridsterObj.get_highest_occupied_cell();
+            var next = gridsterObj.get_right_most_occupied_cell();
             console.log(next);
             //Move the add new note item to the next free position
             //This is safe because the space is guarenteed to be empty
-            //gridsterObj.manage_movements(this.$addNewNoteWidget, next.row, next.col );
+            //gridsterObj.set_player(next.row, next.col, true);
+           // gridsterObj.manage_movements(this.$addNewNoteWidget, next.row, next.col );
+            //gridsterObj.move_widget_to(this.$addNewNoteWidget, next.row);
+            
             this.createView(note, 0, 0, this).render();
         },
 
@@ -329,7 +333,7 @@ $(function() {
                 this.noteViews[i].render();
             }
             this.$addNewNoteWidget= gridsterObj.add_widget(addNewItemHtml);
-           
+            
             //delete any garbage we have (must be done after remove_all_widgets()
             while(this.garbageViews.length > 0) {
                 this.garbageViews.pop().destroy_full(null);

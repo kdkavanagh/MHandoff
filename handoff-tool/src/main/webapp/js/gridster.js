@@ -990,8 +990,8 @@
     * @method add_widget
     * @param {String|HTMLElement} html The string representing the HTML of the widget
     *  or the HTMLElement.
-    * @param {Number} [size_x] The nº of rows the widget occupies horizontally.
-    * @param {Number} [size_y] The nº of columns the widget occupies vertically.
+    * @param {Number} [size_x] The n�� of rows the widget occupies horizontally.
+    * @param {Number} [size_y] The n�� of columns the widget occupies vertically.
     * @param {Number} [col] The column the widget should start in.
     * @param {Number} [row] The row the widget should start in.
     * @param {Array} [max_size] max_size Maximun size (in units) for width and height.
@@ -1344,8 +1344,8 @@
     * Get the most left column below to add a new widget.
     *
     * @method next_position
-    * @param {Number} size_x The nº of rows the widget occupies horizontally.
-    * @param {Number} size_y The nº of columns the widget occupies vertically.
+    * @param {Number} size_x The n�� of rows the widget occupies horizontally.
+    * @param {Number} size_y The n�� of columns the widget occupies vertically.
     * @return {Object} Returns a grid coords object representing the future
     *  widget coords.
     */
@@ -2148,8 +2148,9 @@
         this.player_grid_data = {
             col: to_col,
             row: to_row,
-            size_y : this.player_grid_data.size_y,
-            size_x : this.player_grid_data.size_x
+            size_y : (this.player_grid_data !== undefined && this.player_grid_data.size_y !== undefined ? this.player_grid_data.size_y : 1),
+            size_x : (this.player_grid_data !== undefined && this.player_grid_data.size_x !== undefined ? this.player_grid_data.size_x : 1),
+            
         };
 
         this.cells_occupied_by_player = this.get_cells_occupied(
