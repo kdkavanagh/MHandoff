@@ -1,33 +1,5 @@
 $(function() {
 
-    function getTodaysDate(plusDays) {
-        var today = new Date();
-        var dd = today.getDate()+plusDays;
-        var mm = today.getMonth()+1; //January is 0!
-
-        var yyyy = today.getFullYear();
-        if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = mm+'/'+dd+'/'+yyyy;
-        return today;
-    }
-
-    var Note = Backbone.Model.extend({
-        url:"",
-        defaults : {
-            noteId : "0",
-            priority :"1",
-            reporter:"N/A",
-            reportedDate:getTodaysDate(0),
-            expiration:getTodaysDate(1),
-            badgeLevel:"",
-            text:"Note text",
-        },
-    });
-
-    var NoteCollection = Backbone.Collection.extend({
-        model : Note,
-        url : '/patient/items.do?type=note',
-    });
-
     //Make text inline editable
     $.fn.editable.defaults.mode = 'inline';
     $.fn.editable.defaults.disabled = true;
@@ -168,10 +140,7 @@ $(function() {
             //init our cached selectors
             this.$noteText = this.$el.find("p#noteText");
             this.$notePriorityBadge = this.$el.find("#priorityBadge");
-
-
             this.$noteText.html(this.noteModel.get("text"));
-            console.log("Updating");
             this.$notePriorityBadge.html("Priority "+this.noteModel.get("priority"));
             this.$notePriorityBadge.attr("class", "badge "+this.noteModel.get("badgeLevel")+" pull-right");
 
@@ -255,8 +224,8 @@ $(function() {
 
             console.log("Creating new view");
             _.bindAll(this, 'render');
-
-            this.notes = new NoteCollection();
+            
+            this.notes = new MHandoff.Collections.NoteCollection();
             this.notes.fetch({ data: $.param({ patient: "kyle",}) 
                 ,reset:true,});
             this.notes.on('reset', this.generateViews, this);
@@ -302,7 +271,7 @@ $(function() {
         addItem: function() {
             console.log("Adding item");
             //create the note
-            var note = new Note();
+            var note = new MHandoff.Models.Note();
             this.notes.add(note);
         },
 
@@ -360,7 +329,7 @@ $(function() {
         render: function(){
             var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
             var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\"><span class=\"glyphicon glyphicon-plus addNewTileIcon\"></span>Add New Item</div><div>";
-            gridsterObj.remove_all_widgets();
+           // gridsterObj.remove_all_widgets();
 
             for (var i = 0; i < this.noteViews.length; i++) {
                 this.noteViews[i].render();
