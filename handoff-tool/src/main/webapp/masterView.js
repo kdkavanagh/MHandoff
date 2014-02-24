@@ -15,7 +15,7 @@ $(function() {
     window.MHandoff.Collections = {};
     window.MHandoff.Views = {};
 
-    window.MHandoff.Models.Note = Backbone.Model.extend({
+    MHandoff.Models.Note = Backbone.Model.extend({
         url:"",
         defaults : {
             noteId : "0",
@@ -27,14 +27,25 @@ $(function() {
             text:"Note text",
         },
     });
-
-    window.MHandoff.Collections.NoteCollection = Backbone.Collection.extend({
+    
+    MHandoff.Collections.NoteCollection = Backbone.Collection.extend({
         model : MHandoff.Models.Note,
         url : '/patient/items.do?type=note',
     });
     
-    window.MHandoff.Views.root = Backbone.View.extend({
+    MHandoff.Views.root = Backbone.View.extend({
         
+        initialize: function () {
+
+            console.log("Initializing MHandoff");
+           
+        },
+        
+        render : function() {
+            var view = new MHandoff.Views.NoteGridView();  
+        },
     });
+    
+    var rootView = new MHandoff.Views.root();
 
 });

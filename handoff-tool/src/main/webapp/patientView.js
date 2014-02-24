@@ -377,6 +377,6 @@ $(function() {
 
 
 
-    var view = new MHandoff.Views.NoteGridView();
+    
 
 });
