@@ -1,3 +1,6 @@
+-- DROP DATABASE "handoff";
+-- CREATE DATABASE "handoff";
+
 CREATE TABLE Patient 
 (epicId VARCHAR(255) not NULL, 
 PRIMARY KEY ( epicId )); 
@@ -10,7 +13,7 @@ position VARCHAR(255),
 PRIMARY KEY ( uniqname )); 
 
 CREATE TABLE Task 
-(taskId INTEGER not NULL, 
+(taskId SERIAL, 
 text VARCHAR(255),  
 reporter VARCHAR(255), 
 assignee VARCHAR(255), 
@@ -24,7 +27,7 @@ FOREIGN KEY(epicId) REFERENCES Patient,
 PRIMARY KEY ( taskId )); 
 
 CREATE TABLE BaseNote 
-(noteId INTEGER not NULL, 
+(noteId SERIAL, 
 text VARCHAR(255),  
 reporter VARCHAR(255),  
 reportedDate TIMESTAMP,  
@@ -35,9 +38,13 @@ FOREIGN KEY(epicId) REFERENCES Patient,
 FOREIGN KEY(reporter) REFERENCES UserInfo, 
 PRIMARY KEY ( noteId )); 
 
-CREATE INDEX PatientEpicIdIndex 
-ON Patient (epicId);
 CREATE INDEX TaskEpicIdIndex 
 ON Task (epicId);
 CREATE INDEX NoteEpicIdIndex 
-ON BaseNote (epicId);    
+ON BaseNote (epicId);   
+
+CREATE INDEX TaskAssigneeIndex 
+ON Task (assignee);
+CREATE INDEX TaskReporterIndex 
+ON Task (reporter);
+
