@@ -12,9 +12,10 @@ define([
     
     var NoteGridView = Backbone.View.extend({
 
-        el: '.base',
         mostRecentlyDeletedView : null,
         $addNewNoteWidget:null,
+        gridsterOpts:null,
+        gridsterObj:null,
 
         events: {
             'click #buttonPress': "getItems",
@@ -23,28 +24,31 @@ define([
             'click #addNewTileInner' :"addItem",
         },
 
-        initialize: function () {
+        initialize: function (options) {
+            this.options = options || {};
             _.bindAll(this, 'render');
             
             this.notes = new NoteCollection();
+            
+            this.noteViews = new Array();
+            this.garbageViews = new Array();
+            this.gridsterOpts = this.options.gridsterOpts;
+            this.gridsterID = this.options.gridsterID;
+
+
+            this.gridsterObj = this.$el.find(this.gridsterID+" > ul").gridster(this.gridsterOpts).data('gridster');
+
             this.notes.fetch({ data: $.param({ patient: "kyle",}) 
                 ,reset:true,});
             this.notes.on('reset', this.generateViews, this);
             //this.notes.on('change', this.render);
             this.notes.on('add', this.newItemAdded, this);
-            this.noteViews = new Array();
-            this.garbageViews = new Array();
-            gridster = $(".gridster > ul").gridster({
-                widget_margins : [ 10, 10 ],
-                widget_base_dimensions : [ 250, 150 ],
-                min_cols : 3
-            });
-            
         },
 
         createView: function(note, row, col, self) {
-            var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
-            var noteView = new NoteTileView({parent : self, noteModel:note, row:row, col:col, gridster : gridsterObj});
+            //var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
+ 
+            var noteView = new NoteTileView({parent : self, noteModel:note, row:row, col:col, gridster : self.gridsterObj});
             self.noteViews.push(noteView);
             noteView.on('remove', self.noteRemoved, self);
             return noteView;
@@ -84,7 +88,7 @@ define([
 
         newItemAdded:function(note) {
             //get the next free position
-            var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
+            //var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
 
             //Move the add new note item to the next free position
             //This is safe because the space is guarenteed to be empty
@@ -134,7 +138,7 @@ define([
         },
 
         render: function(){
-            var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
+            var gridsterObj = this.gridsterObj;//$("#noteGrid ul").gridster().data('gridster');
             var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\" class=\"\"><span class=\"glyphicon glyphicon-plus addNewTileIcon ignoreDrag\"></span>Add New Item</div><div>";
            // gridsterObj.remove_all_widgets();
             

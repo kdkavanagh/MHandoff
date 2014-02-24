@@ -30,15 +30,24 @@
 <body>
  <div class="base">
   <div id="modalContainer"></div>
-  <div class="gridster" id="noteGrid">
-   <ul>
-    </ul>
-
+  <div class="container-fluid">
+   <div class="row">
+    <div id="patientInfo" class="col-md-3">Patient Info Goes here</div>
+    <div id="patientNotes" class="col-md-7">
+     <div class="gridster" id="noteGrid">
+      <ul></ul>
+     </div>
+    </div>
+    <div id="patientTasks" class="col-md-2">
+     <div class="gridster" id="taskGrid">
+      <ul></ul>
+     </div>
+    </div>
+   </div>
   </div>
-  <div id="undoAlertHolder" style="width: 100px;"></div>
  </div>
- <ul id="patientList">
- </ul>
+
+ <div id="undoAlertHolder" style="width: 100px;"></div>
 
 
 
