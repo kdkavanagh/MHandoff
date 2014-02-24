@@ -7,15 +7,16 @@ define([
   'moment',
   'bootstrap_editable',
   'Models/Note',
-  "Collections/NoteCollection"
-], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Note, NoteCollection){
+  "Collections/NoteCollection",
+  'text!Views/templates/noteModal.html'
+], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Note, NoteCollection, noteTemplate){
     
     $.fn.editable.defaults.mode = 'inline';
     $.fn.editable.defaults.disabled = true;
     $.fn.editable.defaults.onblur='submit';
     var NoteModalView = Backbone.View.extend({
 
-        template:$("#modalNoteTemplate").html(),
+        template:noteTemplate,
         editing :false,
         $editButton:null,
         $editables:null,

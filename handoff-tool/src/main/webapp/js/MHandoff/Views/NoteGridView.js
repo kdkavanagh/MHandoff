@@ -24,8 +24,6 @@ define([
         },
 
         initialize: function () {
-
-            console.log("Creating new view");
             _.bindAll(this, 'render');
             
             this.notes = new NoteCollection();
@@ -36,6 +34,12 @@ define([
             this.notes.on('add', this.newItemAdded, this);
             this.noteViews = new Array();
             this.garbageViews = new Array();
+            gridster = $(".gridster > ul").gridster({
+                widget_margins : [ 10, 10 ],
+                widget_base_dimensions : [ 250, 150 ],
+                min_cols : 3
+            });
+            
         },
 
         createView: function(note, row, col, self) {
@@ -133,12 +137,12 @@ define([
             var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
             var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\"><span class=\"glyphicon glyphicon-plus addNewTileIcon\"></span>Add New Item</div><div>";
            // gridsterObj.remove_all_widgets();
-
+            
             for (var i = 0; i < this.noteViews.length; i++) {
                 this.noteViews[i].render();
             }
             this.$addNewNoteWidget= gridsterObj.add_widget(addNewItemHtml);
-
+            
             //delete any garbage we have (must be done after remove_all_widgets()
             while(this.garbageViews.length > 0) {
                 this.garbageViews.pop().destroy_full(null);

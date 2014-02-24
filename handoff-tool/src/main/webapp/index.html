@@ -23,103 +23,8 @@
 
 
 <script src="js/libs/jquery-2.1.0.js" type="text/javascript"></script>
-<script src="js/libs/gridster.js" type="text/javascript"></script>
-<script src="js/libs/gridster-ext.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-	var gridster;
-	
-	$(function() {
-		gridtster = $(".gridster > ul").gridster({
-			widget_margins : [ 10, 10 ],
-			widget_base_dimensions : [ 250, 150 ],
-			min_cols : 3
-		}).data('gridster');
-	});
-</script>
 <script data-main="js/MHandoff/main" src="js/libs/require.js"></script>
-
-<script id="indivNoteTemplate" type="text/javascript">
-<li class="panel panel-default note" id="<%= noteId%>">
- <div class="panel-heading">
-  <h3 class="panel-title">
-   Note<span id="closeIcon"
-    class="glyphicon glyphicon-remove-circle closeIcon pull-right"
-    style="padding-left: 5px;" title="Remove note"></span> <span
-    id="priorityBadge" class="badge <%=badgeLevel%> pull-right"></span>&nbsp
-  </h3>
- </div>
- <div class="panel-body noteTextArea">
-  <p id="noteText" style="text-overflow: ellipsis;"></p>
- </div>
- <div class="panel-footer">
-  <div class="pull-right">
-   <button id="openNoteButton" class="btn btn-info">Open</button>
-  </div>
-  <div class="noteReporter">
-   Reported by:<br><%=reporter%>
-  </div>
- </div>
-</li>
-</script>
-
-<script id="modalNoteTemplate" type="text/javascript">
-<div class="modal fade" id="modalNote" tabindex="-1" role="dialog"
- aria-labelledby="myModalLabel" aria-hidden="true">
- <div class="modal-dialog">
-  <div class="modal-content">
-   <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal"
-     aria-hidden="true">&times;</button>
-    <h4 class="modal-title" id="myModalLabel">
-     Note Details <span id="priorityBadge" class="badge <%=badgeLevel%> pull-right"
-      style="font-size: inherit; margin-right: 5px;">Priority
-      <%=priority%></span>
-    </h4>
-   </div>
-   <div class="modal-body">
-    <p>
-     Note Text: <a id="noteText"><%=text%></a>
-    </p>
-    <p>
-    Priority: <a id="priority"><%=priority%></a>
-   </p>
-    <p>
-    Valid Thru: <a id="expiration"></a>
-   </p>
-    <p>
-    Reported by: <%=reporter%> on <%= reportedDate%>
-   </p>
-   </div>
-   <div class="modal-footer">
-    <button id="editButton" type="button" class="btn btn-primary">Edit</button>
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-   </div>
-  </div>
- </div>
-</div>
-</script>
-
-
-
-
-<script id="indivNoteTemplate" type="text/javascript">
-<li class="panel panel-default note" id="<%= noteId%>">
-<div class="panel-heading">
-<h3 class="panel-title">Note <span id="closeIcon"  class="glyphicon glyphicon-remove-circle closeIcon pull-right" style="padding-left:5px;"></span>
-  <span class="badge <%=badgeLevel%> pull-right">Priority <%= priority%></span>&nbsp
-</h3>
-</div>
-<div class="panel-body noteTextArea" >
-<p style="text-overflow:ellipsis;">Text: <%= text%></p></div>
-
-<div class="panel-footer">
-<div class="pull-right">
-<button id="openNoteButton" class="btn btn-info">Open</button>
-</div>
-<div class="noteReporter">Reported by:<br><%=reporter%></div></div>
- </li>
-</script>
 
 </head>
 <body>
@@ -129,10 +34,6 @@
    <ul>
     </ul>
 
-  </div>
-  <div class="button1" , id="myButtons">
-   <button class="first" id="buttonPress">Refresh</button>
-   <button class="second" id="addDummyButton">Create Notes</button>
   </div>
   <div id="undoAlertHolder" style="width: 100px;"></div>
  </div>

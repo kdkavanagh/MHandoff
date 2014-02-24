@@ -6,14 +6,15 @@ define([
   'Models/Note',
   'Collections/NoteCollection',
   'Views/NoteModalView',
-  'utils'
+  'utils',
+  'text!Views/templates/noteTile.html'
   
-], function($, _, Backbone, Note, NoteCollection,NoteModalView, Utils){
+], function($, _, Backbone, Note, NoteCollection,NoteModalView, Utils, noteTemplate){
     
     
     var NoteTileView = Backbone.View.extend({
         tagName: 'li',
-        template:$("#indivNoteTemplate").html(),
+        template:noteTemplate,
         $noteText:null,
         $notePriorityBadge:null,
         $closeIcon:null,
@@ -36,6 +37,7 @@ define([
                 this.noteModel.set("badgeLevel","");
             }
             this.noteModel.on('change', this.updateView, this);
+            
             return this;
         },
 

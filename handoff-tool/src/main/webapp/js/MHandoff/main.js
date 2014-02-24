@@ -13,6 +13,7 @@ require.config({
     wysihtml5 : '../libs/wysihtml5-0.3.0.min',
     bootstrap_editable : '../libs/bootstrap-editable.min',
     bootstrap_select : "../bootstrap-select.min",
+    text:"../libs/text",
         
   }
 
