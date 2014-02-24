@@ -71,7 +71,6 @@ define([
         },
 
         openNote: function() {
-            console.log("opening note");
             var modal = new NoteModalView({parent:this,el:$("modalContainer"), noteModel:this.noteModel});
             modal.render();
             return modal;
