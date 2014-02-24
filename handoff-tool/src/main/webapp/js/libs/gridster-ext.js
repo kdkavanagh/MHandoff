@@ -26,6 +26,11 @@
         return false;
     };
     
+    fn.disable_widget($widget) {
+        $widget.removeClass("gs-w").addClass("staticGridItem");
+        
+    }
+    
     fn.move_widget_to = function($widget, row, col) {
         var self = this;
         var widget_grid_data = $widget.coords().grid;

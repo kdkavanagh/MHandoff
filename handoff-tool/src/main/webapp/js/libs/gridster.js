@@ -944,6 +944,11 @@
         this.drag_api.disable();
         return this;
     };
+    
+    fn.disable_widget=function($widget) {
+        $widget.removeClass("gs-w").addClass("staticGridItem");
+        
+    };
 
 
     /**

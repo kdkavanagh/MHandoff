@@ -32,6 +32,13 @@
 }
 
 .ignoreDrag{}
+.staticGridItem{
+	-webkit-transition: left .3s, top .3s!important;
+    -moz-transition: left .3s, top .3s!important;
+    -o-transition: left .3s, top .3s!important;
+    transition:  left .3s, top .3s!important;
+	display: list-item; position: absolute;
+}
 
 .addNewTileIcon {
 	width:100%;

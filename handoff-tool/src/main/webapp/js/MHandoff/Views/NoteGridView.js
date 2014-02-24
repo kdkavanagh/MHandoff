@@ -142,7 +142,7 @@ define([
                 this.noteViews[i].render();
             }
             this.$addNewNoteWidget= gridsterObj.add_widget(addNewItemHtml);
-            
+            gridsterObj.disable_widget(this.$addNewNoteWidget);
             //delete any garbage we have (must be done after remove_all_widgets()
             while(this.garbageViews.length > 0) {
                 this.garbageViews.pop().destroy_full(null);
