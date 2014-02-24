@@ -11,9 +11,7 @@ define([
 
 ], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Note, NoteCollection){
     
-    $.fn.editable.defaults.mode = 'inline';
-    $.fn.editable.defaults.disabled = true;
-    $.fn.editable.defaults.onblur='submit';
+    
     var NoteModalView = Backbone.View.extend({
 
         template:null,
@@ -28,6 +26,9 @@ define([
         },
 
         initialize : function (options) {
+            $.fn.editable.defaults.mode = 'inline';
+            $.fn.editable.defaults.disabled = true;
+            $.fn.editable.defaults.onblur='submit';
             this.options = options || {};
             this.noteModel = this.options.noteModel;
             this.template = this.options.template;
