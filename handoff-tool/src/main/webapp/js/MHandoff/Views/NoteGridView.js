@@ -34,7 +34,7 @@ define([
             this.garbageViews = new Array();
             this.gridsterOpts = this.options.gridsterOpts;
             this.gridsterID = this.options.gridsterID;
-            this.tileTemplate = this.options.tileTemplate;
+            this.templates = this.options.templates;
 
             this.gridsterObj = this.$el.find(this.gridsterID+" > ul").gridster(this.gridsterOpts).data('gridster');
 
@@ -47,7 +47,7 @@ define([
         createView: function(note, row, col, self) {
             //var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
  
-            var noteView = new NoteTileView({parent : self, noteModel:note,tileTemplate:this.tileTemplate, row:row, col:col, gridster : self.gridsterObj});
+            var noteView = new NoteTileView({parent : self, noteModel:note,templates:this.templates, row:row, col:col, gridster : self.gridsterObj});
             self.noteViews.push(noteView);
             noteView.on('remove', self.noteRemoved, self);
             return noteView;

@@ -1,30 +1,35 @@
 define([
-  // These are path alias that we configured in our bootstrap
-  'jquery',     
-  'underscore', 
-  'backbone',
-  'bootstrap',
-  "Collections/NoteCollection",
-  'Views/NoteGridView',
-  'text!Views/templates/noteTile.html',
-  'text!Views/templates/taskTile.html'
-], function($, _, Backbone,Bootstrap, NoteCollection,NoteGridView, noteTile, taskTile){
-    
+        // These are path alias that we configured in our bootstrap
+        'jquery',     
+        'underscore', 
+        'backbone',
+        'bootstrap',
+        "Collections/NoteCollection",
+        'Views/NoteGridView',
+        'text!Views/templates/noteTile.html',
+        'text!Views/templates/taskTile.html',
+        'text!Views/templates/noteModal.html',
+        'text!Views/templates/taskModal.html'
+        ], function($, _, Backbone,Bootstrap, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal){
+
     var PatientMasterView = Backbone.View.extend({
-        
+
         patientId:null,
-        
-        
+
+
         initialize : function (options) {
             this.options = options || {};
             this.patientId = this.options.patientId;
             return this;
         },
-        
+
         render : function() {
             this.noteGrid = new NoteGridView({el:$("#patientNotes"),
                 gridsterID:"#noteGrid", 
-                tileTemplate:noteTile,
+                templates:{
+                    tile:noteTile,
+                    modal:noteModal,
+                }, 
                 collection:new NoteCollection('note', this.patientId),
                 gridsterOpts:{
                     widget_margins : [ 10, 10 ],
@@ -34,7 +39,10 @@ define([
                 }});
             this.taskGrid = new NoteGridView({el:$("#patientTasks"),
                 gridsterID:"#taskGrid",
-                tileTemplate:taskTile, 
+                templates:{
+                    tile:taskTile,
+                    modal:taskModal,
+                }, 
                 collection:new NoteCollection('task', this.patientId),
                 gridsterOpts:{
                     widget_margins : [ 0, 10 ],
@@ -43,11 +51,11 @@ define([
                     max_cols: 1,
                     namespace:"#taskGrid"
                 }});
-            
-            
+
+
         },
     });
-    
-    
+
+
     return PatientMasterView;
 });

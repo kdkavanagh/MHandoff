@@ -31,7 +31,8 @@ define([
             this.noteModel = this.options.noteModel;
             this.row = this.options.row;
             this.col = this.options.col;
-            this.template = this.options.tileTemplate;
+            this.templates = this.options.templates;
+            this.template = this.templates.tile;
             if(this.noteModel.get("priority") == 1) {
                 this.noteModel.set("badgeLevel", "badge-error");
             } else {
@@ -72,7 +73,7 @@ define([
         },
 
         openNote: function() {
-            var modal = new NoteModalView({parent:this,el:$("modalContainer"), noteModel:this.noteModel});
+            var modal = new NoteModalView({parent:this,el:$("modalContainer"), noteModel:this.noteModel, template:this.templates.modal});
             modal.render();
             return modal;
         },
