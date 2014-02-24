@@ -5,7 +5,7 @@ $(function() {
     $.fn.editable.defaults.disabled = true;
     $.fn.editable.defaults.onblur='submit';
 
-    var NoteModalView = Backbone.View.extend({
+    MHandoff.Views.NoteModalView = Backbone.View.extend({
 
         template:$("#modalNoteTemplate").html(),
         editing :false,
@@ -108,7 +108,7 @@ $(function() {
 
     });
 
-    var IndividualNoteView = Backbone.View.extend({
+    MHandoff.Views.IndividualNoteView = Backbone.View.extend({
         tagName: 'li',
         template:$("#indivNoteTemplate").html(),
         $noteText:null,
@@ -167,7 +167,7 @@ $(function() {
 
         openNote: function() {
             console.log("opening note");
-            var modal = new NoteModalView({parent:this,el:$("modalContainer"), noteModel:this.noteModel});
+            var modal = new MHandoff.Views.NoteModalView({parent:this,el:$("modalContainer"), noteModel:this.noteModel});
             modal.render();
             return modal;
         },
@@ -207,7 +207,7 @@ $(function() {
         }
     });
 
-    var NoteGridView = Backbone.View.extend({
+    MHandoff.Views.NoteGridView = Backbone.View.extend({
 
         el: '.base',
         mostRecentlyDeletedView : null,
@@ -237,7 +237,7 @@ $(function() {
 
         createView: function(note, row, col, self) {
             var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
-            var noteView = new IndividualNoteView({parent : self, noteModel:note, row:row, col:col, gridster : gridsterObj});
+            var noteView = new MHandoff.Views.IndividualNoteView({parent : self, noteModel:note, row:row, col:col, gridster : gridsterObj});
             self.noteViews.push(noteView);
             noteView.on('remove', self.noteRemoved, self);
             return noteView;
@@ -377,6 +377,6 @@ $(function() {
 
 
 
-    var view = new NoteGridView();
+    var view = new MHandoff.Views.NoteGridView();
 
 });

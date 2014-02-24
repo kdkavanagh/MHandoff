@@ -13,6 +13,7 @@ $(function() {
     window.MHandoff = {};
     window.MHandoff.Models = {};
     window.MHandoff.Collections = {};
+    window.MHandoff.Views = {};
 
     window.MHandoff.Models.Note = Backbone.Model.extend({
         url:"",
@@ -30,6 +31,10 @@ $(function() {
     window.MHandoff.Collections.NoteCollection = Backbone.Collection.extend({
         model : MHandoff.Models.Note,
         url : '/patient/items.do?type=note',
+    });
+    
+    window.MHandoff.Views.root = Backbone.View.extend({
+        
     });
 
 });
