@@ -38,8 +38,7 @@ define([
 
             this.gridsterObj = this.$el.find(this.gridsterID+" > ul").gridster(this.gridsterOpts).data('gridster');
 
-            this.notes.fetch({ data: $.param({ patient: "kyle",}) 
-                ,reset:true,});
+            this.notes.fetch({ reset:true,});
             this.notes.on('reset', this.generateViews, this);
             //this.notes.on('change', this.render);
             this.notes.on('add', this.newItemAdded, this);
