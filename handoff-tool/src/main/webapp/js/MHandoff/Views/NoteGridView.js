@@ -135,7 +135,7 @@ define([
 
         render: function(){
             var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
-            var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\"><span class=\"glyphicon glyphicon-plus addNewTileIcon\"></span>Add New Item</div><div>";
+            var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\" class=\"\"><span class=\"glyphicon glyphicon-plus addNewTileIcon ignoreDrag\"></span>Add New Item</div><div>";
            // gridsterObj.remove_all_widgets();
             
             for (var i = 0; i < this.noteViews.length; i++) {

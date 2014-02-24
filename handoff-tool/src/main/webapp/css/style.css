@@ -29,9 +29,9 @@
 
 #addNewTileInner:hover {
    color:#000000;
-   
-
 }
+
+.ignoreDrag{}
 
 .addNewTileIcon {
 	width:100%;
@@ -40,10 +40,6 @@
 
 .badge-error {
 	background-color: #b94a48;
-}
-
-.closeIcon,.closeIcon a {
-	color: #999999;
 }
 
 .closeIcon,.closeIcon a {

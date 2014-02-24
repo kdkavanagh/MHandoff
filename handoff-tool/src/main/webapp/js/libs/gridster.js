@@ -820,7 +820,8 @@
             handle_class: 'gs-resize-handle',
             max_size: [Infinity, Infinity],
             min_size: [1, 1]
-        }
+        },
+        
     };
 
     /**
@@ -1598,7 +1599,7 @@
             container_width: this.cols * this.min_widget_width,
             limit: true,
             ignore_dragging: ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON',
-                '.' + this.options.resize.handle_class],
+                '.' + this.options.resize.handle_class, ".ignoreDrag"],
             start: function(event, ui) {
                 self.$widgets.filter('.player-revert')
                     .removeClass('player-revert');
