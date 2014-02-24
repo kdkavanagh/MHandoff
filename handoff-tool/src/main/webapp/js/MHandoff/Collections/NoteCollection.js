@@ -9,7 +9,18 @@ define([
     
     var NoteCollection = Backbone.Collection.extend({
         model : Note,
-        url : '/patient/items.do?type=note',
+        itemType:"note",
+        
+        initialize: function(type) {
+            if(type) {
+                this.itemType = type;
+            }
+        },
+        
+        
+        url : function() {
+            return "/patient/items.do?type=" + this.itemType;
+        },
     });
     
     

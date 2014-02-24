@@ -7,14 +7,14 @@ define([
   'Collections/NoteCollection',
   'Views/NoteModalView',
   'utils',
-  'text!Views/templates/noteTile.html'
+
   
-], function($, _, Backbone, Note, NoteCollection,NoteModalView, Utils, noteTemplate){
+], function($, _, Backbone, Note, NoteCollection,NoteModalView, Utils){
     
     
     var NoteTileView = Backbone.View.extend({
         tagName: 'li',
-        template:noteTemplate,
+        template:null,
         $noteText:null,
         $notePriorityBadge:null,
         $closeIcon:null,
@@ -31,6 +31,7 @@ define([
             this.noteModel = this.options.noteModel;
             this.row = this.options.row;
             this.col = this.options.col;
+            this.template = this.options.tileTemplate;
             if(this.noteModel.get("priority") == 1) {
                 this.noteModel.set("badgeLevel", "badge-error");
             } else {
