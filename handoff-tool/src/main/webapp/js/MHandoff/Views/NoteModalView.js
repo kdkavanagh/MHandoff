@@ -34,14 +34,8 @@ define([
         },
 
         render:function() {
-            _.template.formatdate = function (stamp, convert) {
-                var d = new Date(stamp*1000), // or d = new Date(date)
-                    fragments = [
-                        d.toDateString(),
-                        d.toLocaleTimeString(),
-
-                    ]; 
-                return fragments.join(' at ');
+            _.template.formatdate = function (stamp) {
+                return moment(stamp *1000).format('MMM Do YYYY, h:mm A');
             };
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             this.setElement(tmpl(this.noteModel.toJSON()));
@@ -68,9 +62,9 @@ define([
                 value: moment.unix(this.noteModel.get("expiration")),
                 format:"X",
                 viewformat:"MMM D, YYYY, hh:mm A",
-                template:"D MMM YYYY  hh:mm A",
+                template:"MMM D YYYY  hh:mm A",
                 success: function (response, newValue) {
-                    self.noteModel.set("expiration", newValue);
+                    self.noteModel.set("expiration", newValue/1000);
                 },
             });
             this.$el.find("a#priority").editable({
