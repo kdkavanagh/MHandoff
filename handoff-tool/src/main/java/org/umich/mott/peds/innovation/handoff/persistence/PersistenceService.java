@@ -16,6 +16,7 @@ import com.google.inject.ImplementedBy;
  * 
  */
 @ImplementedBy(DummyPersistenceService.class)
+// @ImplementedBy(PersistenceServiceImpl.class)
 public interface PersistenceService {
 
   public List<BaseNote> getNotesForPatient(String id);

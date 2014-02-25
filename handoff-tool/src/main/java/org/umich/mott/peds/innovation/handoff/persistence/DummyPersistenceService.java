@@ -43,7 +43,7 @@ public class DummyPersistenceService implements PersistenceService {
   @Inject
   public DummyPersistenceService() {
 
-    notes.add(new BaseNote("1", "This is important", "Kyle Kavanagh", "02/18/2014", "02/20/2014", PriorityLevel.ONE));
+    notes.add(new BaseNote("1", "TEST This is important", "Kyle Kavanagh", "02/18/2014", "02/20/2014", PriorityLevel.ONE));
     notes.add(new BaseNote("2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "02/10/2014",
         "02/20/2014", PriorityLevel.TWO));
     notes
@@ -65,9 +65,11 @@ public class DummyPersistenceService implements PersistenceService {
         .add(new Task("T3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "Minchan Kim", "02/19/2014", "02/20/2014",
             PriorityLevel.TWO));
 
+    notes.add(new BaseNote("7", "Test new", "Kyle Kavanagh", "02/11/2014", "02/21/2014", PriorityLevel.THREE));
   }
 
   public List<BaseNote> getNotesForPatient(String id) {
+
     return notes;
   }
 
