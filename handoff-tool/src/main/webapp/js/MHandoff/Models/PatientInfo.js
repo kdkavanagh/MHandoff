@@ -8,7 +8,7 @@ define([
     
     
     
-    var Patient = Backbone.Model.extend({
+    var PatientInfo = Backbone.Model.extend({
         url:"",
         defaults : {
             idNum : "0",
@@ -28,5 +28,5 @@ define([
     });
     
     
-    return Patient;
+    return PatientInfo;
 });

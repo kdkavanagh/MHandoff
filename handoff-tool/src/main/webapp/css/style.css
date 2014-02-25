@@ -10,6 +10,22 @@
 	overflow: hidden;
 }
 
+.mottHeader {
+	/* background-color:#617FAD; */
+	margin:0 0 0 0;
+	padding-top:20px;
+	padding-bottom:10px;
+	border-bottom:0px;
+}
+
+.tabContainer {
+	/* background-color:#617FAD; */
+}
+
+.tabContainer > li{
+	/* background-color:#FFFFFF; */
+}
+
 .noteTextArea {
 	
 }

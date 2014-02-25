@@ -5,13 +5,13 @@ define([
         'backbone',
         'bootstrap',
         "Collections/NoteCollection",
-        "Collections/PatientCollection",
         'Views/NoteGridView',
         'text!Views/templates/noteTile.html',
         'text!Views/templates/taskTile.html',
         'text!Views/templates/noteModal.html',
-        'text!Views/templates/taskModal.html'
-        ], function($, _, Backbone,Bootstrap, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientCollection){
+        'text!Views/templates/taskModal.html',
+        "Views/PatientInfoView",
+        ], function($, _, Backbone,Bootstrap, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView){
 
     var PatientMasterView = Backbone.View.extend({
 
@@ -25,6 +25,9 @@ define([
         },
 
         render : function() {
+            
+            this.info = new PatientInfoView({el:$("#patientInfo")});
+            
             this.noteGrid = new NoteGridView({el:$("#patientNotes"),
                 gridsterID:"#noteGrid", 
                 templates:{
@@ -38,6 +41,8 @@ define([
                     min_cols : 3,
                     namespace:"#noteGrid"
                 }});
+            
+            
             this.taskGrid = new NoteGridView({el:$("#patientTasks"),
                 gridsterID:"#taskGrid",
                 templates:{
@@ -52,6 +57,9 @@ define([
                     max_cols: 1,
                     namespace:"#taskGrid"
                 }});
+            
+            
+            
 
 
         },
