@@ -31,16 +31,8 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   private static final String dbPass = "mottinnovate";
 
-  private final List<BaseNote> notes = new ArrayList<BaseNote>();
-
-  private final List<Task> tasks = new ArrayList<Task>();
-
   @Inject
   public PersistenceServiceImpl() {
-
-    notes.add(new BaseNote("123", "This note was added in the constructor", "Colleen Sain", "01/01/2014", "01/01/2014", PriorityLevel.ONE));
-    notes.add(new BaseNote("234", "This note was also added in the constructor", "Colleen Sain", "01/01/2014", "01/01/2014", PriorityLevel.ONE));
-
     try {
 
       Class.forName("org.postgresql.Driver");
@@ -61,30 +53,26 @@ public class PersistenceServiceImpl implements PersistenceService {
   }
 
   public List<BaseNote> getNotesForPatient(String id) {
-
-    notes.add(new BaseNote("111", "Test top", "Colleen Sain", "02/11/2014", "02/21/2014", PriorityLevel.ONE));
+    List<BaseNote> tbr = new ArrayList<BaseNote>();
 
     try {
 
       Statement statement = connection.createStatement();
 
-      ResultSet results = statement.executeQuery("SELECT noteId, text, reporter, " + 
-                         "reportedDate, expiration, priority, epicId " +
-                         "FROM BaseNote " +
-                         "WHERE epicId = '" + "1" + "'");
-                                           // id
+      ResultSet results = statement.executeQuery("SELECT noteId, text, reporter, " +
+          "reportedDate, expiration, priority, epicId " +
+          "FROM BaseNote " +
+          "WHERE epicId = '" + "1" + "'");
+      // id
 
-      while(results.next()){
-
+      while (results.next()) {
         String noteId = results.getString(1);
         String text = results.getString(2);
         String reporter = results.getString(3);
         String reportedDate = results.getString(4);
         String expiration = results.getString(5);
         Integer priority = results.getInt(6);
-
-        notes.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, PriorityLevel.ONE));
-
+        tbr.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, PriorityLevel.ONE));
       }
 
       results.close();
@@ -96,9 +84,7 @@ public class PersistenceServiceImpl implements PersistenceService {
       throw new RuntimeException(e);
     }
 
-    notes.add(new BaseNote("222", "Test bottom", "Colleen Sain", "02/11/2014", "02/21/2014", PriorityLevel.TWO));
-
-    return notes;
+    return tbr;
   }
 
   public List<Task> getTasksForPatient(String id) {
