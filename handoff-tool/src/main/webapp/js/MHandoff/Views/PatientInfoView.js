@@ -14,7 +14,7 @@ define([
     var PatientInfoView = Backbone.View.extend({
 
         el: $('#patientInfoDetails'),
-        template : _.template($('#patientInfoDetails').html()),
+        //template : _.template($('#patientInfoDetails').html()),
         events:{
           //"click #buttonPress": "render",           
 
@@ -30,9 +30,7 @@ define([
 
             this.on('change', this.render, this);
 
-            var model = new PatientInfo();
-            //alert(model.url);
-            model.fetch({reset:true});
+            
             //return model;
            // this.patientInfoModel.fetch({reset:true});
 
@@ -60,10 +58,10 @@ define([
             //this.setElement(tmpl(this.patientInfoModel.toJSON()));
             //this.$el.modal('show');
            // this.patientInfo.each(function())
-           return this;
+           //return this;
         }
 
     });
-    //return PatientInfoView;
-    var patientInfo = new PatientInfo();
+
+    return PatientInfoView;
 });

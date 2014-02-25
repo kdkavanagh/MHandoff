@@ -48,6 +48,6 @@ define([
         
     });
     
-    
-    return PatientInfo;
+    //return PatientInfo;
+    var patientInfo = new PatientInfo();
 });
