@@ -71,7 +71,7 @@ public class PersistenceServiceImpl implements PersistenceService {
         String reportedDate = results.getString(4);
         String expiration = results.getString(5);
         Integer priority = results.getInt(6);
-        tbr.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, PriorityLevel.ONE));
+        tbr.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, PriorityLevel.fromInt(priority)));
       }
 
       results.close();
