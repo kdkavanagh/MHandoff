@@ -9,21 +9,42 @@ define([
     
     
     var PatientInfo = Backbone.Model.extend({
-        url:"",
+
+        url:"/patientInfo.do?patient=Kyle&level=1",
+        patientId: "Kyle",
+        patientLevel: "1",
+
+
+
         defaults : {
-            idNum : "0",
+            idNum : "1",
             name :"Abraham",
             dateOfBirth:"01/01/2000",
-            
-            //utils is still included in the path above in define.
-            //perhaps there is a function where it returns user's current
-            //location. If not or if it is too complicated, forget it!
             location: "",
             picBase: "",
             numNotest: "",
             numTasks:"",
             numAlerts: "",
         },
+
+        /*
+        fetch: function() {
+          $.ajax({
+            type: 'GET',
+            url: this.url,
+            success : function(data) {
+              //to see the data.
+              console.log(data);
+              //console.log("HELLO");
+            }
+          });
+
+        }
+        */
+        //url : function() {
+
+        //    return "/patientInfo.do?patient=" + this.patientId+"&patient="+this.patientLevel;
+        //},
         
     });
     

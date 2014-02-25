@@ -12,8 +12,10 @@ define([
         'text!Views/templates/noteModal.html',
         'text!Views/templates/taskModal.html',
         "Views/PatientInfoView",
+        'text!Views/templates/patientInfoModal.html',
 
-        ], function($, _, Backbone,Bootstrap, TaskCollection,NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView){
+
+        ], function($, _, Backbone,Bootstrap, TaskCollection,NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientInfoModal){
 
     function equalHeight(group) {
         tallest = 0;
@@ -41,7 +43,11 @@ define([
 
         render : function() {
 
-            this.info = new PatientInfoView({el:$("#patientInfo")});
+            this.info = new PatientInfoView({el:$("#patientInfo"),
+                templates:{
+                    modal:patientInfoModal,
+                }});
+
 
             this.noteGrid = new NoteGridView({el:$("#patientNotes"),
                 gridsterID:"#noteGrid", 

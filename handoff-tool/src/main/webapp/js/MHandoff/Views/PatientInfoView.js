@@ -13,15 +13,32 @@ define([
     
     var PatientInfoView = Backbone.View.extend({
 
-        initialize : function () {
+        events:{
+          "click #buttonPress": "render",           
+
+        },
+
+        initialize : function (options) {
             console.log("Creating patientView for element "+this.$el.selector);
-            var model = new PatientInfo() //Create the model
+            
+            this.options = options || {};
+
+            
+
+            var model = new PatientInfo(); //Create the model
+            model.fetch();  
+
+            //model.patientInfo.on('reset', this.render, this);
+            //model.patientInfo.on('change', this.render);
+            //.fetch({reset:true,});
+                        
             this.render();
         },
 
         render:function() {
             console.log("Rendering patient view");
             this.$el.html("<div>TESTING</div>");
+           // this.patientInfo.each(function())
         }
 
     });
