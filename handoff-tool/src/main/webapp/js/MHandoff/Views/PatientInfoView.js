@@ -13,34 +13,57 @@ define([
     
     var PatientInfoView = Backbone.View.extend({
 
+        el: $('#patientInfoDetails'),
+        template : _.template($('#patientInfoDetails').html()),
         events:{
-          "click #buttonPress": "render",           
+          //"click #buttonPress": "render",           
 
         },
 
         initialize : function (options) {
             console.log("Creating patientView for element "+this.$el.selector);
             
-            this.options = options || {};
+            //this.options = options || {};
+            //this.patientInfoModel = this.options.patientInfoModel;
+            //this.template = this.options.template;
+            this.render();
+
+            this.on('change', this.render, this);
+
+            var model = new PatientInfo();
+            //alert(model.url);
+            model.fetch({reset:true});
+            //return model;
+           // this.patientInfoModel.fetch({reset:true});
+
+            //return this;
 
             
-
+            /*
             var model = new PatientInfo(); //Create the model
-            model.fetch();  
+            model.fetch();
 
-            //model.patientInfo.on('reset', this.render, this);
+
+            model.collection.on('reset', model.render, model);
+
             //model.patientInfo.on('change', this.render);
             //.fetch({reset:true,});
-                        
-            this.render();
+            */            
+            
         },
 
         render:function() {
             console.log("Rendering patient view");
             this.$el.html("<div>TESTING</div>");
+            alert(this.url);
+            //var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
+            //this.setElement(tmpl(this.patientInfoModel.toJSON()));
+            //this.$el.modal('show');
            // this.patientInfo.each(function())
+           return this;
         }
 
     });
-    return PatientInfoView;
+    //return PatientInfoView;
+    var patientInfo = new PatientInfo();
 });
