@@ -1,5 +1,9 @@
--- DROP DATABASE "handoff";
--- CREATE DATABASE "handoff";
+DROP DATABASE "handoff";
+DROP USER handoffUser;
+CREATE USER handoffUser WITH password 'mottinnovate';
+CREATE DATABASE "handoff" WITH OWNER handoffUser;
+
+\c handoff;
 
 CREATE TABLE Patient 
 (epicId VARCHAR(255) not NULL, 

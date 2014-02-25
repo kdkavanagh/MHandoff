@@ -43,6 +43,7 @@
 
 .patientPanel {
 	border-left: 2px solid #eee;
+	display: table-cell;
 }
 
 .patientPanel h3 {

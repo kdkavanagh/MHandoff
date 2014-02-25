@@ -2,41 +2,34 @@ package org.umich.mott.peds.innovation.handoff.persistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.ResultSet;
-
-import java.util.List;
 import java.util.ArrayList;
 // import java.util.Random;
+import java.util.List;
 
 import org.apache.log4j.Logger;
-
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
 import org.umich.mott.peds.innovation.handoff.common.Patient;
-import org.umich.mott.peds.innovation.handoff.common.Patient.AllergyInfo;
-import org.umich.mott.peds.innovation.handoff.common.Patient.BasicInfo;
-import org.umich.mott.peds.innovation.handoff.common.Patient.LabInfo;
-import org.umich.mott.peds.innovation.handoff.common.Patient.MedInfo;
 import org.umich.mott.peds.innovation.handoff.common.PriorityLevel;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 
-import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
 public class PersistenceServiceImpl implements PersistenceService {
 
-  private static Connection connection;
+  private Connection connection;
 
   private static final Logger logger = Logger.getLogger(PersistenceServiceImpl.class);
 
   private static final String JDBC = "jdbc:postgresql://127.0.0.1:5432/handoff";
 
-  private static final String dbUser = "colleensain";
+  private static final String dbUser = "handoffUser";
 
-  private static final String dbPass = "";
+  private static final String dbPass = "mottinnovate";
 
   private final List<BaseNote> notes = new ArrayList<BaseNote>();
 
@@ -45,8 +38,8 @@ public class PersistenceServiceImpl implements PersistenceService {
   @Inject
   public PersistenceServiceImpl() {
 
-    notes.add(new BaseNote("123", "This note was added in the constructor", "Colleen Sain", "01/01/2014", "01/01/2014",  PriorityLevel.ONE));
-    notes.add(new BaseNote("234", "This note was also added in the constructor", "Colleen Sain", "01/01/2014", "01/01/2014",  PriorityLevel.ONE));
+    notes.add(new BaseNote("123", "This note was added in the constructor", "Colleen Sain", "01/01/2014", "01/01/2014", PriorityLevel.ONE));
+    notes.add(new BaseNote("234", "This note was also added in the constructor", "Colleen Sain", "01/01/2014", "01/01/2014", PriorityLevel.ONE));
 
     try {
 
@@ -68,7 +61,6 @@ public class PersistenceServiceImpl implements PersistenceService {
   }
 
   public List<BaseNote> getNotesForPatient(String id) {
-  // public List<BaseNote> getNotesForPatient(String id) throws SQLException{ 
 
     notes.add(new BaseNote("111", "Test top", "Colleen Sain", "02/11/2014", "02/21/2014", PriorityLevel.ONE));
 
