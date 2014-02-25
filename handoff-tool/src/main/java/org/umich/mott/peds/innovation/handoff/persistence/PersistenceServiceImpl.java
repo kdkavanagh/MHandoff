@@ -104,7 +104,9 @@ public class PersistenceServiceImpl implements PersistenceService {
   }
 
   public List<Task> getTasksForPatient(String id) {
+    // List<Task> tbr = new ArrayList<Task>();
 
+    // return tbr;
     return null;
   }
 
