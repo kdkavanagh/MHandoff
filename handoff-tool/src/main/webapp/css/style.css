@@ -12,22 +12,45 @@
 
 .mottHeader {
 	/* background-color:#617FAD; */
-	margin:0 0 0 0;
-	padding-top:20px;
-	padding-bottom:10px;
-	border-bottom:0px;
+	margin: 0 0 0 0;
+	padding-top: 20px;
+	padding-bottom: 10px;
+	border-bottom: 0px;
+}
+
+.test {
+	border-left:2px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .tabContainer {
 	/* background-color:#617FAD; */
+	
 }
 
-.tabContainer > li{
+.tabContainer>li {
 	/* background-color:#FFFFFF; */
+	
+}
+
+.tileHeading {
+	padding-top:5px;
+	padding-bottom:5px;
 }
 
 .noteTextArea {
 	
+}
+
+.patientPanel {
+	border-left: 2px solid #eee;
+}
+
+.patientPanel h3 {
+	margin-top:5px;
+	margin-bottom:2px;
 }
 
 .addNewTile {
@@ -36,28 +59,35 @@
 
 #addNewTileInner {
 	width: 40%;
-    margin: 0 auto;
+	margin: 0 auto;
 	text-align: center;
 	display: block;
-	margin-top:15%;
+	margin-top: 15%;
 	color: #999999;
 }
 
 #addNewTileInner:hover {
-   color:#000000;
+	color: #000000;
 }
 
-.ignoreDrag{}
-.staticGridItem{
-	-webkit-transition: left .3s, top .3s!important;
-    -moz-transition: left .3s, top .3s!important;
-    -o-transition: left .3s, top .3s!important;
-    transition:  left .3s, top .3s!important;
-	display: list-item; position: absolute;
+.ignoreDrag {
+	
 }
 
+.staticGridItem {
+	-webkit-transition: left .3s, top .3s !important; -moz-transition : left
+	.3s, top .3s !important; -o-transition : left .3s, top .3s !important;
+	transition : left .3s, top .3s !important;
+	display: list-item;
+	position: absolute;
+	-moz-transition: left .3s, top .3s !important;
+	-o-transition: left .3s, top .3s !important;
+	transition: left .3s, top .3s !important;
+}
+
+}
 .addNewTileIcon {
-	width:100%;
+	width: 100%;
 	font-size: 30pt;
 }
 
@@ -103,16 +133,16 @@
 }
 
 .page-footer {
-  padding-bottom: 9px;
-  margin: 40px 0 20px;
-  border-top: 1px solid #eee;
-  
+	padding-bottom: 9px;
+	margin: 40px 0 20px;
+	border-top: 1px solid #ddd;
 }
 
 .footerText {
-	font-size:14px;
-	margin-top:20px;
-	margin-bottom:10px;
+	font-size: 14px;
+	font-color:#DDDDDD;
+	margin-top: 20px;
+	margin-bottom: 10px;
 }
 
 /* long messy gradient background code */
