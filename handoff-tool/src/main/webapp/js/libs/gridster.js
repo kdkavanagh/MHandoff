@@ -1047,8 +1047,14 @@
         this.set_dom_grid_height();
 
         this.drag_api.set_limits(this.cols * this.min_widget_width);
-
-        return $w.fadeIn();
+        var self = this;
+        return $w.fadeIn({
+            
+            complete:function() {
+               
+               self.$widgets.trigger('widget_added');
+            }
+        });
     };
 
 

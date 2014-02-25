@@ -6,15 +6,18 @@ define([
   'gridster',
   'Models/Note',
   'Collections/NoteCollection',
+  'Collections/TaskCollection',
   'Views/NoteTileView'
-], function($, _, Backbone, Gridster, Note, NoteCollection, NoteTileView){
+], function($, _, Backbone, Gridster, Note, NoteCollection,TaskCollection, NoteTileView){
     
     
     var NoteGridView = Backbone.View.extend({
 
-        el: '.base',
         mostRecentlyDeletedView : null,
         $addNewNoteWidget:null,
+        gridsterOpts:null,
+        gridsterObj:null,
+        noteType:true,
 
         events: {
             'click #buttonPress': "getItems",
@@ -23,28 +26,32 @@ define([
             'click #addNewTileInner' :"addItem",
         },
 
-        initialize: function () {
+        initialize: function (options) {
+            this.options = options || {};
             _.bindAll(this, 'render');
             
-            this.notes = new NoteCollection();
-            this.notes.fetch({ data: $.param({ patient: "kyle",}) 
-                ,reset:true,});
+            this.notes = this.options.collection;
+            if(this.notes instanceof TaskCollection) {
+                this.noteType = false;
+            }
+            this.noteViews = new Array();
+            this.garbageViews = new Array();
+            this.gridsterOpts = this.options.gridsterOpts;
+            this.gridsterID = this.options.gridsterID;
+            this.templates = this.options.templates;
+
+            this.gridsterObj = this.$el.find(this.gridsterID+" > ul").gridster(this.gridsterOpts).data('gridster');
+
+            this.notes.fetch({ reset:true,});
             this.notes.on('reset', this.generateViews, this);
             //this.notes.on('change', this.render);
             this.notes.on('add', this.newItemAdded, this);
-            this.noteViews = new Array();
-            this.garbageViews = new Array();
-            gridster = $(".gridster > ul").gridster({
-                widget_margins : [ 10, 10 ],
-                widget_base_dimensions : [ 250, 150 ],
-                min_cols : 3
-            });
-            
         },
 
         createView: function(note, row, col, self) {
-            var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
-            var noteView = new NoteTileView({parent : self, noteModel:note, row:row, col:col, gridster : gridsterObj});
+            //var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
+ 
+            var noteView = new NoteTileView({parent : self, noteModel:note,templates:this.templates, row:row, col:col, gridster : self.gridsterObj});
             self.noteViews.push(noteView);
             noteView.on('remove', self.noteRemoved, self);
             return noteView;
@@ -78,18 +85,23 @@ define([
         addItem: function() {
             console.log("Adding item");
             //create the note
-            var note = new Note();
-            this.notes.add(note);
+//            if(!this.noteType) {
+//                this.notes.add(new Task());
+//            } else {
+//                this.notes.add(new Note());
+//            }
+            this.notes.createNewItem();
         },
 
         newItemAdded:function(note) {
             //get the next free position
-            var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
+            //var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
 
             //Move the add new note item to the next free position
             //This is safe because the space is guarenteed to be empty
             var newView = this.createView(note, 0, 0, this).render();
             newView.openNote().toggleEditing();
+            this.trigger('gridchange');
 //          var next = gridsterObj.get_bottom_most_occupied_cell();
 //          console.log(next);
             //Move the add new note item to the next free position
@@ -112,6 +124,7 @@ define([
                 this.noteViews.push(this.mostRecentlyDeletedView);
                 this.mostRecentlyDeletedView.render();
                 this.mostRecentlyDeletedView = null;
+                this.trigger('gridchange');
             }
         },
 
@@ -131,10 +144,11 @@ define([
             this.mostRecentlyDeletedView = event;
             $('#undoAlertHolder').html('<div id="undoAlert" class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span><button class="btn btn-default" id="undoButton">Undo..</button></span></div>');
 
+            this.trigger('gridchange');
         },
 
         render: function(){
-            var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
+            var gridsterObj = this.gridsterObj;//$("#noteGrid ul").gridster().data('gridster');
             var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\" class=\"\"><span class=\"glyphicon glyphicon-plus addNewTileIcon ignoreDrag\"></span>Add New Item</div><div>";
            // gridsterObj.remove_all_widgets();
             

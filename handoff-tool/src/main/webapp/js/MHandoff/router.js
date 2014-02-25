@@ -3,8 +3,9 @@ define([
         'underscore',
         'backbone',
         'gridster',
-        'Views/NoteGridView'
-        ], function($, _, Backbone,Gridster, NoteGridView){
+        'Views/PatientMasterView',
+
+        ], function($, _, Backbone,Gridster,PatientMasterView){
     var AppRouter = Backbone.Router.extend({
         routes: {
             // Define some URL routes
@@ -18,7 +19,8 @@ define([
     var initialize = function(){
         console.log("Initing router");
         var app_router = new AppRouter();
-        var noteGrid = new NoteGridView();
+        var view = new PatientMasterView({patientId:"kyle"}).render();
+        
         Backbone.history.start();
     };
     return {

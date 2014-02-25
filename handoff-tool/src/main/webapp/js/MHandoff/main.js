@@ -14,6 +14,7 @@ require.config({
         bootstrap_editable : '../libs/bootstrap-editable.min',
         bootstrap_select : "../bootstrap-select.min",
         text:"../libs/text",
+        domReady:"../libs/domReady",
 
     },
 
@@ -45,9 +46,15 @@ require([
          'bootstrap',
          'bootstrap_editable',
          'MHandoff',
-         ], function($, _, Bootstrap, Bootstrap_editable, App){
-    // The "app" dependency is passed in as "App"
+         'domReady',
+         ], function($, _, Bootstrap, Bootstrap_editable, App, dom){
 
-    console.log("Initializing MHandoff");
-    App.initialize();
+    dom(function () {
+        //This function is called once the DOM is ready.
+        //It will be safe to query the DOM and manipulate
+        //DOM nodes in this function.
+        console.log("Initializing MHandoff");
+        App.initialize();
+    });
+
 });

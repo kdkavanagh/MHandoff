@@ -2,6 +2,10 @@
 	position: relative;
 }
 
+.mainView {
+	min-height:500px;
+}
+
 .note {
 	position: relative;
 	box-shadow: 5px 5px 10px #888888;
@@ -10,8 +14,40 @@
 	overflow: hidden;
 }
 
+.mottHeader {
+	/* background-color:#617FAD; */
+	margin: 0 0 0 0;
+	padding-top: 20px;
+	padding-bottom: 10px;
+	border-bottom: 0px;
+}
+
+.tabContainer {
+	/* background-color:#617FAD; */
+	
+}
+
+.tabContainer>li {
+	/* background-color:#FFFFFF; */
+	
+}
+
+.tileHeading {
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
 .noteTextArea {
 	
+}
+
+.patientPanel {
+	border-left: 2px solid #eee;
+}
+
+.patientPanel h3 {
+	margin-top:5px;
+	margin-bottom:2px;
 }
 
 .addNewTile {
@@ -20,28 +56,35 @@
 
 #addNewTileInner {
 	width: 40%;
-    margin: 0 auto;
+	margin: 0 auto;
 	text-align: center;
 	display: block;
-	margin-top:15%;
+	margin-top: 15%;
 	color: #999999;
 }
 
 #addNewTileInner:hover {
-   color:#000000;
+	color: #000000;
 }
 
-.ignoreDrag{}
-.staticGridItem{
-	-webkit-transition: left .3s, top .3s!important;
-    -moz-transition: left .3s, top .3s!important;
-    -o-transition: left .3s, top .3s!important;
-    transition:  left .3s, top .3s!important;
-	display: list-item; position: absolute;
+.ignoreDrag {
+	
 }
+
+.staticGridItem {
+	-webkit-transition: left .3s, top .3s !important; -moz-transition : left
+	.3s, top .3s !important; -o-transition : left .3s, top .3s !important;
+	transition : left .3s, top .3s !important;
+	display: list-item;
+	position: absolute;
+	-moz-transition: left .3s, top .3s !important;
+	-o-transition: left .3s, top .3s !important;
+	transition: left .3s, top .3s !important;
+}
+
 
 .addNewTileIcon {
-	width:100%;
+	width: 100%;
 	font-size: 30pt;
 }
 
@@ -85,6 +128,20 @@
 	position: static;
 	padding: 0;
 }
+
+.page-footer {
+	padding-bottom: 9px;
+	margin: 40px 0 20px;
+	border-top: 1px solid #ddd;
+}
+
+.footerText {
+	font-size: 14px;
+	color:#999;
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
 /* long messy gradient background code */
 .grad {
 	background: -moz-linear-gradient(left, rgba(241, 241, 241, 0) 0%,

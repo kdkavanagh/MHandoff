@@ -3,12 +3,13 @@ define([
   'jquery',     
   'underscore', 
   'backbone',
+  'Models/Note',
   'utils',
-], function($, _, Backbone, Utils){
+], function($, _, Backbone, Note, Utils){
     
     
     
-    var Note = Backbone.Model.extend({
+    var Task = Backbone.Model.extend({
         url:"",
         defaults : {
             noteId : "0",
@@ -18,10 +19,12 @@ define([
             expiration:Utils.getTodaysDate(1),
             badgeLevel:"",
             text:"Note text",
+            assignee:"Unassigned",
+            status:"Unknown",
         },
         
     });
     
     
-    return Note;
+    return Task;
 });

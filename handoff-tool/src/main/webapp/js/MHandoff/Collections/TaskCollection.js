@@ -3,14 +3,15 @@ define([
         'jquery',     
         'underscore', 
         'backbone',
-        'Models/Note',
         'Models/Task',
-        ], function($, _, Backbone, Note, Task){
+        'utils',
+
+        ], function($, _, Backbone, Task, Utils){
 
 
-    var NoteCollection = Backbone.Collection.extend({
-        model:Note,
-        itemType:"note",
+    var TaskCollection = Backbone.Collection.extend({
+        model:Task,
+        itemType:"task",
         patientId:null,
 
         initialize: function(patientId) {
@@ -18,7 +19,6 @@ define([
         },
         
         createNewItem : function() {
-            
             this.add(new this.model());
         },
 
@@ -29,6 +29,5 @@ define([
     });
 
 
-    return NoteCollection;
-    // What we return here will be used by other modules
+    return TaskCollection;
 });
