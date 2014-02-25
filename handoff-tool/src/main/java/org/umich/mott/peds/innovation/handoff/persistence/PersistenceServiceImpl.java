@@ -63,7 +63,8 @@ public class PersistenceServiceImpl implements PersistenceService {
           "FROM BaseNote " +
           "INNER JOIN UserInfo " +
           "ON BaseNote.reporter=UserInfo.uniqname " +
-          "WHERE epicId = '" + "1" + "'");
+          "WHERE epicId = '" + "1" + "' " +
+          "ORDER BY priority ASC");
 
       while (noteResults.next()) {
         int index = 1;
