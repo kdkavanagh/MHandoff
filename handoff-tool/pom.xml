@@ -137,6 +137,29 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>/Applications/Postgres.app/Contents/Versions/9.3/bin/psql</executable>
+					<arguments>
+						
+						<argument>-a</argument>
+						<argument>-f</argument>
+						<argument>${basedir}/../db/masterSetup.sql</argument>
+					</arguments>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 

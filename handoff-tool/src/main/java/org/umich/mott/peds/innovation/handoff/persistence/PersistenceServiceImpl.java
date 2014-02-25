@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-// import java.util.Random;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -73,7 +72,7 @@ public class PersistenceServiceImpl implements PersistenceService {
         String reporter = noteResults.getString(index++) + " " + noteResults.getString(index++);
         String reportedDate = noteResults.getString(index++);
         String expiration = noteResults.getString(index++);
-        Integer priority = noteResults.getInt(index++);
+        int priority = noteResults.getInt(index++);
         tbr.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, PriorityLevel.fromInt(priority)));
       }
 
