@@ -6,8 +6,9 @@ define([
   'gridster',
   'Models/Note',
   'Collections/NoteCollection',
+  'Collections/TaskCollection',
   'Views/NoteTileView'
-], function($, _, Backbone, Gridster, Note, NoteCollection, NoteTileView){
+], function($, _, Backbone, Gridster, Note, NoteCollection,TaskCollection, NoteTileView){
     
     
     var NoteGridView = Backbone.View.extend({
@@ -16,6 +17,7 @@ define([
         $addNewNoteWidget:null,
         gridsterOpts:null,
         gridsterObj:null,
+        noteType:true,
 
         events: {
             'click #buttonPress': "getItems",
@@ -29,7 +31,9 @@ define([
             _.bindAll(this, 'render');
             
             this.notes = this.options.collection;
-            
+            if(this.notes instanceof TaskCollection) {
+                this.noteType = false;
+            }
             this.noteViews = new Array();
             this.garbageViews = new Array();
             this.gridsterOpts = this.options.gridsterOpts;
@@ -81,8 +85,12 @@ define([
         addItem: function() {
             console.log("Adding item");
             //create the note
-            var note = new Note();
-            this.notes.add(note);
+//            if(!this.noteType) {
+//                this.notes.add(new Task());
+//            } else {
+//                this.notes.add(new Note());
+//            }
+            this.notes.createNewItem();
         },
 
         newItemAdded:function(note) {
@@ -93,6 +101,7 @@ define([
             //This is safe because the space is guarenteed to be empty
             var newView = this.createView(note, 0, 0, this).render();
             newView.openNote().toggleEditing();
+            this.trigger('gridchange');
 //          var next = gridsterObj.get_bottom_most_occupied_cell();
 //          console.log(next);
             //Move the add new note item to the next free position
@@ -115,6 +124,7 @@ define([
                 this.noteViews.push(this.mostRecentlyDeletedView);
                 this.mostRecentlyDeletedView.render();
                 this.mostRecentlyDeletedView = null;
+                this.trigger('gridchange');
             }
         },
 
@@ -134,6 +144,7 @@ define([
             this.mostRecentlyDeletedView = event;
             $('#undoAlertHolder').html('<div id="undoAlert" class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span><button class="btn btn-default" id="undoButton">Undo..</button></span></div>');
 
+            this.trigger('gridchange');
         },
 
         render: function(){

@@ -17,6 +17,10 @@ define([
         initialize: function(patientId) {
             this.patientId = patientId;
         },
+        
+        createNewItem : function() {
+            this.add(new this.model());
+        },
 
 
         url : function() {
