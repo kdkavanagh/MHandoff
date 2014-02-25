@@ -57,26 +57,43 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     try {
 
-      Statement statement = connection.createStatement();
+      Statement statement_notes = connection.createStatement();
 
-      ResultSet results = statement.executeQuery("SELECT noteId, text, reporter, " +
+      ResultSet results_notes = statement_notes.executeQuery("SELECT noteId, text, reporter, " +
           "reportedDate, expiration, priority, epicId " +
           "FROM BaseNote " +
           "WHERE epicId = '" + "1" + "'");
-      // id
+                            // id
 
-      while (results.next()) {
-        String noteId = results.getString(1);
-        String text = results.getString(2);
-        String reporter = results.getString(3);
-        String reportedDate = results.getString(4);
-        String expiration = results.getString(5);
-        Integer priority = results.getInt(6);
+      while (results_notes.next()) {
+        String noteId = results_notes.getString(1);
+        String text = results_notes.getString(2);
+        String reporter = results_notes.getString(3);
+        String reportedDate = results_notes.getString(4);
+        String expiration = results_notes.getString(5);
+        Integer priority = results_notes.getInt(6);
+
+        // This to be refactored into its own method
+        Statement statement_reporter = connection.createStatement();
+        ResultSet results_reporter = statement_reporter.executeQuery("SELECT U.first, U.last " + 
+            "FROM UserInfo U, BaseNote N " + 
+            "WHERE N.noteID = '" + noteId + "' AND " + 
+                  "N.reporter = U.uniqname AND " + 
+                  "N.reporter = '" + reporter + "'");
+
+        if (results_reporter.next()) {
+
+          reporter = results_reporter.getString(1) + " " + results_reporter.getString(2);
+        }
+
+        results_reporter.close();
+        statement_reporter.close();
+
         tbr.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, PriorityLevel.ONE));
       }
 
-      results.close();
-      statement.close();
+      results_notes.close();
+      statement_notes.close();
 
     } catch (SQLException e) {
 

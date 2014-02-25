@@ -20,10 +20,13 @@ INSERT INTO BaseNote (text, reporter, reportedDate, expiration, priority, epicId
 VALUES ('No steroids unless absolutely necessary - compromises tx', 'collsain', current_date, current_date + 10, 1, '1');
 
 INSERT INTO BaseNote (text, reporter, reportedDate, expiration, priority, epicId)
-VALUES ('Large emesis. Decreased bolus feeds and increased frequency.', 'collsain', current_date, current_date + 10, 1, '1');
+VALUES ('Large emesis. Decreased bolus feeds and increased frequency.', 'collsain', current_date, current_date + 10, 2, '1');
 
 INSERT INTO BaseNote (text, reporter, reportedDate, expiration, priority, epicId)
-VALUES ('If sick, suspend enalopril', 'collsain', current_date, current_date + 10, 1, '1');
+VALUES ('If sick, suspend enalopril', 'johntyu', current_date, current_date + 10, 2, '1');
+
+INSERT INTO BaseNote (text, reporter, reportedDate, expiration, priority, epicId)
+VALUES ('Increased fluid goals', 'mcspeak', current_date, current_date + 10, 3, '1');
 
 INSERT INTO Task (text, reporter, assignee, reportedDate, expiration, priority, epicId)
 VALUES ('11pm check platelets, if <50 give platelets', 'collsain', 'kminchan', current_date, current_date + 5, 1, '1');
