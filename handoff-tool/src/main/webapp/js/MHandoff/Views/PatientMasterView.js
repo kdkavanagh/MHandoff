@@ -4,6 +4,7 @@ define([
         'underscore', 
         'backbone',
         'bootstrap',
+        "Collections/TaskCollection",
         "Collections/NoteCollection",
         'Views/NoteGridView',
         'text!Views/templates/noteTile.html',
@@ -11,7 +12,8 @@ define([
         'text!Views/templates/noteModal.html',
         'text!Views/templates/taskModal.html',
         "Views/PatientInfoView",
-        ], function($, _, Backbone,Bootstrap, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView){
+
+        ], function($, _, Backbone,Bootstrap, TaskCollection,NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView){
 
     var PatientMasterView = Backbone.View.extend({
 
@@ -25,31 +27,31 @@ define([
         },
 
         render : function() {
-            
+
             this.info = new PatientInfoView({el:$("#patientInfo")});
-            
+
             this.noteGrid = new NoteGridView({el:$("#patientNotes"),
                 gridsterID:"#noteGrid", 
                 templates:{
                     tile:noteTile,
                     modal:noteModal,
                 }, 
-                collection:new NoteCollection('note', this.patientId),
+                collection:new NoteCollection(this.patientId),
                 gridsterOpts:{
                     widget_margins : [ 10, 10 ],
                     widget_base_dimensions : [ 240, 150 ],
                     min_cols : 3,
                     namespace:"#noteGrid"
                 }});
-            
-            
+
+
             this.taskGrid = new NoteGridView({el:$("#patientTasks"),
                 gridsterID:"#taskGrid",
                 templates:{
                     tile:taskTile,
                     modal:taskModal,
                 }, 
-                collection:new NoteCollection('task', this.patientId),
+                collection:new TaskCollection(this.patientId),
                 gridsterOpts:{
                     widget_margins : [ 10, 10 ],
                     widget_base_dimensions : [ 240, 150 ],
@@ -57,9 +59,9 @@ define([
                     max_cols: 1,
                     namespace:"#taskGrid"
                 }});
-            
-            
-            
+
+
+
 
 
         },
