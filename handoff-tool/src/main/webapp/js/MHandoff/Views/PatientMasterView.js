@@ -5,12 +5,13 @@ define([
         'backbone',
         'bootstrap',
         "Collections/NoteCollection",
+        "Collections/PatientCollection",
         'Views/NoteGridView',
         'text!Views/templates/noteTile.html',
         'text!Views/templates/taskTile.html',
         'text!Views/templates/noteModal.html',
         'text!Views/templates/taskModal.html'
-        ], function($, _, Backbone,Bootstrap, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal){
+        ], function($, _, Backbone,Bootstrap, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientCollection){
 
     var PatientMasterView = Backbone.View.extend({
 
