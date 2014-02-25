@@ -27,7 +27,7 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   private static final String JDBC = "jdbc:postgresql://127.0.0.1:5432/handoff";
 
-  private static final String dbUser = "handoffUser";
+  private static final String dbUser = "handoffuser";
 
   private static final String dbPass = "mottinnovate";
 
