@@ -26,9 +26,7 @@ define([
         },
 
         initialize : function (options) {
-            $.fn.editable.defaults.mode = 'inline';
-            $.fn.editable.defaults.disabled = true;
-            $.fn.editable.defaults.onblur='submit';
+            
             this.options = options || {};
             this.noteModel = this.options.noteModel;
             this.template = this.options.template;
@@ -36,33 +34,44 @@ define([
         },
 
         render:function() {
+            _.template.formatdate = function (stamp) {
+                return moment(stamp *1000).format('MMM Do YYYY, h:mm A');
+            };
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             this.setElement(tmpl(this.noteModel.toJSON()));
-
             this.$el.modal('show');
             var self = this;
-            this.$el.find("#noteText").editable({
+            this.$el.find("a#noteText").editable({
                 type: 'textarea',
                 pk: 1,
                 title: 'Note Text',
+                disabled:true,
+                mode:'inline',
+                onblur:'submit',
                 //inputclass:"editable-wysihtml5 input-large",
                 success: function (response, newValue) {
                     console.log(newValue);
                     self.noteModel.set("text", newValue);
                 },
             });
-            this.$el.find("#expiration").editable({
+            this.$el.find("a#expiration").editable({
                 type:'combodate',
-                value: this.noteModel.get("expiration"),
-                template:"MM / D / YYYY",
-                format:"MM / D / YYYY",
-                viewformat:"MM / D / YYYY",
+                disabled:true,
+                mode:'inline',
+                onblur:'submit',
+                value: moment.unix(this.noteModel.get("expiration")),
+                format:"X",
+                viewformat:"MMM D, YYYY, hh:mm A",
+                template:"MMM D YYYY  hh:mm A",
                 success: function (response, newValue) {
-                    self.noteModel.set("expiration", newValue);
+                    self.noteModel.set("expiration", newValue/1000);
                 },
             });
-            this.$el.find("#priority").editable({
+            this.$el.find("a#priority").editable({
                 type:'select',
+                disabled:true,
+                mode:'inline',
+                onblur:'submit',
                 source: [
                          {value: 1, text: 'Priority 1'},
                          {value: 2, text: 'Priority 2'},
