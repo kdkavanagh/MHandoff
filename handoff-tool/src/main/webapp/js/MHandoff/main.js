@@ -33,6 +33,14 @@ require.config({
         'bootstrap':{
             deps:['jquery'],
             exports:'Bootstrap'
+        },
+        "gridster": {
+            deps:['jquery'],
+            "exports": "Gridster"
+        },
+        "bootstrap_editable": {
+            deps:['jquery', 'bootstrap'],
+            "exports": "Bootstrap_editable"
         }
     }
 

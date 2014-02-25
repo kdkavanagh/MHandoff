@@ -54,13 +54,12 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   public List<BaseNote> getNotesForPatient(String id) {
     List<BaseNote> tbr = new ArrayList<BaseNote>();
-
     try {
 
       Statement statement_notes = connection.createStatement();
 
-      ResultSet results_notes = statement_notes.executeQuery("SELECT noteId, text, reporter, " +
-          "reportedDate, expiration, priority, epicId " +
+      ResultSet results = statement.executeQuery("SELECT noteId, text, reporter, " +
+          "extract(epoch from reportedDate), extract(epoch from expiration), priority, epicId " +
           "FROM BaseNote " +
           "WHERE epicId = '" + "1" + "'");
                             // id

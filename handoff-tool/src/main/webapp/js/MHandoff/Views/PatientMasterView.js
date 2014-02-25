@@ -89,14 +89,14 @@ define([
         },
 
         gridChangeHandler : function() {
-            console.log("got event");
-            var h = equalHeight($(".gridster > ul"));
+            //console.log("got event");
+            // var h = equalHeight($(".gridster > ul"));
 //          $(".patientPanel").each(function() {
 //          $(this).height(h);
 
 //          });
 
-            console.log($(".patientPanel").height() +", "+$("#taskGrid").height());
+            //  console.log($(".patientPanel").height() +", "+$("#taskGrid").height());
 
 
 

@@ -22,7 +22,7 @@
     <p>
      Valid Thru: <a id="expiration"></a>
     </p>
-    <p>Reported by: <%=reporter%> on <%= reportedDate%></p>
+    <p>Reported by: <%=reporter%> on <%= _.template.formatdate(reportedDate) %></p>
    </div>
    <div class="modal-footer">
     <button id="editButton" type="button" class="btn btn-primary">Edit</button>

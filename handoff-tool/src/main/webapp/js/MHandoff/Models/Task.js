@@ -5,7 +5,8 @@ define([
   'backbone',
   'Models/Note',
   'utils',
-], function($, _, Backbone, Note, Utils){
+  'moment',
+], function($, _, Backbone, Note, Utils, moment){
     
     
     
@@ -15,8 +16,8 @@ define([
             noteId : "0",
             priority :"1",
             reporter:"N/A",
-            reportedDate:Utils.getTodaysDate(0),
-            expiration:Utils.getTodaysDate(1),
+            reportedDate:moment().valueOf()/1000,
+            expiration:moment().add('days', 1).valueOf()/1000,
             badgeLevel:"",
             text:"Note text",
             assignee:"Unassigned",
