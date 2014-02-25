@@ -56,43 +56,28 @@ public class PersistenceServiceImpl implements PersistenceService {
     List<BaseNote> tbr = new ArrayList<BaseNote>();
     try {
 
-      Statement statement_notes = connection.createStatement();
+      Statement noteStatment = connection.createStatement();
 
-      ResultSet results_notes = statement_notes.executeQuery("SELECT noteId, text, reporter, " +
-          "extract(epoch from reportedDate), extract(epoch from expiration), priority, epicId " +
+      ResultSet noteResults = noteStatment.executeQuery("SELECT BaseNote.noteId, BaseNote.text, UserInfo.first, UserInfo.last, " +
+          "extract(epoch from BaseNote.reportedDate), extract(epoch from BaseNote.expiration), BaseNote.priority, BaseNote.epicId " +
           "FROM BaseNote " +
+          "INNER JOIN UserInfo " +
+          "ON BaseNote.reporter=UserInfo.uniqname " +
           "WHERE epicId = '" + "1" + "'");
 
-      while (results_notes.next()) {
-        String noteId = results_notes.getString(1);
-        String text = results_notes.getString(2);
-        String reporter = results_notes.getString(3);
-        String reportedDate = results_notes.getString(4);
-        String expiration = results_notes.getString(5);
-        Integer priority = results_notes.getInt(6);
-
-        // This to be refactored into its own method
-        Statement statement_reporter = connection.createStatement();
-        ResultSet results_reporter = statement_reporter.executeQuery("SELECT U.first, U.last " +
-            "FROM UserInfo U, BaseNote N " +
-            "WHERE N.noteID = '" + noteId + "' AND " +
-            "N.reporter = U.uniqname AND " +
-            "N.reporter = '" + reporter + "'");
-
-        if (results_reporter.next()) {
-
-          reporter = results_reporter.getString(1) + " " + results_reporter.getString(2);
-        }
-
-        results_reporter.close();
-        statement_reporter.close();
-
+      while (noteResults.next()) {
+        int index = 1;
+        String noteId = noteResults.getString(index++);
+        String text = noteResults.getString(index++);
+        String reporter = noteResults.getString(index++) + " " + noteResults.getString(index++);
+        String reportedDate = noteResults.getString(index++);
+        String expiration = noteResults.getString(index++);
+        Integer priority = noteResults.getInt(index++);
         tbr.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, PriorityLevel.fromInt(priority)));
-
       }
 
-      results_notes.close();
-      statement_notes.close();
+      noteResults.close();
+      noteStatment.close();
 
     } catch (SQLException e) {
 
