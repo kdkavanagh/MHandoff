@@ -101,6 +101,20 @@
 	position: static;
 	padding: 0;
 }
+
+.page-footer {
+  padding-bottom: 9px;
+  margin: 40px 0 20px;
+  border-top: 1px solid #eee;
+  
+}
+
+.footerText {
+	font-size:14px;
+	margin-top:20px;
+	margin-bottom:10px;
+}
+
 /* long messy gradient background code */
 .grad {
 	background: -moz-linear-gradient(left, rgba(241, 241, 241, 0) 0%,

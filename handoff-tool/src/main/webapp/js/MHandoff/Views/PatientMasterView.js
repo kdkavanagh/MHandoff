@@ -51,7 +51,7 @@ define([
                 }, 
                 collection:new NoteCollection('task', this.patientId),
                 gridsterOpts:{
-                    widget_margins : [ 0, 10 ],
+                    widget_margins : [ 10, 10 ],
                     widget_base_dimensions : [ 240, 150 ],
                     min_cols : 1,
                     max_cols: 1,
