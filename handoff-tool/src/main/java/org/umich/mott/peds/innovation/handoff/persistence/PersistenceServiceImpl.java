@@ -66,30 +66,33 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     try {
 
-      Statement statement = this.connection.createStatement();
+      Statement statement = connection.createStatement();
 
-      ResultSet results = statement.executeQuery("SELECT noteId, text, reporter, " +
-          "reportedDate, expiration, priority, epicId " +
-          "FROM BaseNote " +
-          "WHERE epicId = '" + id + "'");
+      ResultSet results = statement.executeQuery("SELECT noteId, text, reporter, " + 
+                         "reportedDate, expiration, priority, epicId " +
+                         "FROM BaseNote " +
+                         "WHERE epicId = '" + "1" + "'");
+                                           // id
 
-      while (results.next()) {
+      while(results.next()){
+
         String noteId = results.getString(1);
         String text = results.getString(2);
         String reporter = results.getString(3);
         String reportedDate = results.getString(4);
         String expiration = results.getString(5);
-        int priority = results.getInt(6);
+        Integer priority = results.getInt(6);
 
         notes.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, PriorityLevel.ONE));
 
       }
+
       results.close();
       statement.close();
 
     } catch (SQLException e) {
 
-      logger.fatal("Cannot create statement.");
+      logger.fatal("Cannot create statement or execute results.");
       throw new RuntimeException(e);
     }
 
