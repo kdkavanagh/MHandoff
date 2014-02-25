@@ -2,6 +2,7 @@
 
 DROP DATABASE "handoff";
 DROP USER handoffUser;
+
 CREATE USER handoffUser WITH password 'mottinnovate';
 CREATE DATABASE "handoff" WITH OWNER handoffUser;
 GRANT ALL PRIVILEGES ON DATABASE "handoff" to handoffUser;
