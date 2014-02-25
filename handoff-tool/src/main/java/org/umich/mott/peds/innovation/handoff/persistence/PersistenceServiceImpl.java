@@ -58,7 +58,7 @@ public class PersistenceServiceImpl implements PersistenceService {
 
       Statement statement_notes = connection.createStatement();
 
-      ResultSet results = statement.executeQuery("SELECT noteId, text, reporter, " +
+      ResultSet results_notes = statement_notes.executeQuery("SELECT noteId, text, reporter, " +
           "extract(epoch from reportedDate), extract(epoch from expiration), priority, epicId " +
           "FROM BaseNote " +
           "WHERE epicId = '" + "1" + "'");
@@ -104,7 +104,9 @@ public class PersistenceServiceImpl implements PersistenceService {
   }
 
   public List<Task> getTasksForPatient(String id) {
+    // List<Task> tbr = new ArrayList<Task>();
 
+    // return tbr;
     return null;
   }
 
