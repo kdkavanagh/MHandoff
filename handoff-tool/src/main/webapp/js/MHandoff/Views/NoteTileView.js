@@ -45,6 +45,7 @@ define([
             this.MHandoff = require("MHandoff");
             var self = this;
             _.template.getPriorityStringFromCode = function (code) {
+                console.log("Getting for code "+code);
                 return self.MHandoff.priorityLevels[code];
             };
             this.noteModel.on('change', this.updateView, this);
@@ -57,7 +58,7 @@ define([
             this.$noteText = this.$el.find("p#noteText");
             this.$notePriorityBadge = this.$el.find("#priorityBadge");
             this.$noteText.html(this.noteModel.get("text"));
-            this.$notePriorityBadge.html(this.noteModel.get("priority"));
+            this.$notePriorityBadge.html( _.template.getPriorityStringFromCode(this.noteModel.get("priorityCode")));
             this.$notePriorityBadge.attr("class", "badge "+this.noteModel.get("badgeLevel")+" pull-right");
 
         },
