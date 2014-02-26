@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
+import org.umich.mott.peds.innovation.handoff.common.Pair;
 import org.umich.mott.peds.innovation.handoff.common.Patient;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 
@@ -143,6 +144,37 @@ public class PersistenceServiceImpl implements PersistenceService {
   public boolean deleteItem(String noteId) {
     // TODO Auto-generated method stub
     return false;
+  }
+
+  public List<Pair<Integer, String>> getPriorityLevels() {
+    List<Pair<Integer, String>> tbr = new ArrayList<Pair<Integer, String>>();
+    try {
+
+      Statement statment = connection.createStatement();
+
+      ResultSet results = statment
+          .executeQuery("SELECT PriorityLevel.code, PriorityLevel.displayText " +
+              "FROM PriorityLevel " +
+              "ORDER BY code DESC");
+
+      while (results.next()) {
+        int index = 1;
+        int value = Integer.parseInt(results.getString(index++));
+        String text = results.getString(index++);
+
+        tbr.add(new Pair<Integer, String>(value, text));
+      }
+
+      results.close();
+      statment.close();
+
+    } catch (SQLException e) {
+
+      logger.fatal("Cannot create statement or execute results.");
+      throw new RuntimeException(e);
+    }
+
+    return tbr;
   }
 
 }

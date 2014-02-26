@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
+import org.umich.mott.peds.innovation.handoff.common.Pair;
 import org.umich.mott.peds.innovation.handoff.common.Patient;
 import org.umich.mott.peds.innovation.handoff.common.Patient.AllergyInfo;
 import org.umich.mott.peds.innovation.handoff.common.Patient.BasicInfo;
@@ -122,5 +123,10 @@ public class DummyPersistenceService implements PersistenceService {
     tasks.remove(n);
     notes.remove(n);
     return result();
+  }
+
+  public List<Pair<Integer, String>> getPriorityLevels() {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

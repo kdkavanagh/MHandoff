@@ -3,6 +3,7 @@ package org.umich.mott.peds.innovation.handoff.persistence;
 import java.util.List;
 
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
+import org.umich.mott.peds.innovation.handoff.common.Pair;
 import org.umich.mott.peds.innovation.handoff.common.Patient;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 
@@ -25,6 +26,8 @@ public interface PersistenceService {
   public List<Task> getTasksForPatient(String id);
 
   public Patient getPatient(String id);
+
+  public List<Pair<Integer, String>> getPriorityLevels();
 
   /**
    * 
