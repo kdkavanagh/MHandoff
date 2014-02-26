@@ -31,6 +31,14 @@ PRIMARY KEY ( code )
 );
 GRANT ALL PRIVILEGES ON TABLE TaskStatus TO handoffUser;
 
+\echo Creating PriorityLevel table
+CREATE TABLE PriorityLevel(
+displayText VARCHAR(255),
+code INTEGER,
+PRIMARY KEY ( code )
+);
+GRANT ALL PRIVILEGES ON TABLE PriorityLevel TO handoffUser;
+
 
 \echo Creating Task table
 CREATE TABLE Task 
@@ -46,6 +54,7 @@ epicId VARCHAR(255),
 FOREIGN KEY(assignee) REFERENCES UserInfo, 
 FOREIGN KEY(reporter) REFERENCES UserInfo, 
 FOREIGN KEY(status) REFERENCES TaskStatus, 
+FOREIGN KEY(priority) REFERENCES PriorityLevel, 
 FOREIGN KEY(epicId) REFERENCES Patient, 
 PRIMARY KEY ( taskId )); 
 
@@ -64,6 +73,7 @@ priority INTEGER,
 epicId VARCHAR(255), 
 FOREIGN KEY(epicId) REFERENCES Patient, 
 FOREIGN KEY(reporter) REFERENCES UserInfo, 
+FOREIGN KEY(priority) REFERENCES PriorityLevel, 
 PRIMARY KEY ( noteId )); 
 
 GRANT ALL PRIVILEGES ON TABLE BaseNote TO handoffUser;
