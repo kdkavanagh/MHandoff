@@ -11,8 +11,8 @@ import org.umich.mott.peds.innovation.handoff.ActionContext;
  */
 public class Task extends BaseNote {
 
-  public Task(String taskId, String text, String reporter, String assignee, String status, String reportedDate, String expiration, String priority) {
-    super(taskId, text, reporter, reportedDate, expiration, priority);
+  public Task(String taskId, String text, String reporter, String assignee, String status, String reportedDate, String expiration, int priorityCode) {
+    super(taskId, text, reporter, reportedDate, expiration, priorityCode);
     this.assignee = assignee;
     this.status = status;
 

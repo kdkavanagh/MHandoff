@@ -92,6 +92,9 @@
 .badge-error {
 	background-color: #b94a48;
 }
+.badge-warning {
+    background-color: #f89406;
+}
 
 .closeIcon,.closeIcon a {
 	color: #999999;

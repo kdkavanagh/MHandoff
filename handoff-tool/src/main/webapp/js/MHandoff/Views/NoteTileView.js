@@ -1,17 +1,18 @@
 define([
-  // These are path alias that we configured in our bootstrap
-  'jquery',     
-  'underscore', 
-  'backbone',
-  'Models/Note',
-  'Collections/NoteCollection',
-  'Views/NoteModalView',
-  'utils',
+        // These are path alias that we configured in our bootstrap
+        'require',
+        'jquery',     
+        'underscore', 
+        'backbone',
+        'Models/Note',
+        'Collections/NoteCollection',
+        'Views/NoteModalView',
+        'utils',
 
-  
-], function($, _, Backbone, Note, NoteCollection,NoteModalView, Utils){
-    
-    
+
+        ], function(require, $, _, Backbone, Note, NoteCollection,NoteModalView, Utils){
+
+
     var NoteTileView = Backbone.View.extend({
         tagName: 'li',
         template:null,
@@ -33,13 +34,21 @@ define([
             this.col = this.options.col;
             this.templates = this.options.templates;
             this.template = this.templates.tile;
-            if(this.noteModel.get("priority") == "Critical") {
+            var priorityCode = this.noteModel.get("priorityCode");
+            if(priorityCode == 200) {
                 this.noteModel.set("badgeLevel", "badge-error");
-            } else {
+            } else if(priorityCode == 150 ) {
+                this.noteModel.set("badgeLevel", "badge-warning");
+            }else {
                 this.noteModel.set("badgeLevel","");
             }
+            this.MHandoff = require("MHandoff");
+            var self = this;
+            _.template.getPriorityStringFromCode = function (code) {
+                return self.MHandoff.priorityLevels[code];
+            };
             this.noteModel.on('change', this.updateView, this);
-            
+
             return this;
         },
 
@@ -112,8 +121,8 @@ define([
 
         }
     });
-    
-    
+
+
     return NoteTileView;
-  // What we return here will be used by other modules
+    // What we return here will be used by other modules
 });

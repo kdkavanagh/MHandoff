@@ -43,29 +43,29 @@ public class DummyPersistenceService implements PersistenceService {
   @Inject
   public DummyPersistenceService() {
 
-    notes.add(new BaseNote("1", "TEST This is important", "Kyle Kavanagh", "02/18/2014", "02/20/2014", "P1"));
+    notes.add(new BaseNote("1", "TEST This is important", "Kyle Kavanagh", "02/18/2014", "02/20/2014", 200));
     notes.add(new BaseNote("2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "02/10/2014",
-        "02/20/2014", "P1"));
+        "02/20/2014", 200));
     notes
         .add(new BaseNote(
             "6",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent malesuada fringilla enim et eleifend. Nam vitae leo dignissim, porta justo ut, scelerisque tortor. Duis lacus leo, malesuada in malesuada et, lacinia ac est. Duis a metus sit amet felis vehicula iaculis ut a enim. Nulla facilisis consectetur risus a adipiscing. Quisque eget elit in neque facilisis vulputate vel eget urna. In hac habitasse platea dictumst. Cras ac blandit nisi. Suspendisse id laoreet ante, nec facilisis purus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec faucibus tristique urna, non tristique sem ultrices ut. Suspendisse sit amet nulla sed diam cursus euismod id et nunc.",
             "Kyle Kavanagh", "02/11/2014", "02/21/2014",
-            "P1"));
+            100));
 
-    notes.add(new BaseNote("3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "02/19/2014", "02/20/2014", "P1"));
-    notes.add(new BaseNote("4", "Aliquam in magna urna", "Kyle Kavanagh", "02/18/2014", "02/20/2014", "P1"));
+    notes.add(new BaseNote("3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "02/19/2014", "02/20/2014", 100));
+    notes.add(new BaseNote("4", "Aliquam in magna urna", "Kyle Kavanagh", "02/18/2014", "02/20/2014", 150));
     notes.add(new BaseNote("5", "Class aptent taciti sociosqu ad litora torquent per conubia nostra", "Kyle Kavanagh", "02/11/2014", "02/21/2014",
-        "P1"));
+        150));
 
-    tasks.add(new Task("T1", "This is an important task", "Kyle Kavanagh", "Minchan Kim", "Working", "02/18/2014", "02/20/2014", "P1"));
+    tasks.add(new Task("T1", "This is an important task", "Kyle Kavanagh", "Minchan Kim", "Working", "02/18/2014", "02/20/2014", 150));
     tasks.add(new Task("T2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "Minchan Kim", "Working", "02/10/2014",
-        "02/20/2014", "P1"));
+        "02/20/2014", 100));
     tasks
         .add(new Task("T3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "Minchan Kim", "Working", "02/19/2014", "02/20/2014",
-            "P1"));
+            200));
 
-    notes.add(new BaseNote("7", "Test new", "Kyle Kavanagh", "02/11/2014", "02/21/2014", "P1"));
+    notes.add(new BaseNote("7", "Test new", "Kyle Kavanagh", "02/11/2014", "02/21/2014", 100));
   }
 
   public List<BaseNote> getNotesForPatient(String id) {
@@ -119,7 +119,7 @@ public class DummyPersistenceService implements PersistenceService {
 
   public boolean deleteItem(String noteId) {
     logger.info("Deleting note " + noteId);
-    BaseNote n = new BaseNote(noteId, null, null, null, null, null);
+    BaseNote n = new BaseNote(noteId, null, null, null, null, 1);
     tasks.remove(n);
     notes.remove(n);
     return result();

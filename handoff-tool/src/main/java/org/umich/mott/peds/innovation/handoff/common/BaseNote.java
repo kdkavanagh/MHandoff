@@ -15,14 +15,14 @@ public class BaseNote {
 
   private final String text, reporter, reportedDate, expiration;
 
-  private final String priority;
+  private final int priorityCode;
 
-  public BaseNote(String noteId, String text, String reporter, String reportedDate, String expiration, String priority) {
+  public BaseNote(String noteId, String text, String reporter, String reportedDate, String expiration, int priorityCode) {
     this.text = text;
     this.reporter = reporter;
     this.reportedDate = reportedDate;
     this.expiration = expiration;
-    this.priority = priority;
+    this.priorityCode = priorityCode;
     this.noteId = noteId;
   }
 
@@ -38,8 +38,7 @@ public class BaseNote {
     reporter = context.getParameterOrFail("reporter");
     reportedDate = context.getParameterOrFail("reportedDate");
     expiration = context.getParameterOrFail("expiration");
-    this.priority = context.getParameterOrFail("priority");
-
+    this.priorityCode = Integer.parseInt(context.getParameterOrFail("priorityCode"));
   }
 
   public String getNoteId() {

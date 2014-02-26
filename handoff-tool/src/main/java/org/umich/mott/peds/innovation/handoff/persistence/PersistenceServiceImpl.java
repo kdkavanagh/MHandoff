@@ -57,10 +57,9 @@ public class PersistenceServiceImpl implements PersistenceService {
 
       Statement noteStatment = connection.createStatement();
       ResultSet noteResults = noteStatment.executeQuery("SELECT BaseNote.noteId, BaseNote.text, UserInfo.first, UserInfo.last, " +
-          "extract(epoch from BaseNote.reportedDate), extract(epoch from BaseNote.expiration), PriorityLevel.displayText, BaseNote.epicId " +
+          "extract(epoch from BaseNote.reportedDate), extract(epoch from BaseNote.expiration), BaseNote.priority, BaseNote.epicId " +
           "FROM BaseNote " +
           "INNER JOIN UserInfo ON BaseNote.reporter=UserInfo.uniqname " +
-          "INNER JOIN PriorityLevel ON BaseNote.priority=PriorityLevel.code " +
           "WHERE epicId = '" + "1" + "' " +
           "ORDER BY priority DESC");
 
@@ -71,8 +70,9 @@ public class PersistenceServiceImpl implements PersistenceService {
         String reporter = noteResults.getString(index++) + " " + noteResults.getString(index++);
         String reportedDate = noteResults.getString(index++);
         String expiration = noteResults.getString(index++);
-        String priority = noteResults.getString(index++);
-        tbr.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, priority));
+
+        int priorityCode = noteResults.getInt(index++);
+        tbr.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, priorityCode));
       }
 
       noteResults.close();
@@ -96,12 +96,11 @@ public class PersistenceServiceImpl implements PersistenceService {
       ResultSet noteResults = noteStatment
           .executeQuery("SELECT Task.taskId, Task.text, ReportUser.first, ReportUser.last, "
               +
-              "AssignUser.first, AssignUser.last, extract(epoch from Task.reportedDate), extract(epoch from Task.expiration), PriorityLevel.displayText, TaskStatus.displayText, Task.epicId "
+              "AssignUser.first, AssignUser.last, extract(epoch from Task.reportedDate), extract(epoch from Task.expiration), Task.priority, TaskStatus.displayText, Task.epicId "
               +
               "FROM Task " +
               "INNER JOIN UserInfo ReportUser ON Task.reporter=ReportUser.uniqname " +
               "INNER JOIN UserInfo AssignUser ON Task.assignee=AssignUser.uniqname " +
-              "INNER JOIN PriorityLevel ON Task.priority=PriorityLevel.code " +
               "INNER JOIN TaskStatus ON Task.status=TaskStatus.code " +
               "WHERE epicId = '" + "1" + "' " +
               "ORDER BY priority DESC");
@@ -114,9 +113,9 @@ public class PersistenceServiceImpl implements PersistenceService {
         String assignee = noteResults.getString(index++) + " " + noteResults.getString(index++);
         String reportedDate = noteResults.getString(index++);
         String expiration = noteResults.getString(index++);
-        String priority = noteResults.getString(index++);
+        int priorityCode = noteResults.getInt(index++);
         String status = noteResults.getString(index++);
-        tbr.add(new Task(noteId, text, reporter, assignee, status, reportedDate, expiration, priority));
+        tbr.add(new Task(noteId, text, reporter, assignee, status, reportedDate, expiration, priorityCode));
       }
 
       noteResults.close();

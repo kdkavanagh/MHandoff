@@ -9,7 +9,7 @@
      Tasks Details <span id="priorityBadge"
       class="badge <%=badgeLevel%> pull-right"
       style="font-size: inherit; margin-right: 5px;">Priority
-      <%=priority%></span>
+      <%=_.template.getPriorityStringFromCode(priorityCode)%></span>
     </h4>
    </div>
    <div class="modal-body">
@@ -17,7 +17,7 @@
      Note Text: <a id="noteText"><%=text%></a>
     </p>
     <p>
-     Priority: <a id="priority"><%=priority%></a>
+     Priority: <a id="priority"><%=_.template.getPriorityStringFromCode(priorityCode)%></a>
     </p>
     <p>
      Assignee: <a id="assignee"><%=assignee%></a>

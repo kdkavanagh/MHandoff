@@ -32,13 +32,18 @@ define([
             this.noteModel = this.options.noteModel;
             this.template = this.options.template;
             this.MHandoff = require("MHandoff");
+            var self = this;
+            _.template.formatdate = function (stamp) {
+                return moment(stamp *1000).format('MMM Do YYYY, h:mm A');
+            };
+            _.template.getPriorityStringFromCode = function (code) {
+                return self.MHandoff.priorityLevels[code];
+            };
             return this;
         },
 
         render:function() {
-            _.template.formatdate = function (stamp) {
-                return moment(stamp *1000).format('MMM Do YYYY, h:mm A');
-            };
+            
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             this.setElement(tmpl(this.noteModel.toJSON()));
             this.$el.modal('show');
@@ -52,7 +57,6 @@ define([
                 onblur:'submit',
                 //inputclass:"editable-wysihtml5 input-large",
                 success: function (response, newValue) {
-                    console.log(newValue);
                     self.noteModel.set("text", newValue);
                 },
             });
@@ -79,10 +83,13 @@ define([
                      console.log(newValue);
                      self.noteModel.set("priorityCode", newValue);
                      var text = self.MHandoff.priorityLevels[newValue];
-                     self.noteModel.set("priority", text);
-                     if(self.noteModel.get("priorityCode") == 200) {
+                     self.noteModel.set("priority",  _.template.getPriorityStringFromCode(newValue));
+                     if(newValue == 200) {
                          self.noteModel.set("badgeLevel", "badge-error");
-                     } else {
+                     } else if(newValue == 150 ) {
+                         self.noteModel.set("badgeLevel", "badge-warning");
+                     }
+                     else {
                          self.noteModel.set("badgeLevel","");
                      }
                      if(self.$priorityBadge == null) {
