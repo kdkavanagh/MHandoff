@@ -48,7 +48,7 @@ define([
             this.$noteText = this.$el.find("p#noteText");
             this.$notePriorityBadge = this.$el.find("#priorityBadge");
             this.$noteText.html(this.noteModel.get("text"));
-            this.$notePriorityBadge.html(this.noteModel.get("priority"));
+            //this.$notePriorityBadge.html(this.noteModel.get("priority"));
             this.$notePriorityBadge.attr("class", "badge "+this.noteModel.get("badgeLevel")+" pull-right");
 
         },

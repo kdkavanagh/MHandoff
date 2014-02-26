@@ -87,7 +87,7 @@ define([
                              if(self.$priorityBadge == null) {
                                  self.$priorityBadge = self.$el.find("#priorityBadge");
                              }
-                             self.$priorityBadge.html("Priority "+newValue);
+                             //self.$priorityBadge.html(newValue);
                              self.$priorityBadge.attr("class", "badge "+self.noteModel.get("badgeLevel")+" pull-right");
 
                          },
