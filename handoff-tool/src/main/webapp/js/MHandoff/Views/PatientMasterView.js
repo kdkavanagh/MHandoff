@@ -65,7 +65,12 @@ define([
                         stop: function(event, ui){ 
                             console.log("stopped");
                         }
-                    }
+                    },
+                    resize: {
+                        enabled: true,
+                        max_size: [2, 2],
+                        min_size: [1, 1]
+                      }
                 }});
 
 

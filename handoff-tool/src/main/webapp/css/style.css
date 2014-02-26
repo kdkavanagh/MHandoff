@@ -3,21 +3,27 @@
 }
 
 .mainView {
-	min-height:500px;
+	min-height: 500px;
 }
 
 .note {
 	position: relative;
 	box-shadow: 5px 5px 10px #888888;
-	max-width: 250px;
-	max-height: 150px;
 	overflow: hidden;
+}
+
+.noteFooter {
+	position: absolute;
+	bottom: 0;
+	padding-top:5px;
+	padding-bottom:5px;
+	width:100%;
 }
 
 .mottHeader {
 	/* background-color:#617FAD; */
 	margin: 0 0 0 0;
-	padding-top: 20px;
+	padding-top: 0px;
 	padding-bottom: 10px;
 	border-bottom: 0px;
 }
@@ -33,8 +39,8 @@
 }
 
 .tileHeading {
-	padding-top:5px;
-	padding-bottom:5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .noteTextArea {
@@ -47,12 +53,12 @@
 }
 
 .patientPanel h3 {
-	margin-top:5px;
-	margin-bottom:2px;
+	margin-top: 5px;
+	margin-bottom: 2px;
 }
 
 .modalNote {
-	padding-bottom:0px;
+	padding-bottom: 0px;
 }
 
 .addNewTile {
@@ -77,16 +83,16 @@
 }
 
 .staticGridItem {
-	-webkit-transition: left .3s, top .3s !important; -moz-transition : left
-	.3s, top .3s !important; -o-transition : left .3s, top .3s !important;
-	transition : left .3s, top .3s !important;
+	-webkit-transition: left .3s, top .3s !important;
+	-moz-transition: left .3s, top .3s !important;
+	-o-transition: left .3s, top .3s !important;
+	transition: left .3s, top .3s !important;
 	display: list-item;
 	position: absolute;
 	-moz-transition: left .3s, top .3s !important;
 	-o-transition: left .3s, top .3s !important;
 	transition: left .3s, top .3s !important;
 }
-
 
 .addNewTileIcon {
 	width: 100%;
@@ -96,8 +102,9 @@
 .badge-error {
 	background-color: #b94a48;
 }
+
 .badge-warning {
-    background-color: #f89406;
+	background-color: #f89406;
 }
 
 .closeIcon,.closeIcon a {
@@ -145,7 +152,7 @@
 
 .footerText {
 	font-size: 14px;
-	color:#999;
+	color: #999;
 	margin-top: 20px;
 	margin-bottom: 10px;
 }
