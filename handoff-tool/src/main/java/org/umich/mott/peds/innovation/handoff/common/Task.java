@@ -11,21 +11,21 @@ import org.umich.mott.peds.innovation.handoff.ActionContext;
  */
 public class Task extends BaseNote {
 
-  public Task(String taskId, String text, String reporter, String assignee, String reportedDate, String expiration, PriorityLevel priority) {
+  public Task(String taskId, String text, String reporter, String assignee, String status, String reportedDate, String expiration, String priority) {
     super(taskId, text, reporter, reportedDate, expiration, priority);
     this.assignee = assignee;
-    status = TaskStatus.NOTSTARTED;
+    this.status = status;
 
   }
 
   public Task(ActionContext context) throws ServletException {
     super(context);
     assignee = context.getParameterOrFail("assignee");
-    status = TaskStatus.valueOf(context.getParameterOrFail("status"));
+    status = context.getParameterOrFail("status");
   }
 
   private final String assignee;
 
-  private final TaskStatus status;
+  private final String status;
 
 }

@@ -11,7 +11,6 @@ import org.umich.mott.peds.innovation.handoff.common.Patient.AllergyInfo;
 import org.umich.mott.peds.innovation.handoff.common.Patient.BasicInfo;
 import org.umich.mott.peds.innovation.handoff.common.Patient.LabInfo;
 import org.umich.mott.peds.innovation.handoff.common.Patient.MedInfo;
-import org.umich.mott.peds.innovation.handoff.common.PriorityLevel;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 
 import com.google.gson.Gson;
@@ -43,29 +42,29 @@ public class DummyPersistenceService implements PersistenceService {
   @Inject
   public DummyPersistenceService() {
 
-    notes.add(new BaseNote("1", "TEST This is important", "Kyle Kavanagh", "02/18/2014", "02/20/2014", PriorityLevel.ONE));
+    notes.add(new BaseNote("1", "TEST This is important", "Kyle Kavanagh", "02/18/2014", "02/20/2014", "P1"));
     notes.add(new BaseNote("2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "02/10/2014",
-        "02/20/2014", PriorityLevel.TWO));
+        "02/20/2014", "P1"));
     notes
         .add(new BaseNote(
             "6",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent malesuada fringilla enim et eleifend. Nam vitae leo dignissim, porta justo ut, scelerisque tortor. Duis lacus leo, malesuada in malesuada et, lacinia ac est. Duis a metus sit amet felis vehicula iaculis ut a enim. Nulla facilisis consectetur risus a adipiscing. Quisque eget elit in neque facilisis vulputate vel eget urna. In hac habitasse platea dictumst. Cras ac blandit nisi. Suspendisse id laoreet ante, nec facilisis purus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec faucibus tristique urna, non tristique sem ultrices ut. Suspendisse sit amet nulla sed diam cursus euismod id et nunc.",
             "Kyle Kavanagh", "02/11/2014", "02/21/2014",
-            PriorityLevel.THREE));
+            "P1"));
 
-    notes.add(new BaseNote("3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "02/19/2014", "02/20/2014", PriorityLevel.TWO));
-    notes.add(new BaseNote("4", "Aliquam in magna urna", "Kyle Kavanagh", "02/18/2014", "02/20/2014", PriorityLevel.ONE));
+    notes.add(new BaseNote("3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "02/19/2014", "02/20/2014", "P1"));
+    notes.add(new BaseNote("4", "Aliquam in magna urna", "Kyle Kavanagh", "02/18/2014", "02/20/2014", "P1"));
     notes.add(new BaseNote("5", "Class aptent taciti sociosqu ad litora torquent per conubia nostra", "Kyle Kavanagh", "02/11/2014", "02/21/2014",
-        PriorityLevel.THREE));
+        "P1"));
 
-    tasks.add(new Task("T1", "This is an important task", "Kyle Kavanagh", "Minchan Kim", "02/18/2014", "02/20/2014", PriorityLevel.ONE));
-    tasks.add(new Task("T2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "Minchan Kim", "02/10/2014",
-        "02/20/2014", PriorityLevel.TWO));
+    tasks.add(new Task("T1", "This is an important task", "Kyle Kavanagh", "Minchan Kim", "Working", "02/18/2014", "02/20/2014", "P1"));
+    tasks.add(new Task("T2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "Minchan Kim", "Working", "02/10/2014",
+        "02/20/2014", "P1"));
     tasks
-        .add(new Task("T3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "Minchan Kim", "02/19/2014", "02/20/2014",
-            PriorityLevel.TWO));
+        .add(new Task("T3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "Minchan Kim", "Working", "02/19/2014", "02/20/2014",
+            "P1"));
 
-    notes.add(new BaseNote("7", "Test new", "Kyle Kavanagh", "02/11/2014", "02/21/2014", PriorityLevel.THREE));
+    notes.add(new BaseNote("7", "Test new", "Kyle Kavanagh", "02/11/2014", "02/21/2014", "P1"));
   }
 
   public List<BaseNote> getNotesForPatient(String id) {

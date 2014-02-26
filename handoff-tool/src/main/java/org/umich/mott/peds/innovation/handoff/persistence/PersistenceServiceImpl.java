@@ -11,7 +11,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
 import org.umich.mott.peds.innovation.handoff.common.Patient;
-import org.umich.mott.peds.innovation.handoff.common.PriorityLevel;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 
 import com.google.inject.Inject;
@@ -56,12 +55,11 @@ public class PersistenceServiceImpl implements PersistenceService {
     try {
 
       Statement noteStatment = connection.createStatement();
-
       ResultSet noteResults = noteStatment.executeQuery("SELECT BaseNote.noteId, BaseNote.text, UserInfo.first, UserInfo.last, " +
-          "extract(epoch from BaseNote.reportedDate), extract(epoch from BaseNote.expiration), BaseNote.priority, BaseNote.epicId " +
+          "extract(epoch from BaseNote.reportedDate), extract(epoch from BaseNote.expiration), PriorityLevel.displayText, BaseNote.epicId " +
           "FROM BaseNote " +
-          "INNER JOIN UserInfo " +
-          "ON BaseNote.reporter=UserInfo.uniqname " +
+          "INNER JOIN UserInfo ON BaseNote.reporter=UserInfo.uniqname " +
+          "INNER JOIN PriorityLevel ON BaseNote.priority=PriorityLevel.code " +
           "WHERE epicId = '" + "1" + "' " +
           "ORDER BY priority ASC");
 
@@ -72,8 +70,8 @@ public class PersistenceServiceImpl implements PersistenceService {
         String reporter = noteResults.getString(index++) + " " + noteResults.getString(index++);
         String reportedDate = noteResults.getString(index++);
         String expiration = noteResults.getString(index++);
-        int priority = noteResults.getInt(index++);
-        tbr.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, PriorityLevel.fromInt(priority)));
+        String priority = noteResults.getString(index++);
+        tbr.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, priority));
       }
 
       noteResults.close();
@@ -89,10 +87,47 @@ public class PersistenceServiceImpl implements PersistenceService {
   }
 
   public List<Task> getTasksForPatient(String id) {
-    // List<Task> tbr = new ArrayList<Task>();
+    List<Task> tbr = new ArrayList<Task>();
+    try {
 
-    // return tbr;
-    return null;
+      Statement noteStatment = connection.createStatement();
+
+      ResultSet noteResults = noteStatment
+          .executeQuery("SELECT Task.taskId, Task.text, ReportUser.first, ReportUser.last, "
+              +
+              "AssignUser.first, AssignUser.last, extract(epoch from Task.reportedDate), extract(epoch from Task.expiration), PriorityLevel.displayText, TaskStatus.displayText, Task.epicId "
+              +
+              "FROM Task " +
+              "INNER JOIN UserInfo ReportUser ON Task.reporter=ReportUser.uniqname " +
+              "INNER JOIN UserInfo AssignUser ON Task.assignee=AssignUser.uniqname " +
+              "INNER JOIN PriorityLevel ON Task.priority=PriorityLevel.code " +
+              "INNER JOIN TaskStatus ON Task.status=TaskStatus.code " +
+              "WHERE epicId = '" + "1" + "' " +
+              "ORDER BY priority ASC");
+
+      while (noteResults.next()) {
+        int index = 1;
+        String noteId = noteResults.getString(index++);
+        String text = noteResults.getString(index++);
+        String reporter = noteResults.getString(index++) + " " + noteResults.getString(index++);
+        String assignee = noteResults.getString(index++) + " " + noteResults.getString(index++);
+        String reportedDate = noteResults.getString(index++);
+        String expiration = noteResults.getString(index++);
+        String priority = noteResults.getString(index++);
+        String status = noteResults.getString(index++);
+        tbr.add(new Task(noteId, text, reporter, assignee, status, reportedDate, expiration, priority));
+      }
+
+      noteResults.close();
+      noteStatment.close();
+
+    } catch (SQLException e) {
+
+      logger.fatal("Cannot create statement or execute results.");
+      throw new RuntimeException(e);
+    }
+
+    return tbr;
   }
 
   public Patient getPatient(String id) {
