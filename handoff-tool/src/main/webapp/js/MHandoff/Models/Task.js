@@ -22,7 +22,7 @@ define([
             badgeLevel:"",
             text:"Note text",
             assignee:"Unassigned",
-            status:"Unknown",
+            status:0,
         },
         
     });

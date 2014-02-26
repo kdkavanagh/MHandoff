@@ -58,11 +58,11 @@ public class DummyPersistenceService implements PersistenceService {
     notes.add(new BaseNote("5", "Class aptent taciti sociosqu ad litora torquent per conubia nostra", "Kyle Kavanagh", "02/11/2014", "02/21/2014",
         150));
 
-    tasks.add(new Task("T1", "This is an important task", "Kyle Kavanagh", "Minchan Kim", "Working", "02/18/2014", "02/20/2014", 150));
-    tasks.add(new Task("T2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "Minchan Kim", "Working", "02/10/2014",
+    tasks.add(new Task("T1", "This is an important task", "Kyle Kavanagh", "Minchan Kim", 0, "02/18/2014", "02/20/2014", 150));
+    tasks.add(new Task("T2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Kyle Kavanagh", "Minchan Kim", 50, "02/10/2014",
         "02/20/2014", 100));
     tasks
-        .add(new Task("T3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "Minchan Kim", "Working", "02/19/2014", "02/20/2014",
+        .add(new Task("T3", "Aliquam id nibh in libero mattis iaculis non at odio.", "Kyle Kavanagh", "Minchan Kim", 0, "02/19/2014", "02/20/2014",
             200));
 
     notes.add(new BaseNote("7", "Test new", "Kyle Kavanagh", "02/11/2014", "02/21/2014", 100));
@@ -126,6 +126,11 @@ public class DummyPersistenceService implements PersistenceService {
   }
 
   public List<Pair<Integer, String>> getPriorityLevels() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public List<Pair<Integer, String>> getTaskStatuses() {
     // TODO Auto-generated method stub
     return null;
   }

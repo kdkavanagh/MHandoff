@@ -23,7 +23,7 @@
      Assignee: <a id="assignee"><%=assignee%></a>
     </p>
     <p>
-     Status: <a id="status"><%=status%></a>
+     Status: <a id="status"><%=_.template.getTaskStatusStringFromCode(status)%></a>
     </p>
     <p>
      Due: <a id="expiration"></a>

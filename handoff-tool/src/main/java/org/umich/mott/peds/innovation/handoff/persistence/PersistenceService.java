@@ -29,6 +29,8 @@ public interface PersistenceService {
 
   public List<Pair<Integer, String>> getPriorityLevels();
 
+  public List<Pair<Integer, String>> getTaskStatuses();
+
   /**
    * 
    * @param patientId

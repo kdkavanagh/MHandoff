@@ -96,12 +96,11 @@ public class PersistenceServiceImpl implements PersistenceService {
       ResultSet noteResults = noteStatment
           .executeQuery("SELECT Task.taskId, Task.text, ReportUser.first, ReportUser.last, "
               +
-              "AssignUser.first, AssignUser.last, extract(epoch from Task.reportedDate), extract(epoch from Task.expiration), Task.priority, TaskStatus.displayText, Task.epicId "
+              "AssignUser.first, AssignUser.last, extract(epoch from Task.reportedDate), extract(epoch from Task.expiration), Task.priority, Task.status, Task.epicId "
               +
               "FROM Task " +
               "INNER JOIN UserInfo ReportUser ON Task.reporter=ReportUser.uniqname " +
               "INNER JOIN UserInfo AssignUser ON Task.assignee=AssignUser.uniqname " +
-              "INNER JOIN TaskStatus ON Task.status=TaskStatus.code " +
               "WHERE epicId = '" + "1" + "' " +
               "ORDER BY priority DESC");
 
@@ -114,7 +113,7 @@ public class PersistenceServiceImpl implements PersistenceService {
         String reportedDate = noteResults.getString(index++);
         String expiration = noteResults.getString(index++);
         int priorityCode = noteResults.getInt(index++);
-        String status = noteResults.getString(index++);
+        int status = noteResults.getInt(index++);
         tbr.add(new Task(noteId, text, reporter, assignee, status, reportedDate, expiration, priorityCode));
       }
 
@@ -148,9 +147,7 @@ public class PersistenceServiceImpl implements PersistenceService {
   public List<Pair<Integer, String>> getPriorityLevels() {
     List<Pair<Integer, String>> tbr = new ArrayList<Pair<Integer, String>>();
     try {
-
       Statement statment = connection.createStatement();
-
       ResultSet results = statment
           .executeQuery("SELECT PriorityLevel.code, PriorityLevel.displayText " +
               "FROM PriorityLevel " +
@@ -163,16 +160,39 @@ public class PersistenceServiceImpl implements PersistenceService {
 
         tbr.add(new Pair<Integer, String>(value, text));
       }
-
       results.close();
       statment.close();
 
     } catch (SQLException e) {
-
       logger.fatal("Cannot create statement or execute results.");
       throw new RuntimeException(e);
     }
+    return tbr;
+  }
 
+  public List<Pair<Integer, String>> getTaskStatuses() {
+    List<Pair<Integer, String>> tbr = new ArrayList<Pair<Integer, String>>();
+    try {
+      Statement statment = connection.createStatement();
+      ResultSet results = statment
+          .executeQuery("SELECT TaskStatus.code, TaskStatus.displayText " +
+              "FROM TaskStatus " +
+              "ORDER BY code DESC");
+
+      while (results.next()) {
+        int index = 1;
+        int value = Integer.parseInt(results.getString(index++));
+        String text = results.getString(index++);
+
+        tbr.add(new Pair<Integer, String>(value, text));
+      }
+      results.close();
+      statment.close();
+
+    } catch (SQLException e) {
+      logger.fatal("Cannot create statement or execute results.");
+      throw new RuntimeException(e);
+    }
     return tbr;
   }
 
