@@ -10,6 +10,7 @@ import org.umich.mott.peds.innovation.handoff.ActionContext;
 import org.umich.mott.peds.innovation.handoff.ActionMapping;
 import org.umich.mott.peds.innovation.handoff.RequestMethod;
 import org.umich.mott.peds.innovation.handoff.common.Pair;
+import org.umich.mott.peds.innovation.handoff.common.User;
 
 /**
  * @author Kyle D. Kavanagh
@@ -38,8 +39,17 @@ public class LoadAppInfoAction implements Action {
       taskLevels.add(p.first.toString(), p.second);
     }
 
+    // get the list of users
+    List<User> users = persistenceService.getAllUsers();
+    JsonObjectBuilder userBuilder = Json.createObjectBuilder();
+
+    for (User u : users) {
+      userBuilder.add(u.getUniqname(), u.getFirst() + " " + u.getLast());
+    }
+
     builder.add("priorityLevels", priorityLevels);
     builder.add("taskStatuses", taskLevels);
+    builder.add("handoffUsers", userBuilder);
     return builder.build().toString();
   }
 

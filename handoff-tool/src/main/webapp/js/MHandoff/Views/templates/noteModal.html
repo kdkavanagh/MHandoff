@@ -12,7 +12,7 @@
       <%= _.template.getPriorityStringFromCode(priorityCode)%></span>
     </h4>
    </div>
-   <div class="modal-body">
+   <div class="modal-body modalNote">
     <p>
      Note Text: <a id="noteText"><%=text%></a>
     </p>
@@ -22,7 +22,7 @@
     <p>
      Valid Thru: <a id="expiration"></a>
     </p>
-    <p>Reported by: <%=reporter%> on <%= _.template.formatdate(reportedDate) %></p>
+    <p>Reported by: <%=_.template.getUser(reporter)%> on <%= _.template.formatdate(reportedDate) %></p>
    </div>
    <div class="modal-footer">
     <button id="editButton" type="button" class="btn btn-primary">Edit</button>

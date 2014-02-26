@@ -13,6 +13,7 @@ import org.umich.mott.peds.innovation.handoff.common.Patient.BasicInfo;
 import org.umich.mott.peds.innovation.handoff.common.Patient.LabInfo;
 import org.umich.mott.peds.innovation.handoff.common.Patient.MedInfo;
 import org.umich.mott.peds.innovation.handoff.common.Task;
+import org.umich.mott.peds.innovation.handoff.common.User;
 
 import com.google.gson.Gson;
 import com.google.inject.Inject;
@@ -131,6 +132,11 @@ public class DummyPersistenceService implements PersistenceService {
   }
 
   public List<Pair<Integer, String>> getTaskStatuses() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public List<User> getAllUsers() {
     // TODO Auto-generated method stub
     return null;
   }

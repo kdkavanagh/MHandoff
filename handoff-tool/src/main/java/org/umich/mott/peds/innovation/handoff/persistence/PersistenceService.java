@@ -6,6 +6,7 @@ import org.umich.mott.peds.innovation.handoff.common.BaseNote;
 import org.umich.mott.peds.innovation.handoff.common.Pair;
 import org.umich.mott.peds.innovation.handoff.common.Patient;
 import org.umich.mott.peds.innovation.handoff.common.Task;
+import org.umich.mott.peds.innovation.handoff.common.User;
 
 import com.google.inject.ImplementedBy;
 
@@ -30,6 +31,8 @@ public interface PersistenceService {
   public List<Pair<Integer, String>> getPriorityLevels();
 
   public List<Pair<Integer, String>> getTaskStatuses();
+
+  public List<User> getAllUsers();
 
   /**
    * 

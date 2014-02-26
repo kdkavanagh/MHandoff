@@ -13,6 +13,7 @@ import org.umich.mott.peds.innovation.handoff.common.BaseNote;
 import org.umich.mott.peds.innovation.handoff.common.Pair;
 import org.umich.mott.peds.innovation.handoff.common.Patient;
 import org.umich.mott.peds.innovation.handoff.common.Task;
+import org.umich.mott.peds.innovation.handoff.common.User;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -56,10 +57,9 @@ public class PersistenceServiceImpl implements PersistenceService {
     try {
 
       Statement noteStatment = connection.createStatement();
-      ResultSet noteResults = noteStatment.executeQuery("SELECT BaseNote.noteId, BaseNote.text, UserInfo.first, UserInfo.last, " +
+      ResultSet noteResults = noteStatment.executeQuery("SELECT BaseNote.noteId, BaseNote.text, BaseNote.reporter, " +
           "extract(epoch from BaseNote.reportedDate), extract(epoch from BaseNote.expiration), BaseNote.priority, BaseNote.epicId " +
           "FROM BaseNote " +
-          "INNER JOIN UserInfo ON BaseNote.reporter=UserInfo.uniqname " +
           "WHERE epicId = '" + "1" + "' " +
           "ORDER BY priority DESC");
 
@@ -67,7 +67,7 @@ public class PersistenceServiceImpl implements PersistenceService {
         int index = 1;
         String noteId = noteResults.getString(index++);
         String text = noteResults.getString(index++);
-        String reporter = noteResults.getString(index++) + " " + noteResults.getString(index++);
+        String reporter = noteResults.getString(index++);
         String reportedDate = noteResults.getString(index++);
         String expiration = noteResults.getString(index++);
 
@@ -94,13 +94,8 @@ public class PersistenceServiceImpl implements PersistenceService {
       Statement noteStatment = connection.createStatement();
 
       ResultSet noteResults = noteStatment
-          .executeQuery("SELECT Task.taskId, Task.text, ReportUser.first, ReportUser.last, "
-              +
-              "AssignUser.first, AssignUser.last, extract(epoch from Task.reportedDate), extract(epoch from Task.expiration), Task.priority, Task.status, Task.epicId "
-              +
-              "FROM Task " +
-              "INNER JOIN UserInfo ReportUser ON Task.reporter=ReportUser.uniqname " +
-              "INNER JOIN UserInfo AssignUser ON Task.assignee=AssignUser.uniqname " +
+          .executeQuery("SELECT Task.taskId, Task.text, Task.reporter, Task.assignee, extract(epoch from Task.reportedDate), extract(epoch from Task.expiration), Task.priority, Task.status, Task.epicId "
+              + "FROM Task " +
               "WHERE epicId = '" + "1" + "' " +
               "ORDER BY priority DESC");
 
@@ -108,8 +103,8 @@ public class PersistenceServiceImpl implements PersistenceService {
         int index = 1;
         String noteId = noteResults.getString(index++);
         String text = noteResults.getString(index++);
-        String reporter = noteResults.getString(index++) + " " + noteResults.getString(index++);
-        String assignee = noteResults.getString(index++) + " " + noteResults.getString(index++);
+        String reporter = noteResults.getString(index++);
+        String assignee = noteResults.getString(index++);
         String reportedDate = noteResults.getString(index++);
         String expiration = noteResults.getString(index++);
         int priorityCode = noteResults.getInt(index++);
@@ -175,9 +170,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     try {
       Statement statment = connection.createStatement();
       ResultSet results = statment
-          .executeQuery("SELECT TaskStatus.code, TaskStatus.displayText " +
-              "FROM TaskStatus " +
-              "ORDER BY code DESC");
+          .executeQuery("SELECT TaskStatus.code, TaskStatus.displayText FROM TaskStatus ORDER BY code DESC");
 
       while (results.next()) {
         int index = 1;
@@ -185,6 +178,31 @@ public class PersistenceServiceImpl implements PersistenceService {
         String text = results.getString(index++);
 
         tbr.add(new Pair<Integer, String>(value, text));
+      }
+      results.close();
+      statment.close();
+
+    } catch (SQLException e) {
+      logger.fatal("Cannot create statement or execute results.");
+      throw new RuntimeException(e);
+    }
+    return tbr;
+  }
+
+  public List<User> getAllUsers() {
+    List<User> tbr = new ArrayList<User>();
+    try {
+      Statement statment = connection.createStatement();
+      ResultSet results = statment
+          .executeQuery("SELECT HandoffUser.uniqname, HandoffUser.first, HandoffUser.last FROM HandoffUser ");
+
+      while (results.next()) {
+        int index = 1;
+        String uniq = results.getString(index++);
+        String first = results.getString(index++);
+        String last = results.getString(index++);
+
+        tbr.add(new User(uniq, first, last));
       }
       results.close();
       statment.close();

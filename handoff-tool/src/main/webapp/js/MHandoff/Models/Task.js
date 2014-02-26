@@ -1,12 +1,13 @@
 define([
   // These are path alias that we configured in our bootstrap
+  'require',
   'jquery',     
   'underscore', 
   'backbone',
   'Models/Note',
   'utils',
   'moment',
-], function($, _, Backbone, Note, Utils, moment){
+], function(require,$, _, Backbone, Note, Utils, moment){
     
     
     

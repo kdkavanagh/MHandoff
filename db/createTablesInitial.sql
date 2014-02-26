@@ -13,15 +13,15 @@ PRIMARY KEY ( epicId ));
 
 GRANT ALL PRIVILEGES ON TABLE Patient TO handoffUser;
 
-\echo Creating UserInfo table
-CREATE TABLE UserInfo 
+\echo Creating HandoffUser table
+CREATE TABLE HandoffUser 
 (uniqname VARCHAR(123) not NULL, 
 first VARCHAR(255),  
 last VARCHAR(255),  
 position VARCHAR(255), 
 PRIMARY KEY ( uniqname )); 
 
-GRANT ALL PRIVILEGES ON TABLE UserInfo TO handoffUser;
+GRANT ALL PRIVILEGES ON TABLE HandoffUser TO handoffUser;
 
 \echo Creating TaskStatus table
 CREATE TABLE TaskStatus(
@@ -51,8 +51,8 @@ reportedDate TIMESTAMP,
 expiration TIMESTAMP,  
 priority INTEGER, 
 epicId VARCHAR(255), 
-FOREIGN KEY(assignee) REFERENCES UserInfo, 
-FOREIGN KEY(reporter) REFERENCES UserInfo, 
+FOREIGN KEY(assignee) REFERENCES HandoffUser, 
+FOREIGN KEY(reporter) REFERENCES HandoffUser, 
 FOREIGN KEY(status) REFERENCES TaskStatus, 
 FOREIGN KEY(priority) REFERENCES PriorityLevel, 
 FOREIGN KEY(epicId) REFERENCES Patient, 
@@ -72,7 +72,7 @@ expiration TIMESTAMP,
 priority INTEGER, 
 epicId VARCHAR(255), 
 FOREIGN KEY(epicId) REFERENCES Patient, 
-FOREIGN KEY(reporter) REFERENCES UserInfo, 
+FOREIGN KEY(reporter) REFERENCES HandoffUser, 
 FOREIGN KEY(priority) REFERENCES PriorityLevel, 
 PRIMARY KEY ( noteId )); 
 

@@ -45,8 +45,10 @@ define([
             this.MHandoff = require("MHandoff");
             var self = this;
             _.template.getPriorityStringFromCode = function (code) {
-                console.log("Getting for code "+code);
                 return self.MHandoff.priorityLevels[code];
+            };
+            _.template.getUser = function(user) {
+                return self.MHandoff.handoffUsers[user];
             };
             this.noteModel.on('change', this.updateView, this);
 
@@ -64,6 +66,7 @@ define([
         },
 
         render: function(){
+            
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             this.setElement(tmpl(this.noteModel.toJSON()));
             this.check();

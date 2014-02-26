@@ -43,11 +43,13 @@ define([
             _.template.getTaskStatusStringFromCode = function (code) {
                 return self.MHandoff.taskStatuses[code];
             };
+            _.template.getUser = function(user) {
+                return self.MHandoff.handoffUsers[user];
+            };
             return this;
         },
 
         render:function() {
-
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             this.setElement(tmpl(this.noteModel.toJSON()));
             this.$el.modal('show');
@@ -83,6 +85,7 @@ define([
                 mode:'inline',
                 onblur:'submit',
                 source: this.MHandoff.priorityLevels,
+                showbuttons: false,
                 success: function (response, newValue) {
                     console.log(newValue);
                     self.noteModel.set("priorityCode", newValue);
@@ -113,10 +116,26 @@ define([
                     disabled:true,
                     mode:'inline',
                     onblur:'submit',
+                    showbuttons: false ,
                     source: this.MHandoff.taskStatuses,
                     success: function (response, newValue) {
-                        console.log(newValue);
                         self.noteModel.set("status", newValue);
+                    },
+                });
+            }
+            
+            var $taskAssignee = this.$el.find("a#assignee");
+            if($taskAssignee.length !== 0) {
+                //We have a task status field
+                $taskAssignee.editable({
+                    type:'select',
+                    disabled:true,
+                    mode:'inline',
+                    onblur:'submit',
+                    showbuttons: false ,
+                    source: this.MHandoff.handoffUsers,
+                    success: function (response, newValue) {
+                        self.noteModel.set("assignee", newValue);
                     },
                 });
             }

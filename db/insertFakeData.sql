@@ -1,7 +1,7 @@
 INSERT INTO Patient (epicId)
 VALUES ('1');
 
-INSERT INTO UserInfo (uniqname, first, last, position)
+INSERT INTO HandoffUser (uniqname, first, last, position)
 VALUES ('collsain', 'Colleen', 'Sain', 'student'),
 ('kminchan', 'Minchan', 'Kim', 'student'),
 ('johntyu', 'John', 'Yu', 'student'),

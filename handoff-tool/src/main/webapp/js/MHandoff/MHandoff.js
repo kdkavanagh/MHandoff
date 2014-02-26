@@ -8,6 +8,7 @@ define([
     
     var priorityLevels = {};
     var taskStatuses={};
+    var handoffUsers={};
 
   var initialize = function(){
     // Pass in our Router module and call it's initialize function
@@ -20,6 +21,10 @@ define([
           for( var key in data.taskStatuses )
               taskStatuses[ key ] = data.taskStatuses[ key ];
 
+          for( var key in data.handoffUsers )
+              handoffUsers[ key ] = data.handoffUsers[ key ];
+
+          
           Router.initialize();
       });
     
@@ -29,5 +34,6 @@ define([
     initialize: initialize,
     priorityLevels:priorityLevels,
     taskStatuses:taskStatuses,
+    handoffUsers:handoffUsers,
   };
 });
