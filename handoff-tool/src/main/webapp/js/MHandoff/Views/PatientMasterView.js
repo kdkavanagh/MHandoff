@@ -57,7 +57,7 @@ define([
                 }, 
                 collection:new NoteCollection(this.patientId),
                 gridsterOpts:{
-                    widget_margins : [ 10, 10 ],
+                    widget_margins : [ 15, 15 ],
                     widget_base_dimensions : [ 240, 150 ],
                     min_cols : 3,
                     namespace:"#noteGrid",
@@ -78,7 +78,7 @@ define([
                 }, 
                 collection:new TaskCollection(this.patientId),
                 gridsterOpts:{
-                    widget_margins : [ 10, 10 ],
+                    widget_margins : [ 10, 15 ],
                     widget_base_dimensions : [ 240, 150 ],
                     min_cols : 1,
                     max_cols: 1,
