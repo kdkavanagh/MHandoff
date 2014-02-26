@@ -37,16 +37,20 @@
   <div class="page-header mottHeader">
    <h1 style="padding-left: 5px">
     MHandoff <small>C.S. Mott Children's Hospital</small>
-   </h1>
+   </h1><div id="userSection" class="pull-right"><h4>David Chesney</h4><a href="">Log out</a></div>
   </div>
-  <ul class="nav nav-tabs tabContainer" style="margin-bottom: 10px; padding-left:20px;">
+  <ul class="nav nav-tabs tabContainer"
+   style="margin-bottom: 10px; padding-left: 20px;">
    <li><a href="#">Dashboard</a></li>
    <li class="active"><a href="#patient">Kyle Kavanagh</a></li>
    <li><a href="#">Min Kim</a></li>
   </ul>
   <div class="container-fluid mainView">
-   <div class="row" >
-    <div id="patientInfo" class="col-md-3"></div>
+   <div class="row">
+    <div class="col-md-3 patientPanel">
+     <span style="display: inline-block"><h3>Patient Info</h3></span>
+     <div id="patientInfo">Under Construction</div>
+    </div>
     <div id="patientNotes" class="col-md-7 patientPanel">
      <span style="display: inline-block"><h3>Notes</h3></span>
 
@@ -54,8 +58,8 @@
       <ul></ul>
      </div>
     </div>
-    <div id="patientTasks" class="col-md-2 patientPanel" >
-    <span style="display: inline-block"><h3>Tasks</h3></span>
+    <div id="patientTasks" class="col-md-2 patientPanel">
+     <span style="display: inline-block"><h3>Tasks</h3></span>
      <div class="gridster" id="taskGrid">
       <ul></ul>
      </div>
@@ -70,7 +74,8 @@
 <footer class="page-footer">
  <div class="footerText">
   <center>Designed for C.S. Mott Children's Hospital by Kyle D.
-   Kavanagh, Minchan Kim, Colleen Sain, Matt Speakman, and John Yu.  Copyright 2014.</center>
+   Kavanagh, Minchan Kim, Colleen Sain, Matt Speakman, and John Yu.
+   Copyright 2014.</center>
  </div>
 </footer>
 </html>

@@ -12,12 +12,28 @@
 	overflow: hidden;
 }
 
+.modalNoteBody {
+    padding-bottom: 0px;
+    width:533px;
+}
+
+.modalNote {
+    padding-bottom: 0px;
+    width:570px;
+}
+
+.modalNoteFooter {
+	padding-top:10px; 
+	padding-bottom:10px;
+}
+
 .noteFooter {
 	position: absolute;
 	bottom: 0;
 	padding-top:5px;
 	padding-bottom:5px;
 	width:100%;
+	
 }
 
 .mottHeader {
@@ -26,6 +42,16 @@
 	padding-top: 0px;
 	padding-bottom: 10px;
 	border-bottom: 0px;
+	
+}
+
+.mottHeader h1 {
+	display:inline-block;
+}
+
+#userSection {
+	padding-right:10px;
+	padding-top:20px;
 }
 
 .tabContainer {
@@ -44,7 +70,8 @@
 }
 
 .noteTextArea {
-	
+	padding-left:10px;
+	padding-right:10px;
 }
 
 .patientPanel {
@@ -55,10 +82,6 @@
 .patientPanel h3 {
 	margin-top: 5px;
 	margin-bottom: 2px;
-}
-
-.modalNote {
-	padding-bottom: 0px;
 }
 
 .addNewTile {

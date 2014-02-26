@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalNote" tabindex="-1" role="dialog"
  aria-labelledby="myModalLabel" aria-hidden="true">
- <div class="modal-dialog">
+ <div class="modal-dialog modalNote">
   <div class="modal-content">
    <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal"
@@ -12,7 +12,7 @@
       <%=_.template.getPriorityStringFromCode(priorityCode)%></span>
     </h4>
    </div>
-   <div class="modal-body modalNote">
+   <div class="modal-body modalNoteBody">
     <p>
      Note Text: <a id="noteText"><%=text%></a>
     </p>
@@ -30,7 +30,7 @@
     </p>
     <p>Reported by: <%=_.template.getUser(reporter)%> on <%= _.template.formatdate(reportedDate) %></p>
    </div>
-   <div class="modal-footer">
+   <div class="modal-footer modalNoteFooter">
     <button id="editButton" type="button" class="btn btn-primary">Edit</button>
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
    </div>

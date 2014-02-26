@@ -52,7 +52,7 @@ define([
 
         render:function() {
             console.log("Rendering patient view");
-            this.$el.html("<div>TESTING</div>");
+            //this.$el.html("<div>TESTING</div>");
             
             //var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             //this.setElement(tmpl(this.patientInfoModel.toJSON()));
