@@ -1,6 +1,4 @@
 define([
-        // These are path alias that we configured in our bootstrap
-        'require',
         'jquery',     
         'underscore', 
         'backbone',
@@ -10,7 +8,7 @@ define([
         'utils',
 
 
-        ], function(require, $, _, Backbone, Note, NoteCollection,NoteModalView, Utils){
+        ], function($, _, Backbone, Note, NoteCollection,NoteModalView, Utils){
 
 
     var NoteTileView = Backbone.View.extend({
@@ -42,14 +40,7 @@ define([
             }else {
                 this.noteModel.set("badgeLevel","");
             }
-            this.MHandoff = require("MHandoff");
-            var self = this;
-            _.template.getPriorityStringFromCode = function (code) {
-                return self.MHandoff.priorityLevels[code];
-            };
-            _.template.getUser = function(user) {
-                return self.MHandoff.handoffUsers[user];
-            };
+            
             this.noteModel.on('change', this.updateView, this);
 
             return this;

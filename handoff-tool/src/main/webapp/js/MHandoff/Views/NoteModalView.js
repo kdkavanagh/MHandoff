@@ -31,21 +31,7 @@ define([
             this.options = options || {};
             this.noteModel = this.options.noteModel;
             this.template = this.options.template;
-            this.MHandoff = require("MHandoff");
-            var self = this;
-            _.template.formatdate = function (stamp) {
-                return moment(stamp *1000).format('MMM Do YYYY, h:mm A');
-            };
-            _.template.getPriorityStringFromCode = function (code) {
-                return self.MHandoff.priorityLevels[code];
-            };
-            
-            _.template.getTaskStatusStringFromCode = function (code) {
-                return self.MHandoff.taskStatuses[code];
-            };
-            _.template.getUser = function(user) {
-                return self.MHandoff.handoffUsers[user];
-            };
+            this.MHandoff = require("MHandoff");            
             return this;
         },
 
@@ -87,7 +73,6 @@ define([
                 source: this.MHandoff.priorityLevels,
                 showbuttons: false,
                 success: function (response, newValue) {
-                    console.log(newValue);
                     self.noteModel.set("priorityCode", newValue);
                     var text = self.MHandoff.priorityLevels[newValue];
                     self.noteModel.set("priority",  _.template.getPriorityStringFromCode(newValue));
