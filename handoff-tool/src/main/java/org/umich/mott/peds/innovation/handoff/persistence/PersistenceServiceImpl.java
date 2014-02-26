@@ -61,7 +61,7 @@ public class PersistenceServiceImpl implements PersistenceService {
           "INNER JOIN UserInfo ON BaseNote.reporter=UserInfo.uniqname " +
           "INNER JOIN PriorityLevel ON BaseNote.priority=PriorityLevel.code " +
           "WHERE epicId = '" + "1" + "' " +
-          "ORDER BY priority ASC");
+          "ORDER BY priority DESC");
 
       while (noteResults.next()) {
         int index = 1;
@@ -103,7 +103,7 @@ public class PersistenceServiceImpl implements PersistenceService {
               "INNER JOIN PriorityLevel ON Task.priority=PriorityLevel.code " +
               "INNER JOIN TaskStatus ON Task.status=TaskStatus.code " +
               "WHERE epicId = '" + "1" + "' " +
-              "ORDER BY priority ASC");
+              "ORDER BY priority DESC");
 
       while (noteResults.next()) {
         int index = 1;
