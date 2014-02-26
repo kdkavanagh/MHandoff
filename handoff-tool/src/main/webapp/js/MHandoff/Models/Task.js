@@ -14,7 +14,8 @@ define([
         url:"",
         defaults : {
             noteId : "0",
-            priority :"1",
+            priority :"Low Priority",
+            priorityCode:50,
             reporter:"N/A",
             reportedDate:moment().valueOf()/1000,
             expiration:moment().add('days', 1).valueOf()/1000,

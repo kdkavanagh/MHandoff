@@ -15,7 +15,7 @@ define([
   
   var checkLength = function() {
       this.showing = new Array();
-  }
+  };
 
   checkLength.prototype.check = function() {
       //Check to see if we need the "more" text

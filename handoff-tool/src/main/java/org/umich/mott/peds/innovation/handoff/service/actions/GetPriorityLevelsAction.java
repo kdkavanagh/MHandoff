@@ -3,7 +3,7 @@ package org.umich.mott.peds.innovation.handoff.service.actions;
 import java.util.List;
 
 import javax.json.Json;
-import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 
 import org.umich.mott.peds.innovation.handoff.Action;
 import org.umich.mott.peds.innovation.handoff.ActionContext;
@@ -21,11 +21,9 @@ public class GetPriorityLevelsAction implements Action {
 
   public String execute(ActionContext context) throws Exception {
     List<Pair<Integer, String>> l = persistenceService.getPriorityLevels();
-    JsonArrayBuilder builder = Json.createArrayBuilder();
+    JsonObjectBuilder builder = Json.createObjectBuilder();
     for (Pair<Integer, String> p : l) {
-      builder.add(Json.createObjectBuilder()
-          .add("value", p.first)
-          .add("text", p.second));
+      builder.add(p.first.toString(), p.second);
     }
     return builder.build().toString();
   }

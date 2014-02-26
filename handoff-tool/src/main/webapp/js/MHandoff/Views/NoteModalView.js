@@ -1,17 +1,18 @@
 define([
-  // These are path alias that we configured in our bootstrap
-  'jquery',     
-  'underscore', 
-  'backbone',
-  'bootstrap',
-  'moment',
-  'bootstrap_editable',
-  'Models/Note',
-  "Collections/NoteCollection",
+        // These are path alias that we configured in our bootstrap
+        'require',
+        'jquery',     
+        'underscore', 
+        'backbone',
+        'bootstrap',
+        'moment',
+        'bootstrap_editable',
+        'Models/Note',
+        "Collections/NoteCollection",
 
-], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Note, NoteCollection){
-    
-    
+        ], function(require, $, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Note, NoteCollection){
+
+
     var NoteModalView = Backbone.View.extend({
 
         template:null,
@@ -26,10 +27,11 @@ define([
         },
 
         initialize : function (options) {
-            
+
             this.options = options || {};
             this.noteModel = this.options.noteModel;
             this.template = this.options.template;
+            this.MHandoff = require("MHandoff");
             return this;
         },
 
@@ -72,25 +74,24 @@ define([
                 disabled:true,
                 mode:'inline',
                 onblur:'submit',
-                source: [
-                         {value: 1, text: 'Priority 1'},
-                         {value: 2, text: 'Priority 2'},
-                         {value: 3, text: 'Priority 3'},
-                         ],
-                         success: function (response, newValue) {
-                             self.noteModel.set("priority", newValue);
-                             if(self.noteModel.get("priority") == 1) {
-                                 self.noteModel.set("badgeLevel", "badge-error");
-                             } else {
-                                 self.noteModel.set("badgeLevel","");
-                             }
-                             if(self.$priorityBadge == null) {
-                                 self.$priorityBadge = self.$el.find("#priorityBadge");
-                             }
-                             //self.$priorityBadge.html(newValue);
-                             self.$priorityBadge.attr("class", "badge "+self.noteModel.get("badgeLevel")+" pull-right");
-
-                         },
+                source: this.MHandoff.priorityLevels,
+                 success: function (response, newValue) {
+                     console.log(newValue);
+                     self.noteModel.set("priorityCode", newValue);
+                     var text = self.MHandoff.priorityLevels[newValue];
+                     self.noteModel.set("priority", text);
+                     if(self.noteModel.get("priorityCode") == 200) {
+                         self.noteModel.set("badgeLevel", "badge-error");
+                     } else {
+                         self.noteModel.set("badgeLevel","");
+                     }
+                     if(self.$priorityBadge == null) {
+                         self.$priorityBadge = self.$el.find("#priorityBadge");
+                     }
+                     self.$priorityBadge.html(text);
+                     self.$priorityBadge.attr("class", "badge "+self.noteModel.get("badgeLevel")+" pull-right");
+    
+                 },
             });
             this.$editButton = this.$el.find("button#editButton");
             this.$editables = this.$el.find(".editable");
@@ -128,7 +129,7 @@ define([
 
     });
 
-    
-    
+
+
     return NoteModalView;
 });

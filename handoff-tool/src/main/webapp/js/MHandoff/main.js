@@ -41,7 +41,8 @@ require.config({
         "bootstrap_editable": {
             deps:['jquery', 'bootstrap'],
             "exports": "Bootstrap_editable"
-        }
+        },
+
     },
 
     
