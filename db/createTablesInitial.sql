@@ -1,5 +1,3 @@
-\connect postgres;
-
 DROP DATABASE "handoff";
 DROP USER handoffUser;
 
@@ -7,8 +5,7 @@ CREATE USER handoffUser WITH password 'mottinnovate';
 CREATE DATABASE "handoff" WITH OWNER handoffUser;
 GRANT ALL PRIVILEGES ON DATABASE "handoff" to handoffUser;
 
-\connect handoff;
-
+\c handoff;
 \echo Creating Patient table
 CREATE TABLE Patient 
 (epicId VARCHAR(255) not NULL, 
@@ -26,20 +23,33 @@ PRIMARY KEY ( uniqname ));
 
 GRANT ALL PRIVILEGES ON TABLE UserInfo TO handoffUser;
 
+\echo Creating TaskStatus table
+CREATE TABLE TaskStatus(
+displayText VARCHAR(255),
+code INTEGER,
+PRIMARY KEY ( code )
+);
+GRANT ALL PRIVILEGES ON TABLE TaskStatus TO handoffUser;
+
+
 \echo Creating Task table
 CREATE TABLE Task 
 (taskId SERIAL, 
 text VARCHAR(255),  
 reporter VARCHAR(255), 
-assignee VARCHAR(255), 
+assignee VARCHAR(255),
+status INTEGER, 
 reportedDate TIMESTAMP,  
 expiration TIMESTAMP,  
 priority INTEGER, 
 epicId VARCHAR(255), 
 FOREIGN KEY(assignee) REFERENCES UserInfo, 
 FOREIGN KEY(reporter) REFERENCES UserInfo, 
+FOREIGN KEY(status) REFERENCES TaskStatus, 
 FOREIGN KEY(epicId) REFERENCES Patient, 
 PRIMARY KEY ( taskId )); 
+
+
 
 GRANT ALL PRIVILEGES ON TABLE Task TO handoffUser;
 
