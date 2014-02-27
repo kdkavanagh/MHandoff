@@ -47,7 +47,6 @@ define([
                 disabled:true,
                 mode:'inline',
                 onblur:'submit',
-                //inputclass:"editable-wysihtml5 input-large",
                 success: function (response, newValue) {
                     self.noteModel.set("text", newValue);
                 },

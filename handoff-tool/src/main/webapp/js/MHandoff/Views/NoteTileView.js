@@ -6,10 +6,7 @@ define([
         'Collections/NoteCollection',
         'Views/NoteModalView',
         'utils',
-
-
         ], function($, _, Backbone, Note, NoteCollection,NoteModalView, Utils){
-
 
     var NoteTileView = Backbone.View.extend({
         tagName: 'li',
@@ -28,8 +25,6 @@ define([
             this.options = options || {};
             this.gridster = this.options.gridster;
             this.noteModel = this.options.noteModel;
-            this.row = this.options.row;
-            this.col = this.options.col;
             this.templates = this.options.templates;
             this.template = this.templates.tile;
             var priorityCode = this.noteModel.get("priorityCode");
@@ -42,8 +37,15 @@ define([
             }
             
             this.noteModel.on('change', this.updateView, this);
-
+            this.noteModel.on('change:badgeLevel', this.updateBadge, this);
+            this.noteModel.on('change:priorityCode', this.updateBadge, this);
+            
             return this;
+        },
+        
+        updateBadge:function() {
+            this.$notePriorityBadge.html( _.template.getPriorityStringFromCode(this.noteModel.get("priorityCode")));
+            this.$notePriorityBadge.attr("class", "badge "+this.noteModel.get("badgeLevel")+" pull-right");
         },
 
         updateView:function() {
@@ -51,29 +53,20 @@ define([
             this.$noteText = this.$el.find("p#noteText");
             this.$notePriorityBadge = this.$el.find("#priorityBadge");
             this.$noteText.html(this.noteModel.get("text"));
-            this.$notePriorityBadge.html( _.template.getPriorityStringFromCode(this.noteModel.get("priorityCode")));
-            this.$notePriorityBadge.attr("class", "badge "+this.noteModel.get("badgeLevel")+" pull-right");
-
+            
         },
 
         render: function(){
             
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             this.setElement(tmpl(this.noteModel.toJSON()));
-            this.check();
+
             this.updateView();
+            this.updateBadge();
             this.gridster.add_widget(this.el);
             this.$closeIcon = this.$el.find("span.closeIcon");
             this.$closeIcon.tooltip({ container: 'body'});
             return this;
-        },
-
-        check: function() {
-            var checker = new Utils.checkLength();
-            checker.check();
-            //maybe set the vertical height of the gridster obj here??
-            //var moreThis = this.$el.find('.more');
-            //moreThis.popover({content:this.noteModel.get("text")});
         },
 
         openNote: function() {
@@ -106,6 +99,9 @@ define([
             delete this.$noteText;
             this.unbind(); // Unbind all local event bindings
             this.noteModel.unbind( 'change', this.render, this ); // Unbind reference to the model
+            this.noteModel.unbind('change', this.updateView, this);
+            this.noteModel.unbind('change:badgeLevel', this.updateBadge, this);
+            this.noteModel.unbind('change:priorityCode', this.updateBadge, this);
             this.noteModel.destroy();
             this.options.parent.unbind( 'close:all', this.close, this ); // Unbind reference to the parent view
 

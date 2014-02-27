@@ -5,6 +5,7 @@ import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 
+import org.apache.log4j.Logger;
 import org.umich.mott.peds.innovation.handoff.Action;
 import org.umich.mott.peds.innovation.handoff.ActionContext;
 import org.umich.mott.peds.innovation.handoff.ActionMapping;
@@ -17,12 +18,14 @@ import org.umich.mott.peds.innovation.handoff.common.User;
  * @date Feb 25, 2014
  * 
  */
-@ActionMapping(method = RequestMethod.GET, path = "backchannel/pull.do")
+@ActionMapping(method = RequestMethod.GET, path = "bacckchannel/pull.do")
 public class LoadAppInfoAction implements Action {
+
+  private static final Logger logger = Logger.getLogger(LoadAppInfoAction.class);
 
   public String execute(ActionContext context) throws Exception {
     JsonObjectBuilder builder = Json.createObjectBuilder();
-
+    logger.info("Backchannel request for application info received.");
     // get the priority levels
     List<Pair<Integer, String>> pLevels = persistenceService.getPriorityLevels();
 

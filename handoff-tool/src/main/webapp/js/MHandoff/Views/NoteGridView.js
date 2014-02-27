@@ -50,7 +50,7 @@ define([
 
         createView: function(note, row, col, self) {
             //var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
- 
+            
             var noteView = new NoteTileView({parent : self, noteModel:note,templates:this.templates, row:row, col:col, gridster : self.gridsterObj});
             self.noteViews.push(noteView);
             noteView.on('remove', self.noteRemoved, self);
@@ -73,6 +73,10 @@ define([
                 }
                 self.createView(note, row, col, self);
             });
+            
+            var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\" class=\"\"><span class=\"glyphicon glyphicon-plus addNewTileIcon ignoreDrag\"></span>Add New Item</div><div>";
+            this.$addNewNoteWidget= this.gridsterObj.add_widget(addNewItemHtml);
+            this.gridsterObj.disable_widget(this.$addNewNoteWidget);
             this.render();
         },
 
@@ -148,15 +152,9 @@ define([
         },
 
         render: function(){
-            var gridsterObj = this.gridsterObj;//$("#noteGrid ul").gridster().data('gridster');
-            var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\" class=\"\"><span class=\"glyphicon glyphicon-plus addNewTileIcon ignoreDrag\"></span>Add New Item</div><div>";
-           // gridsterObj.remove_all_widgets();
-            
             for (var i = 0; i < this.noteViews.length; i++) {
                 this.noteViews[i].render();
             }
-            this.$addNewNoteWidget= gridsterObj.add_widget(addNewItemHtml);
-            gridsterObj.disable_widget(this.$addNewNoteWidget);
             //delete any garbage we have (must be done after remove_all_widgets()
             while(this.garbageViews.length > 0) {
                 this.garbageViews.pop().destroy_full(null);

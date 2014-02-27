@@ -125,7 +125,6 @@ public class PersistenceServiceImpl implements PersistenceService {
   }
 
   public Patient getPatient(String id) {
-
     return null;
   }
 
