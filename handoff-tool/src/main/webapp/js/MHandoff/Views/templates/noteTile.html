@@ -7,15 +7,13 @@
     id="priorityBadge" class="badge <%=badgeLevel%> pull-right"><%=_.template.getPriorityStringFromCode(priorityCode)%></span>&nbsp
   </h3>
  </div>
- <div class="panel-body noteTextArea ignoreDrag">
+ <div class="panel-body noteTextArea ignoreDrag" >
   <p id="noteText" class="ignoreDrag" style="text-overflow: ellipsis;"></p>
  </div>
  <div class="panel-footer noteFooter movable">
-  <div class="pull-right">
-   <button id="openNoteButton" class="btn btn-info">Open</button>
-  </div>
+  
   <div class="noteReporter">
-   Reported by:<br><%=_.template.getUser(reporter)%>
+   <%=_.template.getUser(reporter)%> on <%= _.template.formatdate_noTime(reportedDate) %>
   </div>
  </div>
 </li>

@@ -15,8 +15,12 @@ define([
     var initialize = function(){
         // Pass in our Router module and call it's initialize function
         _.template.formatdate = function (stamp) {
-            return moment(stamp *1000).format('MMM Do YYYY, h:mm A');
+            return moment(stamp *1000).format('ddd, MMM Do YYYY, h:mm A');
         };
+        _.template.formatdate_noTime = function (stamp) {
+            return moment(stamp *1000).format('ddd, MM/DD/YY');
+        };
+        
         _.template.getPriorityStringFromCode = function (code) {
             return priorityLevels[code];
         };

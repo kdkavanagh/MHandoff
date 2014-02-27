@@ -15,6 +15,7 @@ require.config({
         bootstrap_select : "../bootstrap-select.min",
         text:"../libs/text",
         domReady:"../libs/domReady",
+        //qtip:"../libs/jquery.qtip.min"
 
     },
 
@@ -40,8 +41,8 @@ require.config({
         },
         "bootstrap_editable": {
             deps:['jquery', 'bootstrap'],
-            "exports": "Bootstrap_editable"
-        },
+            exports: "Bootstrap_editable"
+        }
 
     },
 

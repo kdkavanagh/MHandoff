@@ -77,10 +77,19 @@
 	padding-left:10px;
 	padding-right:10px;
 	height:100%;
+	   padding-top:10px;
 }
 
 .noteTextArea:hover {
 	cursor:pointer;
+}
+
+.noteTextArea p {
+    padding: 0;
+    margin: 0;
+    float: left;
+    overflow: hidden;
+    font-size:10pt;
 }
 
 .patientPanel {
@@ -105,6 +114,10 @@
 	margin-top: 15%;
 	color: #999999;
 }
+#addNewTileInner:hover {
+    cursor:pointer;
+}
+
 
 #addNewTileInner:hover {
 	color: #000000;
@@ -150,7 +163,7 @@
 
 .noteReporter {
 	font-size: 8pt;
-	width: 50%;
+	width: 100%;
 }
 
 .more {
@@ -158,22 +171,6 @@
 	right: 0;
 	bottom: 5px;
 	padding-left: 2em;
-}
-
-.noteTextArea p {
-	padding: 0;
-	margin: 0;
-	float: left;
-	overflow: hidden;
-}
-
-.active.noteTextArea p {
-	white-space: normal;
-}
-
-.active.noteTextArea .more {
-	position: static;
-	padding: 0;
 }
 
 .page-footer {

@@ -67,6 +67,19 @@ define([
             this.gridster.add_widget(this.el);
             this.$closeIcon = this.$el.find("span.closeIcon");
             this.$closeIcon.tooltip({ container: 'body'});
+//            this.$el.find("div.noteTextArea").qtip({
+//                content: {
+//                    text: 'Open note'
+//                 },
+//                 position: {
+//                    target: 'mouse',
+//                    adjust: {
+//                        x:10,
+//                        y:10
+//                    }
+//                 },
+//
+//              });
             return this;
         },
 
