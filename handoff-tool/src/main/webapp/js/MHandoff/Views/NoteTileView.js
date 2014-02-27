@@ -18,6 +18,7 @@ define([
         events: {
             'click span#closeIcon': "buttonClickHandler",
             'click button#openNoteButton' : "openNote",
+            'click div.panel-body' : "openNote",
         },
 
         initialize : function (options) {

@@ -1,5 +1,5 @@
 <li class="panel panel-default note" id="<%= noteId%>">
- <div class="panel-heading tileHeading">
+ <div class="panel-heading tileHeading movable">
   <h3 class="panel-title">
    Task<span id="closeIcon"
     class="glyphicon glyphicon-remove-circle closeIcon pull-right ignoreDrag"
@@ -7,10 +7,10 @@
     id="priorityBadge" class="badge <%=badgeLevel%> pull-right"><%=_.template.getPriorityStringFromCode(priorityCode)%></span>&nbsp
   </h3>
  </div>
- <div class="panel-body noteTextArea">
-  <p id="noteText" style="text-overflow: ellipsis;"></p>
+ <div class="panel-body noteTextArea ignoreDrag">
+  <p id="noteText" class="ignoreDrag" style="text-overflow: ellipsis;"></p>
  </div>
- <div class="panel-footer noteFooter">
+ <div class="panel-footer noteFooter movable">
   <div class="pull-right">
    <button id="openNoteButton" class="btn btn-info">Open</button>
   </div>

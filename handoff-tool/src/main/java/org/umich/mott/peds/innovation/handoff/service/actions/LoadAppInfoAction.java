@@ -18,7 +18,7 @@ import org.umich.mott.peds.innovation.handoff.common.User;
  * @date Feb 25, 2014
  * 
  */
-@ActionMapping(method = RequestMethod.GET, path = "bacckchannel/pull.do")
+@ActionMapping(method = RequestMethod.GET, path = "backchannel/pull.do")
 public class LoadAppInfoAction implements Action {
 
   private static final Logger logger = Logger.getLogger(LoadAppInfoAction.class);

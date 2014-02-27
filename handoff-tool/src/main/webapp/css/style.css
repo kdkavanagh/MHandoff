@@ -27,6 +27,10 @@
 	padding-bottom:10px;
 }
 
+.movable:hover {
+	cursor:move;
+}
+
 .noteFooter {
 	position: absolute;
 	bottom: 0;
@@ -74,6 +78,10 @@
 	padding-right:10px;
 }
 
+.noteTextArea:hover {
+	cursor:pointer;
+}
+
 .patientPanel {
 	border-left: 2px solid #eee;
 	display: table-cell;
@@ -102,7 +110,6 @@
 }
 
 .ignoreDrag {
-	
 }
 
 .staticGridItem {
@@ -132,10 +139,12 @@
 
 .closeIcon,.closeIcon a {
 	color: #999999;
+	
 }
 
 .closeIcon:hover {
 	color: #000000;
+	cursor:default;
 }
 
 .noteReporter {
