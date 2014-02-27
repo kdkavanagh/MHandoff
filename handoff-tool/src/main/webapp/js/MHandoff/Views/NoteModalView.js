@@ -76,12 +76,15 @@ define([
                     var text = self.MHandoff.priorityLevels[newValue];
                     self.noteModel.set("priority",  _.template.getPriorityStringFromCode(newValue));
                     if(newValue == 200) {
-                        self.noteModel.set("badgeLevel", "badge-error");
+                        this.noteModel.set("badgeLevel", "badge-critical");
                     } else if(newValue == 150 ) {
-                        self.noteModel.set("badgeLevel", "badge-warning");
-                    }
-                    else {
-                        self.noteModel.set("badgeLevel","");
+                        this.noteModel.set("badgeLevel", "badge-high");
+                    } else if(newValue == 100) {
+                        this.noteModel.set("badgeLevel", "badge-med");
+                    }else if(newValue == 50) {
+                        this.noteModel.set("badgeLevel", "badge-low");
+                    } else {
+                        this.noteModel.set("badgeLevel","");
                     }
                     if(self.$priorityBadge == null) {
                         self.$priorityBadge = self.$el.find("#priorityBadge");

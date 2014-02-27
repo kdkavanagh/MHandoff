@@ -11,9 +11,13 @@
   <p id="noteText" class="ignoreDrag" style="text-overflow: ellipsis;"></p>
  </div>
  <div class="panel-footer noteFooter movable">
-  <button id="openNoteButton" class="btn btn-info btn-sm pull-right" >Open</button>
   <div class="noteReporter">
-   Reported by:<br><%=_.template.getUser(reporter)%>
+  <%=_.template.getUser(reporter)%> on <%= _.template.formatdate_noTime(reportedDate) %>
+  </div>
+ </div>
+ <div class="panel-footer noteFooter movable">
+  <div class="noteReporter">
+  <%=_.template.getUser(reporter)%> on <%= _.template.formatdate_noTime(reportedDate) %>
   </div>
  </div>
 </li>

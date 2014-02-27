@@ -30,20 +30,24 @@ define([
             this.template = this.templates.tile;
             var priorityCode = this.noteModel.get("priorityCode");
             if(priorityCode == 200) {
-                this.noteModel.set("badgeLevel", "badge-error");
+                this.noteModel.set("badgeLevel", "badge-critical");
             } else if(priorityCode == 150 ) {
-                this.noteModel.set("badgeLevel", "badge-warning");
-            }else {
+                this.noteModel.set("badgeLevel", "badge-high");
+            } else if(priorityCode == 100) {
+                this.noteModel.set("badgeLevel", "badge-med");
+            }else if(priorityCode == 50) {
+                this.noteModel.set("badgeLevel", "badge-low");
+            } else {
                 this.noteModel.set("badgeLevel","");
             }
-            
+
             this.noteModel.on('change', this.updateView, this);
             this.noteModel.on('change:badgeLevel', this.updateBadge, this);
             this.noteModel.on('change:priorityCode', this.updateBadge, this);
-            
+
             return this;
         },
-        
+
         updateBadge:function() {
             this.$notePriorityBadge.html( _.template.getPriorityStringFromCode(this.noteModel.get("priorityCode")));
             this.$notePriorityBadge.attr("class", "badge "+this.noteModel.get("badgeLevel")+" pull-right");
@@ -54,11 +58,11 @@ define([
             this.$noteText = this.$el.find("p#noteText");
             this.$notePriorityBadge = this.$el.find("#priorityBadge");
             this.$noteText.html(this.noteModel.get("text"));
-            
+
         },
 
         render: function(){
-            
+
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             this.setElement(tmpl(this.noteModel.toJSON()));
 
@@ -67,19 +71,19 @@ define([
             this.gridster.add_widget(this.el);
             this.$closeIcon = this.$el.find("span.closeIcon");
             this.$closeIcon.tooltip({ container: 'body'});
-//            this.$el.find("div.noteTextArea").qtip({
-//                content: {
-//                    text: 'Open note'
-//                 },
-//                 position: {
-//                    target: 'mouse',
-//                    adjust: {
-//                        x:10,
-//                        y:10
-//                    }
-//                 },
-//
-//              });
+//          this.$el.find("div.noteTextArea").qtip({
+//          content: {
+//          text: 'Open note'
+//          },
+//          position: {
+//          target: 'mouse',
+//          adjust: {
+//          x:10,
+//          y:10
+//          }
+//          },
+
+//          });
             return this;
         },
 

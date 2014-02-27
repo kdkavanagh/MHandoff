@@ -143,12 +143,20 @@
 	font-size: 30pt;
 }
 
-.badge-error {
-	background-color: #b94a48;
+.badge-critical {
+	background-color: #d9534f;
 }
 
-.badge-warning {
+.badge-high {
 	background-color: #f89406;
+}
+
+.badge-low {
+	background-color:#5bc0de;
+}
+
+.badge-med {
+    background-color:#428bca;
 }
 
 .closeIcon,.closeIcon a {
