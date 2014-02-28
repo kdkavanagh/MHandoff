@@ -14,6 +14,7 @@ define([
 
     var initialize = function(){
         // Pass in our Router module and call it's initialize function
+
         _.template.formatdate = function (stamp) {
             return moment(stamp *1000).format('ddd, MMM Do YYYY, h:mm A');
         };
@@ -31,6 +32,10 @@ define([
         _.template.getUser = function(user) {
             return handoffUsers[user];
         };
+        
+        $(document).bind('keyup', function(e) {
+            console.log(e.type, e.keyCode);
+        });
 
         $.getJSON("/backchannel/pull.do", function(data){
             //Load the priority levels 
@@ -55,6 +60,8 @@ define([
 
 
     };
+
+
 
     return {
         initialize: initialize,

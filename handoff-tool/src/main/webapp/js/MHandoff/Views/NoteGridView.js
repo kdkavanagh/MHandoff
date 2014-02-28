@@ -7,7 +7,7 @@ define([
   'Models/Note',
   'Collections/NoteCollection',
   'Collections/TaskCollection',
-  'Views/NoteTileView'
+  'Views/NoteTileView',
 ], function($, _, Backbone, Gridster, Note, NoteCollection,TaskCollection, NoteTileView){
     
     
@@ -29,6 +29,8 @@ define([
         initialize: function (options) {
             this.options = options || {};
             _.bindAll(this, 'render');
+            //_.bindAll(this);
+           
             
             this.notes = this.options.collection;
             if(this.notes instanceof TaskCollection) {
@@ -57,7 +59,8 @@ define([
             return noteView;
 
         },
-
+        
+        
         generateViews: function() {
             //Destroy existing views
             while (this.noteViews.length > 0) {

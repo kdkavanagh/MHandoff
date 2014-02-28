@@ -9,6 +9,8 @@ import org.umich.mott.peds.innovation.handoff.common.BaseNote;
 import org.umich.mott.peds.innovation.handoff.common.ErrorCode;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 
+import com.google.gson.Gson;
+
 /**
  * Create an item in the patient's record
  * 
@@ -26,6 +28,7 @@ public class CreateItemAction implements Action {
   private static final Logger logger = Logger.getLogger(CreateItemAction.class);
 
   public String execute(ActionContext context) throws Exception {
+
     String id = context.getParameterOrFail("patient");
     String type = context.getParameterOrFail("type");
     BaseNote note;
@@ -42,6 +45,8 @@ public class CreateItemAction implements Action {
     }
 
     boolean result = persistenceService.writeItem(id, note);
+    Gson gson = new Gson();
+    NoteStream.sendMessageToAllClients("Patient,notes", gson.toJson(note));
     if (result) {
       return ErrorCode.NO_ERROR.json();
     } else {

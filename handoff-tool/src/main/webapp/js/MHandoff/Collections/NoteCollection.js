@@ -5,7 +5,8 @@ define([
         'backbone',
         'Models/Note',
         'Models/Task',
-        ], function($, _, Backbone, Note, Task){
+        'stream'
+        ], function($, _, Backbone, Note, Task, Stream){
 
 
     var NoteCollection = Backbone.Collection.extend({
@@ -15,10 +16,14 @@ define([
 
         initialize: function(patientId) {
             this.patientId = patientId;
+            this.stream = new Stream(patientId+",notes");
+            this.stream.on('newNote', function(e) {
+                this.add(e);
+            }, this);
         },
-        
+
         createNewItem : function() {
-            
+
             this.add(new this.model());
         },
 
