@@ -143,6 +143,9 @@
 	font-size: 30pt;
 }
 
+.newButton {
+	margin-left:15px;
+}
 .badge-critical {
 	background-color: #d9534f;
 }
@@ -157,6 +160,13 @@
 
 .badge-med {
     background-color:#428bca;
+}
+
+.modal.fade .modal-dialog {
+  -webkit-transition: -webkit-transform .1s ease-out;
+     -moz-transition:    -moz-transform .1s ease-out;
+       -o-transition:      -o-transform .1s ease-out;
+          transition:         transform .1s ease-out;
 }
 
 .closeIcon,.closeIcon a {

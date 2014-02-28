@@ -21,7 +21,7 @@ define([
 
         events: {
             'click #buttonPress': "getItems",
-            'click #addDummyButton': "addItem",
+            'click button#addNewButton': "addItem",
             'click #undoButton' : "undoRemove",
             'click #addNewTileInner' :"addItem",
         },
@@ -74,9 +74,9 @@ define([
                 self.createView(note, row, col, self);
             });
             
-            var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\" class=\"\"><span class=\"glyphicon glyphicon-plus addNewTileIcon ignoreDrag\"></span>Add New Item</div><div>";
-            this.$addNewNoteWidget= this.gridsterObj.add_widget(addNewItemHtml);
-            this.gridsterObj.disable_widget(this.$addNewNoteWidget);
+           // var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\" class=\"\"><span class=\"glyphicon glyphicon-plus addNewTileIcon ignoreDrag\"></span>Add New Item</div><div>";
+           // this.$addNewNoteWidget= this.gridsterObj.add_widget(addNewItemHtml);
+          //  this.gridsterObj.disable_widget(this.$addNewNoteWidget);
             this.render();
         },
 
