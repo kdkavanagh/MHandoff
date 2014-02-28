@@ -1,10 +1,9 @@
 package org.umich.mott.peds.innovation.handoff.patient;
 
 import org.apache.log4j.Logger;
-import org.umich.mott.peds.innovation.handoff.Action;
 import org.umich.mott.peds.innovation.handoff.ActionContext;
 import org.umich.mott.peds.innovation.handoff.ActionMapping;
-import org.umich.mott.peds.innovation.handoff.RequestMethod;
+import org.umich.mott.peds.innovation.handoff.CRUDAction;
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
 import org.umich.mott.peds.innovation.handoff.common.ErrorCode;
 import org.umich.mott.peds.innovation.handoff.common.Task;
@@ -22,12 +21,13 @@ import com.google.gson.Gson;
  * 
  * 
  */
-@ActionMapping(method = RequestMethod.POST, path = "patient/createItem.do")
-public class CreateItemAction implements Action {
+@ActionMapping(path = "patient/createItem.do")
+public class CreateItemAction extends CRUDAction {
 
   private static final Logger logger = Logger.getLogger(CreateItemAction.class);
 
-  public String execute(ActionContext context) throws Exception {
+  @Override
+  public String create(ActionContext context) throws Exception {
 
     String id = context.getParameterOrFail("patient");
     String type = context.getParameterOrFail("type");

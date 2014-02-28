@@ -20,7 +20,9 @@ import org.reflections.Reflections;
  * 
  */
 public final class ActionFactory {
-  protected static final Map<String, Action> mappings = new HashMap<String, Action>();
+
+  protected static final Map<String, CRUDAction> mappings = new HashMap<String, CRUDAction>();
+
   private static final Logger logger = Logger.getLogger(ActionFactory.class);
 
   static {
@@ -30,10 +32,10 @@ public final class ActionFactory {
     for (Class<?> clazz : actionClasses) {
       try {
         // Check to make sure this is actually an Action
-        if (!Action.class.isAssignableFrom(clazz)) {
+        if (!CRUDAction.class.isAssignableFrom(clazz)) {
           logger.error(clazz.getName() + " is not an implementation of Action.class");
         } else {
-          createMapping((Action) clazz.newInstance());
+          createMapping((CRUDAction) clazz.newInstance());
         }
       } catch (Exception e) {
         logger.error("Could not map Action class " + clazz.getCanonicalName(), e);
@@ -41,28 +43,27 @@ public final class ActionFactory {
     }
   }
 
-  public static Action getAction(HttpServletRequest request) {
-    String req = request.getMethod() + request.getServletPath();
-    Action a = mappings.get(req);
+  public static CRUDAction getAction(HttpServletRequest request) {
+    String req = request.getServletPath();
+    CRUDAction a = mappings.get(req);
     if (a == null) {
       throw new RuntimeException("No action available for request " + req);
     }
     return a;
   }
 
-  private static void createMapping(Action action) {
+  private static void createMapping(CRUDAction action) {
     // Get the url info from the annotation
-    RequestMethod method = action.getClass().getAnnotation(ActionMapping.class).method();
     String path = action.getClass().getAnnotation(ActionMapping.class).path();
     if (!path.startsWith("/")) {
       path = "/" + path;
     }
-    String key = method.toString() + path;
-    if (!key.endsWith(".do")) {
-      key += ".do";
+
+    if (!path.endsWith(".do")) {
+      path += ".do";
     }
-    logger.debug("Mapping URL " + key + " to action " + action.getClass().getCanonicalName());
-    mappings.put(key, action);
+    logger.debug("Mapping URL " + path + " to action " + action.getClass().getCanonicalName());
+    mappings.put(path, action);
   }
 
 }

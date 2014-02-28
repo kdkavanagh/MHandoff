@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ActionMapping {
-  RequestMethod method();
 
   String path();
+
 }

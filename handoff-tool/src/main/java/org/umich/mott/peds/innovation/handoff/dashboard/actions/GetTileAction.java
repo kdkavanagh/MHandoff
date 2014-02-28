@@ -3,10 +3,9 @@
  */
 package org.umich.mott.peds.innovation.handoff.dashboard.actions;
 
-import org.umich.mott.peds.innovation.handoff.Action;
 import org.umich.mott.peds.innovation.handoff.ActionContext;
 import org.umich.mott.peds.innovation.handoff.ActionMapping;
-import org.umich.mott.peds.innovation.handoff.RequestMethod;
+import org.umich.mott.peds.innovation.handoff.CRUDAction;
 import org.umich.mott.peds.innovation.handoff.common.PatientTile;
 
 /**
@@ -21,17 +20,18 @@ import org.umich.mott.peds.innovation.handoff.common.PatientTile;
  *          - the amount of information to get from the server
  * 
  */
-@ActionMapping(method = RequestMethod.GET, path = "dashboard/patientInfo.do")
-public class GetTileAction implements Action {
+@ActionMapping(path = "dashboard/patientInfo.do")
+public class GetTileAction extends CRUDAction {
 
-  public String execute(ActionContext context) throws Exception {
+  @Override
+  public String read(ActionContext context) throws Exception {
     String id = context.getParameterOrFail("patient");
     int detailLevel = Integer.parseInt(context.getParameterOrFail("level"));
     // Go to the database
     // format the data and return
 
     PatientTile tile = new PatientTile(id, "Kyle Kavanagh", "06/20/1992", "1234A", "null", 3, 2, 0, detailLevel);
-    return Action.gson.toJson(tile);
+    return CRUDAction.gson.toJson(tile);
 
   }
 

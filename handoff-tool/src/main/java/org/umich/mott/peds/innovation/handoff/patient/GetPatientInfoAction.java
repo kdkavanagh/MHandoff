@@ -1,9 +1,8 @@
 package org.umich.mott.peds.innovation.handoff.patient;
 
-import org.umich.mott.peds.innovation.handoff.Action;
 import org.umich.mott.peds.innovation.handoff.ActionContext;
 import org.umich.mott.peds.innovation.handoff.ActionMapping;
-import org.umich.mott.peds.innovation.handoff.RequestMethod;
+import org.umich.mott.peds.innovation.handoff.CRUDAction;
 
 /**
  * @author Kyle D. Kavanagh
@@ -12,10 +11,11 @@ import org.umich.mott.peds.innovation.handoff.RequestMethod;
  * @request.param patient - patient id
  * 
  */
-@ActionMapping(method = RequestMethod.GET, path = "patient/info.do")
-public class GetPatientInfoAction implements Action {
+@ActionMapping(path = "patient/info.do")
+public class GetPatientInfoAction extends CRUDAction {
 
-  public String execute(ActionContext context) throws Exception {
+  @Override
+  public String read(ActionContext context) throws Exception {
     return gson.toJson(persistenceService.getPatient(context.getParameterOrFail("patient")));
   }
 

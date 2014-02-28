@@ -1,10 +1,9 @@
 package org.umich.mott.peds.innovation.handoff.patient;
 
 import org.apache.log4j.Logger;
-import org.umich.mott.peds.innovation.handoff.Action;
 import org.umich.mott.peds.innovation.handoff.ActionContext;
 import org.umich.mott.peds.innovation.handoff.ActionMapping;
-import org.umich.mott.peds.innovation.handoff.RequestMethod;
+import org.umich.mott.peds.innovation.handoff.CRUDAction;
 
 /**
  * @author Kyle D. Kavanagh
@@ -14,12 +13,13 @@ import org.umich.mott.peds.innovation.handoff.RequestMethod;
  * @request.param patient - patient id
  * 
  */
-@ActionMapping(method = RequestMethod.GET, path = "patient/items.do")
-public class GetNotesAndTasksAction implements Action {
+@ActionMapping(path = "patient/items.do")
+public class GetNotesAndTasksAction extends CRUDAction {
 
   private static final Logger logger = Logger.getLogger(GetNotesAndTasksAction.class);
 
-  public String execute(ActionContext context) throws Exception {
+  @Override
+  public String read(ActionContext context) throws Exception {
     String intent = context.getParameterOrFail("type");
     String id = context.getParameterOrFail("patient");
     if (intent.equals("note")) {
