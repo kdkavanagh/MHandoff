@@ -13,7 +13,7 @@ import org.umich.mott.peds.innovation.handoff.CRUDAction;
  * @request.param patient - patient id
  * 
  */
-@ActionMapping(path = "patient/items.do")
+@ActionMapping(path = "patient/items/list.do")
 public class GetNotesAndTasksAction extends CRUDAction {
 
   private static final Logger logger = Logger.getLogger(GetNotesAndTasksAction.class);

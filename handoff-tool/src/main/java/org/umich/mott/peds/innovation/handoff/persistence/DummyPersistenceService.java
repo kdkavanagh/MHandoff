@@ -140,4 +140,34 @@ public class DummyPersistenceService implements PersistenceService {
     // TODO Auto-generated method stub
     return null;
   }
+
+  public BaseNote getNoteById(String noteId) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public Task getTaskById(String taskId) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public void writeNote(BaseNote note) {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void writeTask(Task task) {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void deleteNote(String noteId) {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void deleteTask(String taskId) {
+    // TODO Auto-generated method stub
+
+  }
 }

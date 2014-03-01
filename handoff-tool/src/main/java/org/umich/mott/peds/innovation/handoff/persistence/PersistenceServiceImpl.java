@@ -128,16 +128,6 @@ public class PersistenceServiceImpl implements PersistenceService {
     return null;
   }
 
-  public boolean writeItem(String patientId, BaseNote note) {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  public boolean deleteItem(String noteId) {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
   public List<Pair<Integer, String>> getPriorityLevels() {
     List<Pair<Integer, String>> tbr = new ArrayList<Pair<Integer, String>>();
     try {

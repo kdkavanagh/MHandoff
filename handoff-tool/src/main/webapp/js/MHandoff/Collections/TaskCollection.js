@@ -28,7 +28,7 @@ define([
 
 
         url : function() {
-            return "/patient/items.do?type=" + this.itemType+"&patient="+this.patientId;
+            return "/patient/items/list.do?type=" + this.itemType+"&patient="+this.patientId;
         },
     });
 

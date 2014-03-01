@@ -33,7 +33,7 @@ public final class ActionFactory {
       try {
         // Check to make sure this is actually an Action
         if (!CRUDAction.class.isAssignableFrom(clazz)) {
-          logger.error(clazz.getName() + " is not an implementation of Action.class");
+          logger.error(clazz.getName() + " is not an implementation of CRUDAction.class");
         } else {
           createMapping((CRUDAction) clazz.newInstance());
         }

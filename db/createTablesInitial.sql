@@ -51,11 +51,11 @@ reportedDate TIMESTAMP,
 expiration TIMESTAMP,  
 priority INTEGER, 
 epicId VARCHAR(255), 
-FOREIGN KEY(assignee) REFERENCES HandoffUser, 
-FOREIGN KEY(reporter) REFERENCES HandoffUser, 
-FOREIGN KEY(status) REFERENCES TaskStatus, 
-FOREIGN KEY(priority) REFERENCES PriorityLevel, 
-FOREIGN KEY(epicId) REFERENCES Patient, 
+FOREIGN KEY(assignee) REFERENCES HandoffUser(uniqname), 
+FOREIGN KEY(reporter) REFERENCES HandoffUser(uniqname), 
+FOREIGN KEY(status) REFERENCES TaskStatus(code), 
+FOREIGN KEY(priority) REFERENCES PriorityLevel(code), 
+FOREIGN KEY(epicId) REFERENCES Patient(epicId), 
 PRIMARY KEY ( taskId )); 
 
 
@@ -71,9 +71,9 @@ reportedDate TIMESTAMP,
 expiration TIMESTAMP,  
 priority INTEGER, 
 epicId VARCHAR(255), 
-FOREIGN KEY(epicId) REFERENCES Patient, 
-FOREIGN KEY(reporter) REFERENCES HandoffUser, 
-FOREIGN KEY(priority) REFERENCES PriorityLevel, 
+FOREIGN KEY(epicId) REFERENCES Patient(epicId), 
+FOREIGN KEY(reporter) REFERENCES HandoffUser(uniqname), 
+FOREIGN KEY(priority) REFERENCES PriorityLevel(code), 
 PRIMARY KEY ( noteId )); 
 
 GRANT ALL PRIVILEGES ON TABLE BaseNote TO handoffUser;

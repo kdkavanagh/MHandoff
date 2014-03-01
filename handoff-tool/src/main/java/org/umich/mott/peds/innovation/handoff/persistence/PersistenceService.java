@@ -24,7 +24,19 @@ public interface PersistenceService {
 
   public List<BaseNote> getNotesForPatient(String id);
 
+  public BaseNote getNoteById(String noteId);
+
   public List<Task> getTasksForPatient(String id);
+
+  public Task getTaskById(String taskId);
+
+  public void writeNote(BaseNote note);
+
+  public void writeTask(Task task);
+
+  public void deleteNote(String noteId);
+
+  public void deleteTask(String taskId);
 
   public Patient getPatient(String id);
 
@@ -33,20 +45,5 @@ public interface PersistenceService {
   public List<Pair<Integer, String>> getTaskStatuses();
 
   public List<User> getAllUsers();
-
-  /**
-   * 
-   * @param patientId
-   * @param note
-   * @return true if write was successful
-   */
-  public boolean writeItem(String patientId, BaseNote note);
-
-  /**
-   * 
-   * @param noteId
-   * @return true if delete was successful
-   */
-  public boolean deleteItem(String noteId);
 
 }
