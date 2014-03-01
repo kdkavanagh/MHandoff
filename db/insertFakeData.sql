@@ -1,4 +1,4 @@
-INSERT INTO Patient (epicId)
+INSERT INTO Patient (patientId)
 VALUES ('1');
 
 INSERT INTO HandoffUser (uniqname, first, last, position)

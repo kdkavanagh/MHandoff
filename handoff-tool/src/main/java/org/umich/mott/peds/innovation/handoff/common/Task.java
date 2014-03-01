@@ -11,8 +11,13 @@ import org.umich.mott.peds.innovation.handoff.ActionContext;
  */
 public class Task extends BaseNote {
 
-  public Task(String taskId, String text, String reporter, String assignee, int status, String reportedDate, String expiration, int priorityCode) {
-    super(taskId, text, reporter, reportedDate, expiration, priorityCode);
+  private final String assignee;
+
+  private final int status;
+
+  public Task(String taskId, String patientId, String text, String reporter, String assignee, int status, String reportedDate, String expiration,
+      int priorityCode) {
+    super(taskId, patientId, text, reporter, reportedDate, expiration, priorityCode);
     this.assignee = assignee;
     this.status = status;
 
@@ -24,8 +29,12 @@ public class Task extends BaseNote {
     status = Integer.parseInt(context.getParameterOrFail("status"));
   }
 
-  private final String assignee;
+  public String getAssignee() {
+    return assignee;
+  }
 
-  private final int status;
+  public int getStatus() {
+    return status;
+  }
 
 }

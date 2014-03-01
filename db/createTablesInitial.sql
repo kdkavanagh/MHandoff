@@ -8,8 +8,8 @@ GRANT ALL PRIVILEGES ON DATABASE "handoff" to handoffUser;
 \c handoff;
 \echo Creating Patient table
 CREATE TABLE Patient 
-(epicId VARCHAR(255) not NULL, 
-PRIMARY KEY ( epicId )); 
+(patientId VARCHAR(255) not NULL, 
+PRIMARY KEY ( patientId )); 
 
 GRANT ALL PRIVILEGES ON TABLE Patient TO handoffUser;
 
@@ -50,12 +50,12 @@ status INTEGER,
 reportedDate TIMESTAMP,  
 expiration TIMESTAMP,  
 priority INTEGER, 
-epicId VARCHAR(255), 
+patientId VARCHAR(255), 
 FOREIGN KEY(assignee) REFERENCES HandoffUser(uniqname), 
 FOREIGN KEY(reporter) REFERENCES HandoffUser(uniqname), 
 FOREIGN KEY(status) REFERENCES TaskStatus(code), 
 FOREIGN KEY(priority) REFERENCES PriorityLevel(code), 
-FOREIGN KEY(epicId) REFERENCES Patient(epicId), 
+FOREIGN KEY(patientId) REFERENCES Patient(patientId), 
 PRIMARY KEY ( taskId )); 
 
 
@@ -70,8 +70,8 @@ reporter VARCHAR(255),
 reportedDate TIMESTAMP,  
 expiration TIMESTAMP,  
 priority INTEGER, 
-epicId VARCHAR(255), 
-FOREIGN KEY(epicId) REFERENCES Patient(epicId), 
+patientId VARCHAR(255), 
+FOREIGN KEY(patientId) REFERENCES Patient(patientId), 
 FOREIGN KEY(reporter) REFERENCES HandoffUser(uniqname), 
 FOREIGN KEY(priority) REFERENCES PriorityLevel(code), 
 PRIMARY KEY ( noteId )); 
@@ -79,10 +79,10 @@ PRIMARY KEY ( noteId ));
 GRANT ALL PRIVILEGES ON TABLE BaseNote TO handoffUser;
 
 \echo Creating indices 
-CREATE INDEX TaskEpicIdIndex 
-ON Task (epicId);
-CREATE INDEX NoteEpicIdIndex 
-ON BaseNote (epicId);   
+CREATE INDEX TaskpatientIdIndex 
+ON Task (patientId);
+CREATE INDEX NotepatientIdIndex 
+ON BaseNote (patientId);   
 
 CREATE INDEX TaskAssigneeIndex 
 ON Task (assignee);

@@ -13,17 +13,18 @@ public class BaseNote {
 
   private String noteId;
 
-  private final String text, reporter, reportedDate, expiration;
+  private final String text, reporter, reportedDate, expiration, patientId;
 
   private final int priorityCode;
 
-  public BaseNote(String noteId, String text, String reporter, String reportedDate, String expiration, int priorityCode) {
+  public BaseNote(String noteId, String patientId, String text, String reporter, String reportedDate, String expiration, int priorityCode) {
     this.text = text;
     this.reporter = reporter;
     this.reportedDate = reportedDate;
     this.expiration = expiration;
     this.priorityCode = priorityCode;
     this.noteId = noteId;
+    this.patientId = patientId;
   }
 
   /**
@@ -38,6 +39,7 @@ public class BaseNote {
     reporter = context.getParameterOrFail("reporter");
     reportedDate = context.getParameterOrFail("reportedDate");
     expiration = context.getParameterOrFail("expiration");
+    patientId = context.getParameterOrFail("patientId");
     this.priorityCode = Integer.parseInt(context.getParameterOrFail("priorityCode"));
   }
 
@@ -47,6 +49,30 @@ public class BaseNote {
 
   public void setNoteId(String noteId) {
     this.noteId = noteId;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public String getReporter() {
+    return reporter;
+  }
+
+  public String getReportedDate() {
+    return reportedDate;
+  }
+
+  public String getExpiration() {
+    return expiration;
+  }
+
+  public int getPriorityCode() {
+    return priorityCode;
+  }
+
+  public String getPatientId() {
+    return patientId;
   }
 
   public boolean equals(BaseNote n) {

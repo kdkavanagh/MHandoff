@@ -31,9 +31,9 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   private static final String dbPass = "mottinnovate";
 
-  private static final String NOTE_SELECT = "SELECT BaseNote.noteId, BaseNote.text, BaseNote.reporter, extract(epoch from BaseNote.reportedDate) as reportedDate, extract(epoch from BaseNote.expiration) as expiration, BaseNote.priority, BaseNote.epicId FROM BaseNote ";
+  private static final String NOTE_SELECT = "SELECT BaseNote.noteId, BaseNote.text, BaseNote.reporter, extract(epoch from BaseNote.reportedDate) as reportedDate, extract(epoch from BaseNote.expiration) as expiration, BaseNote.priority, BaseNote.patientId FROM BaseNote ";
 
-  private static final String TASK_SELECT = "SELECT Task.taskId, Task.text, Task.reporter, Task.assignee, extract(epoch from Task.reportedDate) as reportedDate, extract(epoch from Task.expiration) as expiration, Task.priority, Task.status, Task.epicId FROM Task ";
+  private static final String TASK_SELECT = "SELECT Task.taskId, Task.text, Task.reporter, Task.assignee, extract(epoch from Task.reportedDate) as reportedDate, extract(epoch from Task.expiration) as expiration, Task.priority, Task.status, Task.patientId FROM Task ";
 
   @Inject
   public PersistenceServiceImpl() {
@@ -62,13 +62,14 @@ public class PersistenceServiceImpl implements PersistenceService {
    */
   private BaseNote noteFromResults(ResultSet noteResults) throws SQLException {
     String noteId = noteResults.getString("noteId");
+    String patientId = noteResults.getString("patientId");
     String text = noteResults.getString("text");
     String reporter = noteResults.getString("reporter");
     String reportedDate = noteResults.getString("reportedDate");
     String expiration = noteResults.getString("expiration");
     int priorityCode = noteResults.getInt("priority");
 
-    return new BaseNote(noteId, text, reporter, reportedDate, expiration, priorityCode);
+    return new BaseNote(noteId, patientId, text, reporter, reportedDate, expiration, priorityCode);
   }
 
   /**
@@ -77,6 +78,7 @@ public class PersistenceServiceImpl implements PersistenceService {
    */
   private Task taskFromResults(ResultSet taskResults) throws SQLException {
     String noteId = taskResults.getString("taskId");
+    String patientId = taskResults.getString("patientId");
     String text = taskResults.getString("text");
     String reporter = taskResults.getString("reporter");
     String assignee = taskResults.getString("assignee");
@@ -84,7 +86,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     String expiration = taskResults.getString("expiration");
     int priorityCode = taskResults.getInt("priority");
     int status = taskResults.getInt("status");
-    return new Task(noteId, text, reporter, assignee, status, reportedDate, expiration, priorityCode);
+    return new Task(noteId, patientId, text, reporter, assignee, status, reportedDate, expiration, priorityCode);
 
   }
 
@@ -95,7 +97,7 @@ public class PersistenceServiceImpl implements PersistenceService {
       Statement noteStatment = connection.createStatement();
       ResultSet noteResults = noteStatment
           .executeQuery(NOTE_SELECT +
-              "WHERE epicId = '" + id + "' " +
+              "WHERE patientId = '" + id + "' " +
               "ORDER BY priority DESC");
 
       while (noteResults.next()) {
@@ -122,7 +124,7 @@ public class PersistenceServiceImpl implements PersistenceService {
 
       ResultSet noteResults = noteStatment
           .executeQuery(TASK_SELECT +
-              "WHERE epicId = '" + id + "' " +
+              "WHERE patientId = '" + id + "' " +
               "ORDER BY priority DESC");
 
       while (noteResults.next()) {
@@ -268,13 +270,60 @@ public class PersistenceServiceImpl implements PersistenceService {
   }
 
   public void writeNote(BaseNote note) {
-    // TODO Auto-generated method stub
+    StringBuilder sb = new StringBuilder();
+    sb.append("INSERT INTO basenote (noteid, patientid, text, reporter, reportedDate, expiration, priority, assignee, status) ");
+    sb.append("VALUES(");
+    sb.append(note.getNoteId()).append(", ");
+    sb.append(note.getPatientId()).append(", ");
+    sb.append(note.getText()).append(", ");
+    sb.append(note.getReporter()).append(", ");
+    sb.append("timestamp(").append(note.getReportedDate()).append("), ");
+    sb.append("timestamp(").append(note.getExpiration()).append("), ");
+    sb.append(note.getPriorityCode()).append(", ");
+    sb.append(") ");
+    // Note: noteid and patientid are not updated.
+    sb.append("ON DUPLICATE KEY UPDATE text=VALUES(text), reporter=VALUES(reporter), reportedDate=VALUES(reportedDate), expiration=VALUES(expiration), priority=VALUES(priority);");
+
+    String query = sb.toString();
+
+    try {
+      Statement statment = connection.createStatement();
+      int updateNum = statment.executeUpdate(query);
+      logger.info("Updated " + updateNum + " row(s)");
+      statment.close();
+    } catch (SQLException e) {
+      logger.fatal("Cannot create statement or execute results.");
+      throw new RuntimeException(e);
+    }
 
   }
 
   public void writeTask(Task task) {
-    // TODO Auto-generated method stub
+    StringBuilder sb = new StringBuilder();
+    sb.append("INSERT INTO task (taskid,patientId, text, reporter, reportedDate, expiration, priority) ");
+    sb.append("VALUES(");
+    sb.append(task.getNoteId()).append(", ");
+    sb.append(task.getPatientId()).append(", ");
+    sb.append(task.getText()).append(", ");
+    sb.append(task.getReporter()).append(", ");
+    sb.append("timestamp(").append(task.getReportedDate()).append("), ");
+    sb.append("timestamp(").append(task.getExpiration()).append("), ");
+    sb.append(task.getPriorityCode()).append(", ");
+    sb.append(") ");
+    // Note: noteid and patientid are not updated.
+    sb.append("ON DUPLICATE KEY UPDATE text=VALUES(text), reporter=VALUES(reporter), reportedDate=VALUES(reportedDate), expiration=VALUES(expiration), priority=VALUES(priority), status=VALUES(status), assignee=VALUES(assignee);");
 
+    String query = sb.toString();
+
+    try {
+      Statement statment = connection.createStatement();
+      int updateNum = statment.executeUpdate(query);
+      logger.info("Updated " + updateNum + " row(s)");
+      statment.close();
+    } catch (SQLException e) {
+      logger.fatal("Cannot create statement or execute results.");
+      throw new RuntimeException(e);
+    }
   }
 
   public void deleteNote(String noteId) {
