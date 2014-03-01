@@ -44,10 +44,10 @@ public class CreateItemAction extends CRUDAction {
       throw new RuntimeException("Failure: Unknown type " + type);
     }
 
-    boolean result = persistenceService.writeItem(id, note);
+    // boolean result = persistenceService.writeItem(id, note);
     Gson gson = new Gson();
     NoteStream.sendMessageToAllClients("Patient,notes", gson.toJson(note));
-    if (result) {
+    if (true) {
       return ErrorCode.NO_ERROR.json();
     } else {
       return ErrorCode.UNABLE_TO_WRITE_ITEM.json();

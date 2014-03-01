@@ -31,6 +31,10 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   private static final String dbPass = "mottinnovate";
 
+  private static final String NOTE_SELECT = "SELECT BaseNote.noteId, BaseNote.text, BaseNote.reporter, extract(epoch from BaseNote.reportedDate) as reportedDate, extract(epoch from BaseNote.expiration) as expiration, BaseNote.priority, BaseNote.epicId FROM BaseNote ";
+
+  private static final String TASK_SELECT = "SELECT Task.taskId, Task.text, Task.reporter, Task.assignee, extract(epoch from Task.reportedDate) as reportedDate, extract(epoch from Task.expiration) as expiration, Task.priority, Task.status, Task.epicId FROM Task ";
+
   @Inject
   public PersistenceServiceImpl() {
     try {
@@ -52,27 +56,50 @@ public class PersistenceServiceImpl implements PersistenceService {
     }
   }
 
+  /**
+   * Expects order "noteId, text, reporter, reportedData, expiration,
+   * prioritycode"
+   */
+  private BaseNote noteFromResults(ResultSet noteResults) throws SQLException {
+    String noteId = noteResults.getString("noteId");
+    String text = noteResults.getString("text");
+    String reporter = noteResults.getString("reporter");
+    String reportedDate = noteResults.getString("reportedDate");
+    String expiration = noteResults.getString("expiration");
+    int priorityCode = noteResults.getInt("priority");
+
+    return new BaseNote(noteId, text, reporter, reportedDate, expiration, priorityCode);
+  }
+
+  /**
+   * Expects order
+   * "noteId, text, reporter, assignee, reportedDate, expiration, priorityCode, status"
+   */
+  private Task taskFromResults(ResultSet taskResults) throws SQLException {
+    String noteId = taskResults.getString("taskId");
+    String text = taskResults.getString("text");
+    String reporter = taskResults.getString("reporter");
+    String assignee = taskResults.getString("assignee");
+    String reportedDate = taskResults.getString("reportedDate");
+    String expiration = taskResults.getString("expiration");
+    int priorityCode = taskResults.getInt("priority");
+    int status = taskResults.getInt("status");
+    return new Task(noteId, text, reporter, assignee, status, reportedDate, expiration, priorityCode);
+
+  }
+
   public List<BaseNote> getNotesForPatient(String id) {
     List<BaseNote> tbr = new ArrayList<BaseNote>();
     try {
 
       Statement noteStatment = connection.createStatement();
-      ResultSet noteResults = noteStatment.executeQuery("SELECT BaseNote.noteId, BaseNote.text, BaseNote.reporter, " +
-          "extract(epoch from BaseNote.reportedDate), extract(epoch from BaseNote.expiration), BaseNote.priority, BaseNote.epicId " +
-          "FROM BaseNote " +
-          "WHERE epicId = '" + "1" + "' " +
-          "ORDER BY priority DESC");
+      ResultSet noteResults = noteStatment
+          .executeQuery(NOTE_SELECT +
+              "WHERE epicId = '" + id + "' " +
+              "ORDER BY priority DESC");
 
       while (noteResults.next()) {
-        int index = 1;
-        String noteId = noteResults.getString(index++);
-        String text = noteResults.getString(index++);
-        String reporter = noteResults.getString(index++);
-        String reportedDate = noteResults.getString(index++);
-        String expiration = noteResults.getString(index++);
-
-        int priorityCode = noteResults.getInt(index++);
-        tbr.add(new BaseNote(noteId, text, reporter, reportedDate, expiration, priorityCode));
+        tbr.add(noteFromResults(noteResults));
       }
 
       noteResults.close();
@@ -94,22 +121,12 @@ public class PersistenceServiceImpl implements PersistenceService {
       Statement noteStatment = connection.createStatement();
 
       ResultSet noteResults = noteStatment
-          .executeQuery("SELECT Task.taskId, Task.text, Task.reporter, Task.assignee, extract(epoch from Task.reportedDate), extract(epoch from Task.expiration), Task.priority, Task.status, Task.epicId "
-              + "FROM Task " +
-              "WHERE epicId = '" + "1" + "' " +
+          .executeQuery(TASK_SELECT +
+              "WHERE epicId = '" + id + "' " +
               "ORDER BY priority DESC");
 
       while (noteResults.next()) {
-        int index = 1;
-        String noteId = noteResults.getString(index++);
-        String text = noteResults.getString(index++);
-        String reporter = noteResults.getString(index++);
-        String assignee = noteResults.getString(index++);
-        String reportedDate = noteResults.getString(index++);
-        String expiration = noteResults.getString(index++);
-        int priorityCode = noteResults.getInt(index++);
-        int status = noteResults.getInt(index++);
-        tbr.add(new Task(noteId, text, reporter, assignee, status, reportedDate, expiration, priorityCode));
+        tbr.add(taskFromResults(noteResults));
       }
 
       noteResults.close();
@@ -201,6 +218,73 @@ public class PersistenceServiceImpl implements PersistenceService {
       throw new RuntimeException(e);
     }
     return tbr;
+  }
+
+  public BaseNote getNoteById(String noteId) {
+    BaseNote tbr = null;
+    try {
+      Statement noteStatment = connection.createStatement();
+      ResultSet noteResults = noteStatment.executeQuery(NOTE_SELECT +
+          "WHERE noteId = '" + noteId + "' ");
+
+      while (noteResults.next()) {
+        tbr = noteFromResults(noteResults);
+      }
+      noteResults.close();
+      noteStatment.close();
+
+    } catch (SQLException e) {
+      logger.fatal("Cannot create statement or execute results.");
+      throw new RuntimeException(e);
+    }
+
+    return tbr;
+  }
+
+  public Task getTaskById(String taskId) {
+    Task tbr = null;
+    try {
+
+      Statement noteStatment = connection.createStatement();
+
+      ResultSet noteResults = noteStatment
+          .executeQuery(TASK_SELECT +
+              "WHERE taskId = '" + taskId + "'");
+
+      while (noteResults.next()) {
+        tbr = taskFromResults(noteResults);
+      }
+
+      noteResults.close();
+      noteStatment.close();
+
+    } catch (SQLException e) {
+
+      logger.fatal("Cannot create statement or execute results.");
+      throw new RuntimeException(e);
+    }
+
+    return tbr;
+  }
+
+  public void writeNote(BaseNote note) {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void writeTask(Task task) {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void deleteNote(String noteId) {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void deleteTask(String taskId) {
+    // TODO Auto-generated method stub
+
   }
 
 }

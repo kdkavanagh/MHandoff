@@ -22,28 +22,90 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(PersistenceServiceImpl.class)
 public interface PersistenceService {
 
+  /**
+   * 
+   * @param id
+   *          - Patient's ID
+   * @return A list of all notes for the given patientId
+   */
   public List<BaseNote> getNotesForPatient(String id);
 
+  /**
+   * 
+   * @param noteId
+   * @return the note associated with noteId
+   */
   public BaseNote getNoteById(String noteId);
 
+  /**
+   * 
+   * @param id
+   *          - Patient's ID
+   * @return a list of all tasks for the given patientId
+   */
   public List<Task> getTasksForPatient(String id);
 
+  /**
+   * 
+   * @param taskId
+   * @return the task associated with the taskId
+   */
   public Task getTaskById(String taskId);
 
+  /**
+   * Write the note to the database. Update note if already exists
+   * 
+   * @param note
+   */
   public void writeNote(BaseNote note);
 
+  /**
+   * Write the task to the database. Update task is already exists
+   * 
+   * @param task
+   */
   public void writeTask(Task task);
 
+  /**
+   * Delete a note from the database
+   * 
+   * @param noteId
+   */
   public void deleteNote(String noteId);
 
+  /**
+   * Delete a task from the database
+   * 
+   * @param taskId
+   */
   public void deleteTask(String taskId);
 
+  /**
+   * 
+   * @param id
+   *          - Patient's ID
+   * @return the patient associated with the ID
+   */
   public Patient getPatient(String id);
 
+  /**
+   * 
+   * @return a list of all possible priority levels, structured as Pair
+   *         (code, display text)
+   */
   public List<Pair<Integer, String>> getPriorityLevels();
 
+  /**
+   * 
+   * @return a list of all possible task statuses, structured as Pair
+   *         (code, display text)
+   */
   public List<Pair<Integer, String>> getTaskStatuses();
 
+  /**
+   * 
+   * @return a list of all the users of the application in the database
+   */
   public List<User> getAllUsers();
 
 }
