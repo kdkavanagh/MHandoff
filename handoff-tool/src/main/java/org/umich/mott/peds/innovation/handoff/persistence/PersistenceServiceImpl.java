@@ -56,10 +56,6 @@ public class PersistenceServiceImpl implements PersistenceService {
     }
   }
 
-  /**
-   * Expects order "noteId, text, reporter, reportedData, expiration,
-   * prioritycode"
-   */
   private BaseNote noteFromResults(ResultSet noteResults) throws SQLException {
     String noteId = noteResults.getString("noteId");
     String patientId = noteResults.getString("patientId");
@@ -72,10 +68,6 @@ public class PersistenceServiceImpl implements PersistenceService {
     return new BaseNote(noteId, patientId, text, reporter, reportedDate, expiration, priorityCode);
   }
 
-  /**
-   * Expects order
-   * "noteId, text, reporter, assignee, reportedDate, expiration, priorityCode, status"
-   */
   private Task taskFromResults(ResultSet taskResults) throws SQLException {
     String noteId = taskResults.getString("noteId");
     String patientId = taskResults.getString("patientId");
