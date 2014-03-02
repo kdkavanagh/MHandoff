@@ -269,22 +269,39 @@ public class PersistenceServiceImpl implements PersistenceService {
     return tbr;
   }
 
-  public void writeNote(BaseNote note) {
+  public void writeNote(BaseNote note, boolean update) {
     StringBuilder sb = new StringBuilder();
-    sb.append("INSERT INTO basenote (noteid, patientid, text, reporter, reportedDate, expiration, priority, assignee, status) ");
-    sb.append("VALUES(");
-    sb.append(note.getNoteId()).append(", ");
-    sb.append(note.getPatientId()).append(", ");
-    sb.append(note.getText()).append(", ");
-    sb.append(note.getReporter()).append(", ");
-    sb.append("timestamp(").append(note.getReportedDate()).append("), ");
-    sb.append("timestamp(").append(note.getExpiration()).append("), ");
-    sb.append(note.getPriorityCode()).append(", ");
-    sb.append(") ");
-    // Note: noteid and patientid are not updated.
-    sb.append("ON DUPLICATE KEY UPDATE text=VALUES(text), reporter=VALUES(reporter), reportedDate=VALUES(reportedDate), expiration=VALUES(expiration), priority=VALUES(priority);");
+    if (update) {
+      // update
+      sb.append("UPDATE basenote SET ( patientid, text, reporter, reportedDate, expiration, priority) = ");
+      sb.append("(");
+      sb.append(note.getPatientId()).append(", ");
+      sb.append("'").append(note.getText()).append("', ");
+      sb.append("'").append(note.getReporter()).append("', ");
+      sb.append("to_timestamp(").append(note.getReportedDate()).append("), ");
+      sb.append("to_timestamp(").append(note.getExpiration()).append("), ");
+      sb.append(note.getPriorityCode());
+      sb.append(") WHERE noteid=");
+      sb.append(note.getNoteId());
+
+    } else {
+      // insert
+      sb.append("INSERT INTO basenote ( patientid, text, reporter, reportedDate, expiration, priority) ");
+      sb.append("VALUES(");
+      sb.append(note.getPatientId()).append(", ");
+      sb.append("'").append(note.getText()).append("', ");
+      sb.append("'").append(note.getReporter()).append("', ");
+      sb.append("to_timestamp(").append(note.getReportedDate()).append("), ");
+      sb.append("to_timestamp(").append(note.getExpiration()).append("), ");
+      sb.append(note.getPriorityCode());
+      sb.append(") ");
+      // code for other sql updates
+      // sb.append("ON DUPLICATE KEY UPDATE text=VALUES(text), reporter=VALUES(reporter), reportedDate=VALUES(reportedDate), expiration=VALUES(expiration), priority=VALUES(priority);");
+
+    }
 
     String query = sb.toString();
+    logger.info("Writing note: " + query);
 
     try {
       Statement statment = connection.createStatement();
@@ -298,20 +315,36 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   }
 
-  public void writeTask(Task task) {
+  public void writeTask(Task task, boolean update) {
     StringBuilder sb = new StringBuilder();
-    sb.append("INSERT INTO task (taskid,patientId, text, reporter, reportedDate, expiration, priority) ");
-    sb.append("VALUES(");
-    sb.append(task.getNoteId()).append(", ");
-    sb.append(task.getPatientId()).append(", ");
-    sb.append(task.getText()).append(", ");
-    sb.append(task.getReporter()).append(", ");
-    sb.append("timestamp(").append(task.getReportedDate()).append("), ");
-    sb.append("timestamp(").append(task.getExpiration()).append("), ");
-    sb.append(task.getPriorityCode()).append(", ");
-    sb.append(") ");
-    // Note: noteid and patientid are not updated.
-    sb.append("ON DUPLICATE KEY UPDATE text=VALUES(text), reporter=VALUES(reporter), reportedDate=VALUES(reportedDate), expiration=VALUES(expiration), priority=VALUES(priority), status=VALUES(status), assignee=VALUES(assignee);");
+    if (update) {
+      sb.append("UPDATE task SET (patientId, text, reporter, reportedDate, expiration, priority, assignee, status) = ");
+      sb.append("(");
+      sb.append(task.getPatientId()).append(", ");
+      sb.append("'").append(task.getText()).append("', ");
+      sb.append("'").append(task.getReporter()).append("', ");
+      sb.append("timestamp(").append(task.getReportedDate()).append("), ");
+      sb.append("timestamp(").append(task.getExpiration()).append("), ");
+      sb.append(task.getPriorityCode()).append(", ");
+      sb.append("'").append(task.getAssignee()).append("', ");
+      sb.append(task.getStatus());
+      sb.append(") WHERE taskid=");
+      sb.append(task.getNoteId());
+    } else {
+      sb.append("INSERT INTO task (patientId, text, reporter, reportedDate, expiration, priority, assignee, status) ");
+      sb.append("VALUES(");
+      sb.append(task.getPatientId()).append(", ");
+      sb.append("'").append(task.getText()).append("', ");
+      sb.append(task.getReporter()).append(", ");
+      sb.append("timestamp(").append(task.getReportedDate()).append("), ");
+      sb.append("timestamp(").append(task.getExpiration()).append("), ");
+      sb.append(task.getPriorityCode()).append(", ");
+      sb.append("'").append(task.getAssignee()).append("', ");
+      sb.append(task.getStatus());
+      sb.append(") ");
+
+      // sb.append("ON DUPLICATE KEY UPDATE text=VALUES(text), reporter=VALUES(reporter), reportedDate=VALUES(reportedDate), expiration=VALUES(expiration), priority=VALUES(priority), status=VALUES(status), assignee=VALUES(assignee);");
+    }
 
     String query = sb.toString();
 

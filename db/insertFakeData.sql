@@ -8,7 +8,7 @@ VALUES ('collsain', 'Colleen', 'Sain', 'student'),
 ('mcspeak', 'Matt', 'Speakman', 'student'),
 ('kdkav', 'Kyle', 'Kavanagh', 'student');
 
-INSERT INTO BaseNote (text, reporter, reportedDate, expiration, priority, epicId)
+INSERT INTO BaseNote (text, reporter, reportedDate, expiration, priority, patientId)
 VALUES ('No steroids unless absolutely necessary - compromises tx', 'collsain', current_date, current_date + 10, 200, '1'),
 ('Large emesis. Decreased bolus feeds and increased frequency.', 'collsain', current_date, current_date + 10, 200, '1'),
 ('If sick, suspend enalopril', 'johntyu', current_date, current_date + 10, 50, '1'),('Increased fluid goals', 'mcspeak', current_date, current_date + 10, 50, '1'),
@@ -17,7 +17,7 @@ VALUES ('No steroids unless absolutely necessary - compromises tx', 'collsain', 
 ('Lorem ipsum 4', 'collsain', current_date, current_date + 10, 200, '1');
 
 
-INSERT INTO Task (text, reporter, assignee, reportedDate,status, expiration, priority, epicId)
+INSERT INTO Task (text, reporter, assignee, reportedDate,status, expiration, priority, patientId)
 VALUES ('11pm check platelets, if <50 give platelets', 'collsain', 'kminchan', current_date, 0, current_date + 5, 200, '1'),
 ('3am check platelets, if <50 give platelets', 'collsain', 'johntyu', current_date, 0, current_date + 5, 200, '1'),
 ('D/C order is in', 'kminchan', 'collsain', current_date, 0, current_date + 5, 150, '1'),

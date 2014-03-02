@@ -77,6 +77,7 @@ FOREIGN KEY(priority) REFERENCES PriorityLevel(code),
 PRIMARY KEY ( noteId )); 
 
 GRANT ALL PRIVILEGES ON TABLE BaseNote TO handoffUser;
+GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO handoffUser;
 
 \echo Creating indices 
 CREATE INDEX TaskpatientIdIndex 

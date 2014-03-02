@@ -56,15 +56,19 @@ public interface PersistenceService {
    * Write the note to the database. Update note if already exists
    * 
    * @param note
+   * @param update
+   *          - if true, an SQL UPDATE query will be used. Else, INSERT
    */
-  public void writeNote(BaseNote note);
+  public void writeNote(BaseNote note, boolean update);
 
   /**
    * Write the task to the database. Update task is already exists
    * 
    * @param task
+   * @param update
+   *          - if true, an SQL UPDATE query will be used. Else, INSERT
    */
-  public void writeTask(Task task);
+  public void writeTask(Task task, boolean update);
 
   /**
    * Delete a note from the database
