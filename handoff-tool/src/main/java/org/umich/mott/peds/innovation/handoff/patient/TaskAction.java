@@ -8,6 +8,7 @@ import org.umich.mott.peds.innovation.handoff.ActionContext;
 import org.umich.mott.peds.innovation.handoff.ActionMapping;
 import org.umich.mott.peds.innovation.handoff.CRUDAction;
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
+import org.umich.mott.peds.innovation.handoff.common.Task;
 
 /**
  * Create an item in the patient's record
@@ -20,15 +21,15 @@ import org.umich.mott.peds.innovation.handoff.common.BaseNote;
  * 
  * 
  */
-@ActionMapping(path = "patient/note.do")
-public class NoteAction extends CRUDAction {
+@ActionMapping(path = "patient/task.do")
+public class TaskAction extends CRUDAction {
 
-  private static final Logger logger = Logger.getLogger(NoteAction.class);
+  private static final Logger logger = Logger.getLogger(TaskAction.class);
 
   @Override
   public String create(ActionContext context) throws Exception {
-    logger.info("Creating new note");
-    String id = persistenceService.writeNote(new BaseNote(context), false);
+    logger.info("Request to create new task");
+    String id = persistenceService.writeTask(new Task(context), false);
     JsonObjectBuilder resp = Json.createObjectBuilder();
     resp.add("noteId", id);
     return resp.build().toString();
@@ -37,14 +38,14 @@ public class NoteAction extends CRUDAction {
 
   @Override
   public String read(ActionContext context) throws Exception {
-    BaseNote n = persistenceService.getNoteById(context.getParameterOrFail("noteid"));
+    BaseNote n = persistenceService.getTaskById(context.getParameterOrFail("noteId"));
     return gson.toJson(n);
   }
 
   @Override
   public String update(ActionContext context) throws Exception {
-    logger.info("Updating note " + context.getParameterOrFail("noteId"));
-    String id = persistenceService.writeNote(new BaseNote(context), true);
+    logger.info("Request to update task " + context.getParameterOrFail("noteId"));
+    String id = persistenceService.writeTask(new Task(context), true);
     JsonObjectBuilder resp = Json.createObjectBuilder();
     resp.add("noteId", id);
     return resp.build().toString();
@@ -52,8 +53,8 @@ public class NoteAction extends CRUDAction {
 
   @Override
   public String delete(ActionContext context) throws Exception {
-    logger.info("Deleting note " + context.getParameterOrFail("noteId"));
-    persistenceService.deleteNote(context.getParameterOrFail("noteId"));
+    logger.info("Request to delete task " + context.getParameterOrFail("noteId"));
+    persistenceService.deleteTask(context.getParameterOrFail("noteId"));
     return null;
   }
 }

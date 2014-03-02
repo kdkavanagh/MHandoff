@@ -13,7 +13,7 @@ define([
         idAttribute: 'noteId',
         defaults : {
             patientId:"1",  //Will need to get the patient from the view
-            priorityCode:50,
+            priorityCode:0,
             reporter:"kdkav",  //Will need to get logged in user
             reportedDate:moment().valueOf()/1000,
             expiration:moment().add('days', 1).valueOf()/1000,

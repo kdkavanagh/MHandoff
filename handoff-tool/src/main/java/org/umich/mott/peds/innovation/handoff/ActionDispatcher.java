@@ -28,12 +28,12 @@ public class ActionDispatcher extends HttpServlet {
     response.setContentType("application/json");
     response.getOutputStream().print(json);
     response.getOutputStream().close();
-    logger.debug("JSON Response set.");
+    logger.trace("JSON Response set.");
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) {
-    logger.info("Received new GET action request");
+    logger.trace("Received new GET action request");
     try {
       String resp = ActionFactory.getAction(request).read(new ActionContext(request, response));
       if (resp != null) {
@@ -52,7 +52,7 @@ public class ActionDispatcher extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) {
-    logger.info("Received new POST action request");
+    logger.trace("Received new POST action request");
     try {
       String resp = ActionFactory.getAction(request).create(new ActionContext(request, response));
       if (resp != null) {
@@ -71,7 +71,7 @@ public class ActionDispatcher extends HttpServlet {
 
   @Override
   public void doPut(HttpServletRequest request, HttpServletResponse response) {
-    logger.info("Received new PUT action request");
+    logger.trace("Received new PUT action request");
     try {
       String resp = ActionFactory.getAction(request).update(new ActionContext(request, response));
       if (resp != null) {
@@ -90,7 +90,7 @@ public class ActionDispatcher extends HttpServlet {
 
   @Override
   public void doDelete(HttpServletRequest request, HttpServletResponse response) {
-    logger.info("Received new DELETE action request");
+    logger.trace("Received new DELETE action request");
     try {
       String resp = ActionFactory.getAction(request).delete(new ActionContext(request, response));
       if (resp != null) {

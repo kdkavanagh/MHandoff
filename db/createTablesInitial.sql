@@ -42,7 +42,7 @@ GRANT ALL PRIVILEGES ON TABLE PriorityLevel TO handoffUser;
 
 \echo Creating Task table
 CREATE TABLE Task 
-(taskId SERIAL, 
+(noteId SERIAL, 
 text VARCHAR(255),  
 reporter VARCHAR(255), 
 assignee VARCHAR(255),
@@ -56,7 +56,7 @@ FOREIGN KEY(reporter) REFERENCES HandoffUser(uniqname),
 FOREIGN KEY(status) REFERENCES TaskStatus(code), 
 FOREIGN KEY(priority) REFERENCES PriorityLevel(code), 
 FOREIGN KEY(patientId) REFERENCES Patient(patientId), 
-PRIMARY KEY ( taskId )); 
+PRIMARY KEY ( noteId )); 
 
 
 

@@ -16,7 +16,7 @@ define([
         $closeIcon:null,
 
         events: {
-            'click span#closeIcon': "buttonClickHandler",
+            'click span#closeIcon': "removeClickHandler",
             'click button#openNoteButton' : "openNote",
             'click div.panel-body' : "openNote",
         },
@@ -71,19 +71,6 @@ define([
             this.gridster.add_widget(this.el);
             this.$closeIcon = this.$el.find("span.closeIcon");
             this.$closeIcon.tooltip({ container: 'body'});
-//          this.$el.find("div.noteTextArea").qtip({
-//          content: {
-//          text: 'Open note'
-//          },
-//          position: {
-//          target: 'mouse',
-//          adjust: {
-//          x:10,
-//          y:10
-//          }
-//          },
-
-//          });
             return this;
         },
 
@@ -93,9 +80,8 @@ define([
             return modal;
         },
 
-        buttonClickHandler : function(event){
+        removeClickHandler : function(event){
             console.log("Removing...");
-            //this.noteModel.destroy();
             this.$closeIcon.tooltip('hide');
             this.gridster.remove_widget(this.$el);
             this.remove();

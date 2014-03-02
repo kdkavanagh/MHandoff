@@ -1,16 +1,16 @@
 define([
-  // These are path alias that we configured in our bootstrap
-  'jquery',     
-  'underscore', 
-  'backbone',
-  'gridster',
-  'Models/Note',
-  'Collections/NoteCollection',
-  'Collections/TaskCollection',
-  'Views/NoteTileView',
-], function($, _, Backbone, Gridster, Note, NoteCollection,TaskCollection, NoteTileView){
-    
-    
+        // These are path alias that we configured in our bootstrap
+        'jquery',     
+        'underscore', 
+        'backbone',
+        'gridster',
+        'Models/Note',
+        'Collections/NoteCollection',
+        'Collections/TaskCollection',
+        'Views/NoteTileView',
+        ], function($, _, Backbone, Gridster, Note, NoteCollection,TaskCollection, NoteTileView){
+
+
     var NoteGridView = Backbone.View.extend({
 
         mostRecentlyDeletedView : null,
@@ -19,7 +19,6 @@ define([
         gridsterObj:null,
 
         events: {
-            'click #buttonPress': "getItems",
             'click button#addNewButton': "addItem",
             'click #undoButton' : "undoRemove",
             'click #addNewTileInner' :"addItem",
@@ -29,8 +28,8 @@ define([
             this.options = options || {};
             _.bindAll(this, 'render');
             //_.bindAll(this);
-           
-            
+
+
             this.notes = this.options.collection;
             this.noteViews = new Array();
             this.garbageViews = new Array();
@@ -47,16 +46,14 @@ define([
         },
 
         createView: function(note, row, col, self) {
-            //var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
-            
             var noteView = new NoteTileView({parent : self, noteModel:note,templates:this.templates, row:row, col:col, gridster : self.gridsterObj});
             self.noteViews.push(noteView);
             noteView.on('remove', self.noteRemoved, self);
             return noteView;
 
         },
-        
-        
+
+
         generateViews: function() {
             //Destroy existing views
             while (this.noteViews.length > 0) {
@@ -72,10 +69,10 @@ define([
                 }
                 self.createView(note, row, col, self);
             });
-            
-           // var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\" class=\"\"><span class=\"glyphicon glyphicon-plus addNewTileIcon ignoreDrag\"></span>Add New Item</div><div>";
-           // this.$addNewNoteWidget= this.gridsterObj.add_widget(addNewItemHtml);
-          //  this.gridsterObj.disable_widget(this.$addNewNoteWidget);
+
+            // var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\" class=\"\"><span class=\"glyphicon glyphicon-plus addNewTileIcon ignoreDrag\"></span>Add New Item</div><div>";
+            // this.$addNewNoteWidget= this.gridsterObj.add_widget(addNewItemHtml);
+            //  this.gridsterObj.disable_widget(this.$addNewNoteWidget);
             this.render();
         },
 
@@ -99,19 +96,6 @@ define([
             var newView = this.createView(note, 0, 0, this).render();
             newView.openNote().toggleEditing();
             this.trigger('gridchange');
-//          var next = gridsterObj.get_bottom_most_occupied_cell();
-//          console.log(next);
-            //Move the add new note item to the next free position
-            //This is safe because the space is guarenteed to be empty
-            //this.$addNewNoteWidget.attr("data-col", next.col);
-            //this.$addNewNoteWidget.attr("data-row", next.row);\
-
-            // gridsterObj.mutate_widget_in_gridmap(this.$addNewNoteWidget, next.col, next.row);
-//          var target = gridsterObj.widgets_in_range(next.col, next.row, next.col, next.row);
-//          if(target.attr("data-col") === newView.$el.attr("data-col") && target.attr("data-row") === newView.$el.attr("data-row")) {
-//          gridsterObj.swap_widgets(target, this.$addNewNoteWidget);
-//          }
-            //gridsterObj.manage_movements(this.$addNewNoteWidget, next.col, next.row);
         },
 
 
@@ -131,7 +115,7 @@ define([
             if(this.mostRecentlyDeletedView != null) {
                 //There was a previously deleted note, lets get rid of it for good
                 console.log("Permanently deleting note");
-                this.mostRecentlyDeletedView.destroy_full(null);
+                this.mostRecentlyDeletedView.destroy_full(null);                
             }
             //remove the view from our list of views to render
             var index = this.noteViews.indexOf(event);
@@ -157,8 +141,8 @@ define([
         }
     });
 
-    
-    
+
+
     return NoteGridView;
-  // What we return here will be used by other modules
+    // What we return here will be used by other modules
 });

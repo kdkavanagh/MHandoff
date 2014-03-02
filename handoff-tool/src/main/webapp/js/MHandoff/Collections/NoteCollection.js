@@ -4,9 +4,8 @@ define([
         'underscore', 
         'backbone',
         'Models/Note',
-        'Models/Task',
         'stream'
-        ], function($, _, Backbone, Note, Task, Stream){
+        ], function($, _, Backbone, Note, Stream){
 
 
     var NoteCollection = Backbone.Collection.extend({
@@ -16,10 +15,10 @@ define([
 
         initialize: function(patientId) {
             this.patientId = patientId;
-            this.stream = new Stream(patientId+",notes");
-            this.stream.on('newNote', function(e) {
-                this.add(e);
-            }, this);
+//            this.stream = new Stream(patientId+",notes");
+//            this.stream.on('newNote', function(e) {
+//                this.add(e);
+//            }, this);
         },
 
         createNewItem : function() {
@@ -35,5 +34,4 @@ define([
 
 
     return NoteCollection;
-    // What we return here will be used by other modules
 });

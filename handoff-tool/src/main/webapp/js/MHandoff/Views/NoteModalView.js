@@ -150,9 +150,7 @@ define([
             console.log("Destroying item");
             this.unbind(); // Unbind all local event bindings
             this.noteModel.unbind( 'change', this.render, this ); // Unbind reference to the model
-            this.noteModel.destroy();
             this.options.parent.unbind( 'close:all', this.close, this ); // Unbind reference to the parent view
-
             this.remove(); // Remove view from DOM
 
             delete this.$el; // Delete the jQuery wrapped object variable

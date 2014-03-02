@@ -16,10 +16,10 @@ define([
 
         initialize: function(patientId) {
             this.patientId = patientId;
-            this.stream = new Stream(patientId+",tasks");
-            this.stream.on('newNote', function(e) {
-                this.add(e);
-            }, this);
+//            this.stream = new Stream(patientId+",tasks");
+//            this.stream.on('newNote', function(e) {
+//                this.add(e);
+//            }, this);
         },
         
         createNewItem : function() {

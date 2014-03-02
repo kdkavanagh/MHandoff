@@ -33,7 +33,7 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   private static final String NOTE_SELECT = "SELECT BaseNote.noteId, BaseNote.text, BaseNote.reporter, extract(epoch from BaseNote.reportedDate) as reportedDate, extract(epoch from BaseNote.expiration) as expiration, BaseNote.priority, BaseNote.patientId FROM BaseNote ";
 
-  private static final String TASK_SELECT = "SELECT Task.taskId, Task.text, Task.reporter, Task.assignee, extract(epoch from Task.reportedDate) as reportedDate, extract(epoch from Task.expiration) as expiration, Task.priority, Task.status, Task.patientId FROM Task ";
+  private static final String TASK_SELECT = "SELECT Task.noteId, Task.text, Task.reporter, Task.assignee, extract(epoch from Task.reportedDate) as reportedDate, extract(epoch from Task.expiration) as expiration, Task.priority, Task.status, Task.patientId FROM Task ";
 
   @Inject
   public PersistenceServiceImpl() {
@@ -77,7 +77,7 @@ public class PersistenceServiceImpl implements PersistenceService {
    * "noteId, text, reporter, assignee, reportedDate, expiration, priorityCode, status"
    */
   private Task taskFromResults(ResultSet taskResults) throws SQLException {
-    String noteId = taskResults.getString("taskId");
+    String noteId = taskResults.getString("noteId");
     String patientId = taskResults.getString("patientId");
     String text = taskResults.getString("text");
     String reporter = taskResults.getString("reporter");
@@ -243,7 +243,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     return tbr;
   }
 
-  public Task getTaskById(String taskId) {
+  public Task getTaskById(String noteId) {
     Task tbr = null;
     try {
 
@@ -251,7 +251,7 @@ public class PersistenceServiceImpl implements PersistenceService {
 
       ResultSet noteResults = noteStatment
           .executeQuery(TASK_SELECT +
-              "WHERE taskId = '" + taskId + "'");
+              "WHERE noteId = '" + noteId + "'");
 
       while (noteResults.next()) {
         tbr = taskFromResults(noteResults);
@@ -329,37 +329,37 @@ public class PersistenceServiceImpl implements PersistenceService {
       sb.append(task.getPatientId()).append(", ");
       sb.append("'").append(task.getText()).append("', ");
       sb.append("'").append(task.getReporter()).append("', ");
-      sb.append("timestamp(").append(task.getReportedDate()).append("), ");
-      sb.append("timestamp(").append(task.getExpiration()).append("), ");
+      sb.append("to_timestamp(").append(task.getReportedDate()).append("), ");
+      sb.append("to_timestamp(").append(task.getExpiration()).append("), ");
       sb.append(task.getPriorityCode()).append(", ");
       sb.append("'").append(task.getAssignee()).append("', ");
       sb.append(task.getStatus());
-      sb.append(") WHERE taskid=");
+      sb.append(") WHERE noteId=");
       sb.append(task.getNoteId());
-      sb.append(" RETURNING taskid");
+      sb.append(" RETURNING noteId");
     } else {
       sb.append("INSERT INTO task (patientId, text, reporter, reportedDate, expiration, priority, assignee, status) ");
       sb.append("VALUES(");
       sb.append(task.getPatientId()).append(", ");
       sb.append("'").append(task.getText()).append("', ");
-      sb.append(task.getReporter()).append(", ");
-      sb.append("timestamp(").append(task.getReportedDate()).append("), ");
-      sb.append("timestamp(").append(task.getExpiration()).append("), ");
+      sb.append("'").append(task.getReporter()).append("', ");
+      sb.append("to_timestamp(").append(task.getReportedDate()).append("), ");
+      sb.append("to_timestamp(").append(task.getExpiration()).append("), ");
       sb.append(task.getPriorityCode()).append(", ");
       sb.append("'").append(task.getAssignee()).append("', ");
       sb.append(task.getStatus());
-      sb.append(") RETURNING taskid");
+      sb.append(") RETURNING noteId");
 
       // sb.append("ON DUPLICATE KEY UPDATE text=VALUES(text), reporter=VALUES(reporter), reportedDate=VALUES(reportedDate), expiration=VALUES(expiration), priority=VALUES(priority), status=VALUES(status), assignee=VALUES(assignee);");
     }
 
     String query = sb.toString();
-
+    logger.debug("Writing task: " + query);
     try {
       Statement statment = connection.createStatement();
       ResultSet updateNum = statment.executeQuery(query);
       updateNum.next();
-      tbr = updateNum.getString("taskid");
+      tbr = updateNum.getString("noteId");
       logger.debug("Updated Task " + tbr);
       statment.close();
     } catch (SQLException e) {
@@ -370,14 +370,27 @@ public class PersistenceServiceImpl implements PersistenceService {
     return tbr;
   }
 
-  public void deleteNote(String noteId) {
-    // TODO Auto-generated method stub
-
+  private void deleteNoteOrTask(String id, String table) {
+    String query = "DELETE FROM " + table + " WHERE noteid=" + id + " RETURNING noteid";
+    String tbr = null;
+    try {
+      Statement statment = connection.createStatement();
+      ResultSet updateNum = statment.executeQuery(query);
+      updateNum.next();
+      tbr = updateNum.getString("noteid");
+      statment.close();
+    } catch (SQLException e) {
+      logger.debug("Cannot create statement or execute results.");
+      throw new RuntimeException(e);
+    }
   }
 
-  public void deleteTask(String taskId) {
-    // TODO Auto-generated method stub
+  public void deleteNote(String noteId) {
+    deleteNoteOrTask(noteId, "basenote");
+  }
 
+  public void deleteTask(String noteId) {
+    deleteNoteOrTask(noteId, "task");
   }
 
 }
