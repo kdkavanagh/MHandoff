@@ -136,12 +136,12 @@ define([
             this.$editables.editable('toggleDisabled');
             if(this.editing) {
                 //we were editing, set the text back to edit
-
+                this.noteModel.save();
                 this.$editButton.html("Edit");
             } else {
                 //we were not editing, change text to done
 
-                this.$editButton.html("Done editing");
+                this.$editButton.html("Save");
             }
             this.editing = !this.editing;
         },

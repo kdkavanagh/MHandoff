@@ -269,7 +269,8 @@ public class PersistenceServiceImpl implements PersistenceService {
     return tbr;
   }
 
-  public void writeNote(BaseNote note, boolean update) {
+  public String writeNote(BaseNote note, boolean update) {
+    String tbr = null;
     StringBuilder sb = new StringBuilder();
     if (update) {
       // update
@@ -283,6 +284,7 @@ public class PersistenceServiceImpl implements PersistenceService {
       sb.append(note.getPriorityCode());
       sb.append(") WHERE noteid=");
       sb.append(note.getNoteId());
+      sb.append(" RETURNING noteid");
 
     } else {
       // insert
@@ -294,28 +296,32 @@ public class PersistenceServiceImpl implements PersistenceService {
       sb.append("to_timestamp(").append(note.getReportedDate()).append("), ");
       sb.append("to_timestamp(").append(note.getExpiration()).append("), ");
       sb.append(note.getPriorityCode());
-      sb.append(") ");
+      sb.append(") RETURNING noteid");
       // code for other sql updates
       // sb.append("ON DUPLICATE KEY UPDATE text=VALUES(text), reporter=VALUES(reporter), reportedDate=VALUES(reportedDate), expiration=VALUES(expiration), priority=VALUES(priority);");
 
     }
 
     String query = sb.toString();
-    logger.info("Writing note: " + query);
+    logger.debug("Writing note: " + query);
 
     try {
       Statement statment = connection.createStatement();
-      int updateNum = statment.executeUpdate(query);
-      logger.info("Updated " + updateNum + " row(s)");
+      ResultSet updateNum = statment.executeQuery(query);
+      updateNum.next();
+      tbr = updateNum.getString("noteid");
+      logger.debug("Updated Note " + tbr);
       statment.close();
     } catch (SQLException e) {
       logger.fatal("Cannot create statement or execute results.");
       throw new RuntimeException(e);
     }
+    return tbr;
 
   }
 
-  public void writeTask(Task task, boolean update) {
+  public String writeTask(Task task, boolean update) {
+    String tbr = null;
     StringBuilder sb = new StringBuilder();
     if (update) {
       sb.append("UPDATE task SET (patientId, text, reporter, reportedDate, expiration, priority, assignee, status) = ");
@@ -330,6 +336,7 @@ public class PersistenceServiceImpl implements PersistenceService {
       sb.append(task.getStatus());
       sb.append(") WHERE taskid=");
       sb.append(task.getNoteId());
+      sb.append(" RETURNING taskid");
     } else {
       sb.append("INSERT INTO task (patientId, text, reporter, reportedDate, expiration, priority, assignee, status) ");
       sb.append("VALUES(");
@@ -341,7 +348,7 @@ public class PersistenceServiceImpl implements PersistenceService {
       sb.append(task.getPriorityCode()).append(", ");
       sb.append("'").append(task.getAssignee()).append("', ");
       sb.append(task.getStatus());
-      sb.append(") ");
+      sb.append(") RETURNING taskid");
 
       // sb.append("ON DUPLICATE KEY UPDATE text=VALUES(text), reporter=VALUES(reporter), reportedDate=VALUES(reportedDate), expiration=VALUES(expiration), priority=VALUES(priority), status=VALUES(status), assignee=VALUES(assignee);");
     }
@@ -350,13 +357,17 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     try {
       Statement statment = connection.createStatement();
-      int updateNum = statment.executeUpdate(query);
-      logger.info("Updated " + updateNum + " row(s)");
+      ResultSet updateNum = statment.executeQuery(query);
+      updateNum.next();
+      tbr = updateNum.getString("taskid");
+      logger.debug("Updated Task " + tbr);
       statment.close();
     } catch (SQLException e) {
-      logger.fatal("Cannot create statement or execute results.");
+      logger.debug("Cannot create statement or execute results.");
       throw new RuntimeException(e);
     }
+
+    return tbr;
   }
 
   public void deleteNote(String noteId) {

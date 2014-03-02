@@ -33,9 +33,9 @@ define([
             return handoffUsers[user];
         };
         
-        $(document).bind('keyup', function(e) {
-            console.log(e.type, e.keyCode);
-        });
+//        $(document).bind('keyup', function(e) {
+//            console.log(e.type, e.keyCode);
+//        });
 
         $.getJSON("/backchannel/pull.do", function(data){
             //Load the priority levels 

@@ -17,7 +17,6 @@ define([
         $addNewNoteWidget:null,
         gridsterOpts:null,
         gridsterObj:null,
-        noteType:true,
 
         events: {
             'click #buttonPress': "getItems",
@@ -33,9 +32,6 @@ define([
            
             
             this.notes = this.options.collection;
-            if(this.notes instanceof TaskCollection) {
-                this.noteType = false;
-            }
             this.noteViews = new Array();
             this.garbageViews = new Array();
             this.gridsterOpts = this.options.gridsterOpts;
@@ -91,12 +87,6 @@ define([
         },
         addItem: function() {
             console.log("Adding item");
-            //create the note
-//            if(!this.noteType) {
-//                this.notes.add(new Task());
-//            } else {
-//                this.notes.add(new Note());
-//            }
             this.notes.createNewItem();
         },
 

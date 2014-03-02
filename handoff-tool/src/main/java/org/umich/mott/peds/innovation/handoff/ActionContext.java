@@ -68,7 +68,11 @@ public class ActionContext {
   public String getParameterOrFail(String key) throws ServletException {
     String result = request.getParameter(key);
     if (result == null) {
-      throw new ServletException("Request does not contain parameter " + key);
+      StringBuilder sb = new StringBuilder();
+      for (String param : request.getParameterMap().keySet()) {
+        sb.append(param).append(", ");
+      }
+      throw new ServletException("Request does not contain parameter " + key + ". Parameters: " + sb.toString());
     }
     return result;
   }

@@ -58,8 +58,9 @@ public interface PersistenceService {
    * @param note
    * @param update
    *          - if true, an SQL UPDATE query will be used. Else, INSERT
+   * @return the ID of the note that was affected
    */
-  public void writeNote(BaseNote note, boolean update);
+  public String writeNote(BaseNote note, boolean update);
 
   /**
    * Write the task to the database. Update task is already exists
@@ -67,8 +68,9 @@ public interface PersistenceService {
    * @param task
    * @param update
    *          - if true, an SQL UPDATE query will be used. Else, INSERT
+   * @return the ID of the task that was affected
    */
-  public void writeTask(Task task, boolean update);
+  public String writeTask(Task task, boolean update);
 
   /**
    * Delete a note from the database

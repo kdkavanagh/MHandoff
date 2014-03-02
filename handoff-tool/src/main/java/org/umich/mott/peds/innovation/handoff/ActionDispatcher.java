@@ -71,7 +71,7 @@ public class ActionDispatcher extends HttpServlet {
 
   @Override
   public void doPut(HttpServletRequest request, HttpServletResponse response) {
-    logger.info("Received new POST action request");
+    logger.info("Received new PUT action request");
     try {
       String resp = ActionFactory.getAction(request).update(new ActionContext(request, response));
       if (resp != null) {
@@ -90,7 +90,7 @@ public class ActionDispatcher extends HttpServlet {
 
   @Override
   public void doDelete(HttpServletRequest request, HttpServletResponse response) {
-    logger.info("Received new POST action request");
+    logger.info("Received new DELETE action request");
     try {
       String resp = ActionFactory.getAction(request).delete(new ActionContext(request, response));
       if (resp != null) {

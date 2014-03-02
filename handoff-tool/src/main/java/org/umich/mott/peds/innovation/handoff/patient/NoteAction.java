@@ -1,5 +1,8 @@
 package org.umich.mott.peds.innovation.handoff.patient;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+
 import org.apache.log4j.Logger;
 import org.umich.mott.peds.innovation.handoff.ActionContext;
 import org.umich.mott.peds.innovation.handoff.ActionMapping;
@@ -25,13 +28,11 @@ public class NoteAction extends CRUDAction {
 
   @Override
   public String create(ActionContext context) throws Exception {
-    persistenceService.writeNote(new BaseNote(context), false);
+    String id = persistenceService.writeNote(new BaseNote(context), false);
+    JsonObjectBuilder resp = Json.createObjectBuilder();
+    resp.add("noteId", id);
+    return resp.build().toString();
 
-    if (true) {
-      return ErrorCode.NO_ERROR.json();
-    } else {
-      return ErrorCode.UNABLE_TO_WRITE_ITEM.json();
-    }
   }
 
   @Override
@@ -42,13 +43,10 @@ public class NoteAction extends CRUDAction {
 
   @Override
   public String update(ActionContext context) throws Exception {
-    persistenceService.writeNote(new BaseNote(context), true);
-
-    if (true) {
-      return ErrorCode.NO_ERROR.json();
-    } else {
-      return ErrorCode.UNABLE_TO_WRITE_ITEM.json();
-    }
+    String id = persistenceService.writeNote(new BaseNote(context), true);
+    JsonObjectBuilder resp = Json.createObjectBuilder();
+    resp.add("noteId", id);
+    return resp.build().toString();
   }
 
   @Override

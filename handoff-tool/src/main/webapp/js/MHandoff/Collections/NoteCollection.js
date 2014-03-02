@@ -23,8 +23,8 @@ define([
         },
 
         createNewItem : function() {
-
-            this.add(new this.model());
+            var note = new this.model();
+            this.add(note);
         },
 
 
