@@ -17,8 +17,6 @@ define([
     });
 
     var initialize = function(){
-        console.log("Initing router");
-        var app_router = new AppRouter();
         var view = new PatientMasterView({patientId:"1"}).render();
         
         Backbone.history.start();

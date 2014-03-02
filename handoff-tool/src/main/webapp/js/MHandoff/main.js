@@ -10,12 +10,10 @@ require.config({
         gridster: '../libs/gridster',
         gridster_ext: '../libs/gridster-ext',
         moment : '../libs/moment.min',
-        wysihtml5 : '../libs/wysihtml5-0.3.0.min',
         bootstrap_editable : '../libs/bootstrap-editable.min',
         bootstrap_select : "../bootstrap-select.min",
         text:"../libs/text",
         domReady:"../libs/domReady",
-        //qtip:"../libs/jquery.qtip.min"
 
     },
 
