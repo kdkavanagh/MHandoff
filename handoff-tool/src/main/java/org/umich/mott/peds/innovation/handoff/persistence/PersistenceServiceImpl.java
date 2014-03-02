@@ -21,8 +21,6 @@ import com.google.inject.Singleton;
 @Singleton
 public class PersistenceServiceImpl implements PersistenceService {
 
-  private Connection connection;
-
   private static final Logger logger = Logger.getLogger(PersistenceServiceImpl.class);
 
   private static final String JDBC = "jdbc:postgresql://127.0.0.1:5432/handoff";
@@ -38,22 +36,12 @@ public class PersistenceServiceImpl implements PersistenceService {
   @Inject
   public PersistenceServiceImpl() {
     try {
-
       Class.forName("org.postgresql.Driver");
     } catch (ClassNotFoundException e) {
-
       logger.fatal("No PostgreSQL Driver found.");
       throw new RuntimeException(e);
     }
 
-    try {
-
-      this.connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
-    } catch (SQLException e) {
-
-      logger.fatal("Cannot make connection to PostgreSQL database.");
-      throw new RuntimeException(e);
-    }
   }
 
   private BaseNote noteFromResults(ResultSet noteResults) throws SQLException {
@@ -84,25 +72,24 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   public List<BaseNote> getNotesForPatient(String id) {
     List<BaseNote> tbr = new ArrayList<BaseNote>();
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
     try {
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
+      resultSet = statement
+          .executeQuery(NOTE_SELECT + "WHERE patientId = '" + id + "' ORDER BY priority DESC");
 
-      Statement noteStatment = connection.createStatement();
-      ResultSet noteResults = noteStatment
-          .executeQuery(NOTE_SELECT +
-              "WHERE patientId = '" + id + "' " +
-              "ORDER BY priority DESC");
-
-      while (noteResults.next()) {
-        tbr.add(noteFromResults(noteResults));
+      while (resultSet.next()) {
+        tbr.add(noteFromResults(resultSet));
       }
 
-      noteResults.close();
-      noteStatment.close();
-
     } catch (SQLException e) {
-
-      logger.fatal("Cannot create statement or execute results.");
+      logger.error("Failed to execute query", e);
       throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
     }
 
     return tbr;
@@ -110,26 +97,24 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   public List<Task> getTasksForPatient(String id) {
     List<Task> tbr = new ArrayList<Task>();
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
     try {
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
 
-      Statement noteStatment = connection.createStatement();
+      resultSet = statement.executeQuery(TASK_SELECT + "WHERE patientId = '" + id + "' ORDER BY priority DESC");
 
-      ResultSet noteResults = noteStatment
-          .executeQuery(TASK_SELECT +
-              "WHERE patientId = '" + id + "' " +
-              "ORDER BY priority DESC");
-
-      while (noteResults.next()) {
-        tbr.add(taskFromResults(noteResults));
+      while (resultSet.next()) {
+        tbr.add(taskFromResults(resultSet));
       }
 
-      noteResults.close();
-      noteStatment.close();
-
     } catch (SQLException e) {
-
-      logger.fatal("Cannot create statement or execute results.");
+      logger.error("Failed to execute query", e);
       throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
     }
 
     return tbr;
@@ -141,95 +126,104 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   public List<Pair<Integer, String>> getPriorityLevels() {
     List<Pair<Integer, String>> tbr = new ArrayList<Pair<Integer, String>>();
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
     try {
-      Statement statment = connection.createStatement();
-      ResultSet results = statment
-          .executeQuery("SELECT PriorityLevel.code, PriorityLevel.displayText " +
-              "FROM PriorityLevel " +
-              "ORDER BY code DESC");
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery("SELECT PriorityLevel.code, PriorityLevel.displayText FROM PriorityLevel ORDER BY code DESC");
 
-      while (results.next()) {
+      while (resultSet.next()) {
         int index = 1;
-        int value = Integer.parseInt(results.getString(index++));
-        String text = results.getString(index++);
+        int value = Integer.parseInt(resultSet.getString(index++));
+        String text = resultSet.getString(index++);
 
         tbr.add(new Pair<Integer, String>(value, text));
       }
-      results.close();
-      statment.close();
 
     } catch (SQLException e) {
-      logger.fatal("Cannot create statement or execute results.");
+      logger.error("Failed to execute query", e);
       throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
     }
     return tbr;
   }
 
   public List<Pair<Integer, String>> getTaskStatuses() {
     List<Pair<Integer, String>> tbr = new ArrayList<Pair<Integer, String>>();
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
     try {
-      Statement statment = connection.createStatement();
-      ResultSet results = statment
-          .executeQuery("SELECT TaskStatus.code, TaskStatus.displayText FROM TaskStatus ORDER BY code DESC");
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery("SELECT TaskStatus.code, TaskStatus.displayText FROM TaskStatus ORDER BY code DESC");
 
-      while (results.next()) {
+      while (resultSet.next()) {
         int index = 1;
-        int value = Integer.parseInt(results.getString(index++));
-        String text = results.getString(index++);
+        int value = Integer.parseInt(resultSet.getString(index++));
+        String text = resultSet.getString(index++);
 
         tbr.add(new Pair<Integer, String>(value, text));
       }
-      results.close();
-      statment.close();
-
     } catch (SQLException e) {
-      logger.fatal("Cannot create statement or execute results.");
+      logger.error("Failed to execute query", e);
       throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
     }
     return tbr;
   }
 
   public List<User> getAllUsers() {
     List<User> tbr = new ArrayList<User>();
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
     try {
-      Statement statment = connection.createStatement();
-      ResultSet results = statment
-          .executeQuery("SELECT HandoffUser.uniqname, HandoffUser.first, HandoffUser.last FROM HandoffUser ");
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery("SELECT HandoffUser.uniqname, HandoffUser.first, HandoffUser.last FROM HandoffUser ");
 
-      while (results.next()) {
+      while (resultSet.next()) {
         int index = 1;
-        String uniq = results.getString(index++);
-        String first = results.getString(index++);
-        String last = results.getString(index++);
+        String uniq = resultSet.getString(index++);
+        String first = resultSet.getString(index++);
+        String last = resultSet.getString(index++);
 
         tbr.add(new User(uniq, first, last));
       }
-      results.close();
-      statment.close();
 
     } catch (SQLException e) {
-      logger.fatal("Cannot create statement or execute results.");
+      logger.error("Failed to execute query", e);
       throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
     }
     return tbr;
   }
 
   public BaseNote getNoteById(String noteId) {
     BaseNote tbr = null;
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
     try {
-      Statement noteStatment = connection.createStatement();
-      ResultSet noteResults = noteStatment.executeQuery(NOTE_SELECT +
-          "WHERE noteId = '" + noteId + "' ");
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery(NOTE_SELECT + "WHERE noteId = '" + noteId + "' ");
 
-      while (noteResults.next()) {
-        tbr = noteFromResults(noteResults);
+      while (resultSet.next()) {
+        tbr = noteFromResults(resultSet);
       }
-      noteResults.close();
-      noteStatment.close();
 
     } catch (SQLException e) {
-      logger.fatal("Cannot create statement or execute results.");
+      logger.error("Failed to execute query", e);
       throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
     }
 
     return tbr;
@@ -237,27 +231,22 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   public Task getTaskById(String noteId) {
     Task tbr = null;
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
     try {
-
-      Statement noteStatment = connection.createStatement();
-
-      ResultSet noteResults = noteStatment
-          .executeQuery(TASK_SELECT +
-              "WHERE noteId = '" + noteId + "'");
-
-      while (noteResults.next()) {
-        tbr = taskFromResults(noteResults);
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery(TASK_SELECT + "WHERE noteId = '" + noteId + "'");
+      while (resultSet.next()) {
+        tbr = taskFromResults(resultSet);
       }
-
-      noteResults.close();
-      noteStatment.close();
-
     } catch (SQLException e) {
-
-      logger.fatal("Cannot create statement or execute results.");
+      logger.error("Failed to execute query", e);
       throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
     }
-
     return tbr;
   }
 
@@ -296,17 +285,21 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     String query = sb.toString();
     logger.debug("Writing note: " + query);
-
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
     try {
-      Statement statment = connection.createStatement();
-      ResultSet updateNum = statment.executeQuery(query);
-      updateNum.next();
-      tbr = updateNum.getString("noteid");
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery(query);
+      resultSet.next();
+      tbr = resultSet.getString("noteid");
       logger.debug("Updated Note " + tbr);
-      statment.close();
     } catch (SQLException e) {
-      logger.fatal("Cannot create statement or execute results.");
+      logger.error("Failed to execute query", e);
       throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
     }
     return tbr;
 
@@ -347,16 +340,21 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     String query = sb.toString();
     logger.debug("Writing task: " + query);
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
     try {
-      Statement statment = connection.createStatement();
-      ResultSet updateNum = statment.executeQuery(query);
-      updateNum.next();
-      tbr = updateNum.getString("noteId");
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery(query);
+      resultSet.next();
+      tbr = resultSet.getString("noteId");
       logger.debug("Updated Task " + tbr);
-      statment.close();
     } catch (SQLException e) {
-      logger.debug("Cannot create statement or execute results.");
+      logger.error("Failed to execute query", e);
       throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
     }
 
     return tbr;
@@ -365,15 +363,21 @@ public class PersistenceServiceImpl implements PersistenceService {
   private void deleteNoteOrTask(String id, String table) {
     String query = "DELETE FROM " + table + " WHERE noteid=" + id + " RETURNING noteid";
     String tbr = null;
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
     try {
-      Statement statment = connection.createStatement();
-      ResultSet updateNum = statment.executeQuery(query);
-      updateNum.next();
-      tbr = updateNum.getString("noteid");
-      statment.close();
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery(query);
+      resultSet.next();
+      tbr = resultSet.getString("noteid");
+
     } catch (SQLException e) {
-      logger.debug("Cannot create statement or execute results.");
+      logger.error("Failed to execute query", e);
       throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
     }
   }
 
@@ -383,6 +387,24 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   public void deleteTask(String noteId) {
     deleteNoteOrTask(noteId, "task");
+  }
+
+  private void closeDBConnection(Connection connection, Statement statement, ResultSet resultSet) {
+    if (resultSet != null)
+      try {
+        resultSet.close();
+      } catch (SQLException ignore) {
+      }
+    if (statement != null)
+      try {
+        statement.close();
+      } catch (SQLException ignore) {
+      }
+    if (connection != null)
+      try {
+        connection.close();
+      } catch (SQLException ignore) {
+      }
   }
 
 }
