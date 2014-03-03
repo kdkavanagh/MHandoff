@@ -16,12 +16,27 @@ define([
 
         initialize: function(patientId) {
             this.patientId = patientId;
-//            this.stream = new Stream(patientId+",tasks");
-//            this.stream.on('newNote', function(e) {
-//                this.add(e);
-//            }, this);
+            this.stream = require("MHandoff").stream();
+
+            var self = this;
+            this.stream.on(patientId+":tasks:create", function(e) {
+                console.log("Received create note topic message");
+                var newTask = new Task(e);
+                newTask.fetch();
+                self.add(newTask);
+            }, this);
+            this.stream.on(patientId+":tasks:update", function(e) {
+                console.log("Received update note topic message");
+                if(self.get(e) !== undefined) {
+                    self.get(e).fetch();
+                } else {
+                    var newTask = new Task(e);
+                    newTask.fetch();
+                    self.add(newTask);
+                }
+            }, this);
         },
-        
+
         createNewItem : function() {
             this.add(new this.model());
         },

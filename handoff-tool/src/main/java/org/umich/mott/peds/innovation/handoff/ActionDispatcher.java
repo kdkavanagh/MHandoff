@@ -33,9 +33,9 @@ public class ActionDispatcher extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) {
-    logger.trace("Received new GET action request");
+    logger.info("Received new GET action request from session " + request.getSession().getId());
     try {
-      String resp = ActionFactory.getAction(request).read(new ActionContext(request, response));
+      String resp = ActionFactory.getAction(request).read(new ActionContext(request, response, ActionFactory.getMappingString(request)));
       if (resp != null) {
         setJsonResponse(resp, response);
       }
@@ -54,7 +54,7 @@ public class ActionDispatcher extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) {
     logger.trace("Received new POST action request");
     try {
-      String resp = ActionFactory.getAction(request).create(new ActionContext(request, response));
+      String resp = ActionFactory.getAction(request).create(new ActionContext(request, response, ActionFactory.getMappingString(request)));
       if (resp != null) {
         setJsonResponse(resp, response);
       }
@@ -73,7 +73,7 @@ public class ActionDispatcher extends HttpServlet {
   public void doPut(HttpServletRequest request, HttpServletResponse response) {
     logger.trace("Received new PUT action request");
     try {
-      String resp = ActionFactory.getAction(request).update(new ActionContext(request, response));
+      String resp = ActionFactory.getAction(request).update(new ActionContext(request, response, ActionFactory.getMappingString(request)));
       if (resp != null) {
         setJsonResponse(resp, response);
       }
@@ -92,7 +92,7 @@ public class ActionDispatcher extends HttpServlet {
   public void doDelete(HttpServletRequest request, HttpServletResponse response) {
     logger.trace("Received new DELETE action request");
     try {
-      String resp = ActionFactory.getAction(request).delete(new ActionContext(request, response));
+      String resp = ActionFactory.getAction(request).delete(new ActionContext(request, response, ActionFactory.getMappingString(request)));
       if (resp != null) {
         setJsonResponse(resp, response);
       }

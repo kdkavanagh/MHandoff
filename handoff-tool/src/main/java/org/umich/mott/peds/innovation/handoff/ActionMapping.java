@@ -18,6 +18,6 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ActionMapping {
 
-  String path();
+  String[] path();
 
 }

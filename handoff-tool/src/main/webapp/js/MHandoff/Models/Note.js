@@ -1,14 +1,14 @@
 define([
-  // These are path alias that we configured in our bootstrap
-  'jquery',     
-  'underscore', 
-  'backbone',
-  'utils',
-  'moment',
-], function($, _, Backbone, Utils, moment){
-    
-    
-    
+        // These are path alias that we configured in our bootstrap
+        'jquery',     
+        'underscore', 
+        'backbone',
+        'utils',
+        'moment',
+        ], function($, _, Backbone, Utils, moment){
+
+
+
     var Note = Backbone.Model.extend({
         idAttribute: 'noteId',
         defaults : {
@@ -21,7 +21,19 @@ define([
             text:"Note text",
         },
 
-        url : function() {
+        initialize : function() {
+            this.methodToURL.parent= this;
+        },
+
+        baseUrl:"/patient/note.do",
+        methodToURL: {
+            'read': function() {return this.parent.baseUrl+"?noteId="+this.parent.get("noteId");},
+            'create': function() {return this.parent.fullUrl();},
+            'update': function() {return this.parent.fullUrl();},
+            'delete': function() {return this.parent.baseUrl+"?noteId="+this.parent.get("noteId");},
+        },
+
+        fullUrl : function() {
             return "/patient/note.do?noteId=" 
             + this.get("noteId")
             +"&patientId="+this.get("patientId")
@@ -29,13 +41,17 @@ define([
             + "&reportedDate="+this.get("reportedDate")
             + "&expiration="+this.get("expiration")
             + "&priorityCode="+this.get("priorityCode")
-            + "&text="+this.get("text");
-            
-            
+            + "&text="+this.get("text"); 
         },
-        
+
+        sync: function(method, model, options) {
+            options = options || {};
+            options.url = model.methodToURL[method.toLowerCase()]();
+            return  Backbone.sync(method, model, options);
+        },
+
     });
-    
-    
+
+
     return Note;
 });

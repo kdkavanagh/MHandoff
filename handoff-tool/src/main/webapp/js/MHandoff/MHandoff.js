@@ -4,13 +4,16 @@ define([
         'backbone',
         'bootstrap',
         'router', // Request router.js
+        'stream',
         'text!Views/templates/errorModal.html',
-        ], function($, _, Backbone,Bootstrap, Router, errorModal){
+        ], function($, _, Backbone,Bootstrap, Router,Stream, errorModal){
 
 
     var priorityLevels = {};
     var taskStatuses={};
     var handoffUsers={};
+    
+    var stream;
 
     var initialize = function(){
         // Pass in our Router module and call it's initialize function
@@ -49,7 +52,7 @@ define([
             for( var key in data.handoffUsers )
                 handoffUsers[ key ] = data.handoffUsers[ key ];
 
-
+            stream  = new Stream();
             Router.initialize();
         }).error(function() { 
             var tmpl = _.template(errorModal); //tmpl is a function that takes a JSON and returns html
@@ -68,5 +71,6 @@ define([
         priorityLevels:priorityLevels,
         taskStatuses:taskStatuses,
         handoffUsers:handoffUsers,
+        stream : function() {return stream},
     };
 });

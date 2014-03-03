@@ -62,7 +62,6 @@ require([
         //This function is called once the DOM is ready.
         //It will be safe to query the DOM and manipulate
         //DOM nodes in this function.
-        console.log("Initializing MHandoff");
         App.initialize();
     });
 

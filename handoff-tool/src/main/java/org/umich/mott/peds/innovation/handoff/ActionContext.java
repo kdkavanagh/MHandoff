@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.umich.mott.peds.innovation.handoff.patient.Stream;
+
 /**
  * Wrapper class for HttpServletRequest/Response to simplify access to
  * request/response methods
@@ -21,9 +23,12 @@ public class ActionContext {
 
   private final HttpServletResponse response;
 
-  public ActionContext(final HttpServletRequest req, final HttpServletResponse resp) {
+  private final String path;
+
+  public ActionContext(final HttpServletRequest req, final HttpServletResponse resp, String path) {
     request = req;
     response = resp;
+    this.path = path;
   }
 
   public HttpServletRequest getRequest() {
@@ -32,6 +37,10 @@ public class ActionContext {
 
   public HttpServletResponse getResponse() {
     return response;
+  }
+
+  public Stream getStreamingConnection() {
+    return (Stream) this.request.getSession().getAttribute(Stream.STREAM);
   }
 
   /**
@@ -86,5 +95,9 @@ public class ActionContext {
    */
   public String getParameter(String key) {
     return request.getParameter(key);
+  }
+
+  public String getPath() {
+    return path;
   }
 }

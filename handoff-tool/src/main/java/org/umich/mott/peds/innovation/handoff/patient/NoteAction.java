@@ -8,6 +8,7 @@ import org.umich.mott.peds.innovation.handoff.ActionContext;
 import org.umich.mott.peds.innovation.handoff.ActionMapping;
 import org.umich.mott.peds.innovation.handoff.CRUDAction;
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
+import org.umich.mott.peds.innovation.handoff.common.Task;
 
 /**
  * Create an item in the patient's record
@@ -20,15 +21,33 @@ import org.umich.mott.peds.innovation.handoff.common.BaseNote;
  * 
  * 
  */
-@ActionMapping(path = "patient/note.do")
+@ActionMapping(path = { NoteAction.NOTE_PATH, NoteAction.TASK_PATH })
 public class NoteAction extends CRUDAction {
 
   private static final Logger logger = Logger.getLogger(NoteAction.class);
 
+  protected static final String NOTE_PATH = "/patient/note.do";
+
+  protected static final String TASK_PATH = "/patient/task.do";
+
   @Override
   public String create(ActionContext context) throws Exception {
-    logger.info("Creating new note");
-    String id = persistenceService.writeNote(new BaseNote(context), false);
+    String id = null;
+    BaseNote newNote;
+    logger.info(context.getPath());
+    if (context.getPath().equals(NOTE_PATH)) {
+      logger.info("Creating new note");
+      newNote = new BaseNote(context);
+      id = persistenceService.writeNote(newNote, false);
+    } else {
+      logger.info("Creating new task");
+      newNote = new Task(context);
+      id = persistenceService.writeTask((Task) newNote, false);
+    }
+    newNote.setNoteId(id);
+    String type = context.getPath().equals(NOTE_PATH) ? "notes" : "tasks";
+    String topic = newNote.getPatientId() + ":" + type + ":create";
+    context.getStreamingConnection().sendMessageToOtherClients(new Stream.Message(topic, newNote));
     JsonObjectBuilder resp = Json.createObjectBuilder();
     resp.add("noteId", id);
     return resp.build().toString();
@@ -37,14 +56,34 @@ public class NoteAction extends CRUDAction {
 
   @Override
   public String read(ActionContext context) throws Exception {
-    BaseNote n = persistenceService.getNoteById(context.getParameterOrFail("noteid"));
-    return gson.toJson(n);
+    String res = null;
+    if (context.getPath().equals(NOTE_PATH)) {
+      BaseNote n = persistenceService.getNoteById(context.getParameterOrFail("noteId"));
+      res = gson.toJson(n);
+    } else {
+      Task n = persistenceService.getTaskById(context.getParameterOrFail("noteId"));
+      res = gson.toJson(n);
+    }
+    return res;
   }
 
   @Override
   public String update(ActionContext context) throws Exception {
-    logger.info("Updating note " + context.getParameterOrFail("noteId"));
-    String id = persistenceService.writeNote(new BaseNote(context), true);
+    String id = null;
+    BaseNote newNote;
+    if (context.getPath().equals(NOTE_PATH)) {
+      logger.info("Updating note " + context.getParameterOrFail("noteId"));
+      newNote = new BaseNote(context);
+      id = persistenceService.writeNote(newNote, true);
+    } else {
+      logger.info("Updating task " + context.getParameterOrFail("noteId"));
+      newNote = new Task(context);
+      id = persistenceService.writeTask((Task) newNote, true);
+    }
+    String type = context.getPath().equals(NOTE_PATH) ? "notes" : "tasks";
+    String topic = newNote.getPatientId() + ":" + type + ":update";
+    context.getStreamingConnection().sendMessageToOtherClients(new Stream.Message(topic, newNote));
+
     JsonObjectBuilder resp = Json.createObjectBuilder();
     resp.add("noteId", id);
     return resp.build().toString();
@@ -52,8 +91,13 @@ public class NoteAction extends CRUDAction {
 
   @Override
   public String delete(ActionContext context) throws Exception {
-    logger.info("Deleting note " + context.getParameterOrFail("noteId"));
-    persistenceService.deleteNote(context.getParameterOrFail("noteId"));
+    if (context.getPath().equals(NOTE_PATH)) {
+      logger.info("Deleting note " + context.getParameterOrFail("noteId"));
+      persistenceService.deleteNote(context.getParameterOrFail("noteId"));
+    } else {
+      logger.info("Deleting task " + context.getParameterOrFail("noteId"));
+      persistenceService.deleteTask(context.getParameterOrFail("noteId"));
+    }
     return null;
   }
 }

@@ -35,7 +35,7 @@ public final class ActionFactory {
         if (!CRUDAction.class.isAssignableFrom(clazz)) {
           logger.error(clazz.getName() + " is not an implementation of CRUDAction.class");
         } else {
-          createMapping((CRUDAction) clazz.newInstance());
+          createMapping(clazz);
         }
       } catch (Exception e) {
         logger.error("Could not map Action class " + clazz.getCanonicalName(), e);
@@ -43,8 +43,12 @@ public final class ActionFactory {
     }
   }
 
+  public static final String getMappingString(HttpServletRequest request) {
+    return request.getServletPath();
+  }
+
   public static CRUDAction getAction(HttpServletRequest request) {
-    String req = request.getServletPath();
+    String req = getMappingString(request);
     CRUDAction a = mappings.get(req);
     if (a == null) {
       throw new RuntimeException("No action available for request " + req);
@@ -52,18 +56,20 @@ public final class ActionFactory {
     return a;
   }
 
-  private static void createMapping(CRUDAction action) {
+  private static void createMapping(Class<?> clazz) throws InstantiationException, IllegalAccessException {
     // Get the url info from the annotation
-    String path = action.getClass().getAnnotation(ActionMapping.class).path();
-    if (!path.startsWith("/")) {
-      path = "/" + path;
-    }
+    String[] paths = clazz.getAnnotation(ActionMapping.class).path();
+    for (String path : paths) {
+      if (!path.startsWith("/")) {
+        path = "/" + path;
+      }
 
-    if (!path.endsWith(".do")) {
-      path += ".do";
+      if (!path.endsWith(".do")) {
+        path += ".do";
+      }
+      logger.debug("Mapping URL " + path + " to action " + clazz.getCanonicalName());
+      mappings.put(path, (CRUDAction) clazz.newInstance());
     }
-    logger.debug("Mapping URL " + path + " to action " + action.getClass().getCanonicalName());
-    mappings.put(path, action);
   }
 
 }
