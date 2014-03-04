@@ -15,12 +15,17 @@ define([
 
         initialize: function(patientId) {
             this.patientId = patientId;
+            
+
+        },
+        
+        initStream : function(patientId) {
             this.stream = require("MHandoff").stream();
 
             var self = this;
             this.stream.on(patientId+":notes:create", function(e) {
                 console.log("Received create note topic message");
-                var newNote = new Note(e);
+                var newNote = new Note({noteId:e});
                 newNote.fetch();
                 self.add(newNote);
             }, this);
@@ -29,12 +34,11 @@ define([
                 if(self.get(e) !== undefined) {
                     self.get(e).fetch();
                 } else {
-                    var newNote = new Note(e);
+                    var newNote = new Note({noteId:e});
                     newNote.fetch();
                     self.add(newNote);
                 }
             }, this);
-
         },
 
         createNewItem : function() {

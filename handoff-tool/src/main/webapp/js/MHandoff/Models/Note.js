@@ -18,23 +18,13 @@ define([
             reportedDate:moment().valueOf()/1000,
             expiration:moment().add('days', 1).valueOf()/1000,
             badgeLevel:"",
-            text:"Note text",
-        },
-
-        initialize : function() {
-            this.methodToURL.parent= this;
+            text:"",
         },
 
         baseUrl:"/patient/note.do",
-        methodToURL: {
-            'read': function() {return this.parent.baseUrl+"?noteId="+this.parent.get("noteId");},
-            'create': function() {return this.parent.fullUrl();},
-            'update': function() {return this.parent.fullUrl();},
-            'delete': function() {return this.parent.baseUrl+"?noteId="+this.parent.get("noteId");},
-        },
 
-        fullUrl : function() {
-            return "/patient/note.do?noteId=" 
+        url : function() {
+            return this.baseUrl+"?noteId=" 
             + this.get("noteId")
             +"&patientId="+this.get("patientId")
             + "&reporter="+this.get("reporter")
@@ -46,7 +36,21 @@ define([
 
         sync: function(method, model, options) {
             options = options || {};
-            options.url = model.methodToURL[method.toLowerCase()]();
+            if(method.toLowerCase() === 'read' || method.toLowerCase() === 'delete' ) {
+                //We only need to send the noteId
+                options.url= this.baseUrl+"?noteId="+ this.get("noteId");
+            } else {
+                options.url = this.baseUrl+"?noteId=" 
+                + this.get("noteId")
+                +"&patientId="+this.get("patientId")
+                + "&reporter="+this.get("reporter")
+                + "&reportedDate="+this.get("reportedDate")
+                + "&expiration="+this.get("expiration")
+                + "&priorityCode="+this.get("priorityCode")
+                + "&text="+this.get("text"); 
+            }
+ 
+
             return  Backbone.sync(method, model, options);
         },
 

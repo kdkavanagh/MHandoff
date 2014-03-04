@@ -40,10 +40,10 @@ define([
             } else {
                 this.noteModel.set("badgeLevel","");
             }
-
-            this.noteModel.on('change', this.updateView, this);
-            this.noteModel.on('change:badgeLevel', this.updateBadge, this);
-            this.noteModel.on('change:priorityCode', this.updateBadge, this);
+            
+            this.listenTo(this.noteModel, 'change', this.updateView);
+            this.listenTo(this.noteModel, 'change:badgeLevel', this.updateBadge);
+            this.listenTo(this.noteModel, 'change:priorityCode', this.updateBadge);
 
             return this;
         },
@@ -102,10 +102,6 @@ define([
             delete this.$notePriorityBadge;
             delete this.$noteText;
             this.unbind(); // Unbind all local event bindings
-            this.noteModel.unbind( 'change', this.render, this ); // Unbind reference to the model
-            this.noteModel.unbind('change', this.updateView, this);
-            this.noteModel.unbind('change:badgeLevel', this.updateBadge, this);
-            this.noteModel.unbind('change:priorityCode', this.updateBadge, this);
             this.noteModel.destroy();
             this.options.parent.unbind( 'close:all', this.close, this ); // Unbind reference to the parent view
 

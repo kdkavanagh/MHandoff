@@ -58,11 +58,6 @@ define([
                     widget_base_dimensions : [ 230, 130 ],
                     min_cols : 3,
                     namespace:"#noteGrid",
-                    draggable: {
-                        stop: function(event, ui){ 
-                            console.log("stopped");
-                        }
-                    },
                     resize: {
                         enabled: true,
                         max_size: [2, 2],
@@ -85,30 +80,19 @@ define([
                     min_cols : 1,
                     max_cols: 1,
                     namespace:"#taskGrid",
-                    draggable: {
-                        stop: function(event, ui){ 
-                            console.log("stopped");
-                        }
-                    }
                 }});
-            this.noteGrid.on('gridchange', this.gridChangeHandler, this);
-            this.taskGrid.on('gridchange', this.gridChangeHandler, this);
-
         },
+        
+        destroyView : function() {
+            this.undelegateEvents();
 
-        gridChangeHandler : function() {
-            //console.log("got event");
-            // var h = equalHeight($(".gridster > ul"));
-//          $(".patientPanel").each(function() {
-//          $(this).height(h);
-
-//          });
-
-            //  console.log($(".patientPanel").height() +", "+$("#taskGrid").height());
-
-
-
-
+            this.$el.removeData().unbind(); 
+            
+            this.noteGrid.destroyView();
+            this.TaskGrid.destroyView();
+            //Remove view from DOM
+            this.remove();  
+            Backbone.View.prototype.remove.call(this);
 
         },
 

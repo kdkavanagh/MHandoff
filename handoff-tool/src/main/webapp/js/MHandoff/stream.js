@@ -22,6 +22,7 @@ define([
             this.socket.onmessage = function(e) {
                     var jsonData = JSON.parse(e.data);
                     self.trigger('message', jsonData);
+                    console.log("Received message on topic "+jsonData.topic);
                     if(jsonData.topic) {
                         var topic = jsonData.topic;
                         delete jsonData.topic;

@@ -52,7 +52,7 @@ define([
             for( var key in data.handoffUsers )
                 handoffUsers[ key ] = data.handoffUsers[ key ];
 
-            stream  = new Stream();
+            //stream  = new Stream();
             Router.initialize();
         }).error(function() { 
             var tmpl = _.template(errorModal); //tmpl is a function that takes a JSON and returns html

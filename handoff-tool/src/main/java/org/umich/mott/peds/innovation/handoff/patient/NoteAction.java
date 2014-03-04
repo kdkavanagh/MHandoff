@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.umich.mott.peds.innovation.handoff.ActionContext;
 import org.umich.mott.peds.innovation.handoff.ActionMapping;
 import org.umich.mott.peds.innovation.handoff.CRUDAction;
+import org.umich.mott.peds.innovation.handoff.Stream;
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 
@@ -36,7 +37,7 @@ public class NoteAction extends CRUDAction {
     BaseNote newNote;
     logger.info(context.getPath());
     if (context.getPath().equals(NOTE_PATH)) {
-      logger.info("Creating new note");
+      logger.info("Creating new note for session " + context.getRequest().getSession().getId());
       newNote = new BaseNote(context);
       id = persistenceService.writeNote(newNote, false);
     } else {
@@ -47,7 +48,7 @@ public class NoteAction extends CRUDAction {
     newNote.setNoteId(id);
     String type = context.getPath().equals(NOTE_PATH) ? "notes" : "tasks";
     String topic = newNote.getPatientId() + ":" + type + ":create";
-    context.getStreamingConnection().sendMessageToOtherClients(new Stream.Message(topic, newNote));
+    context.postMessageToStream(new Stream.Message(topic, newNote.getNoteId()));
     JsonObjectBuilder resp = Json.createObjectBuilder();
     resp.add("noteId", id);
     return resp.build().toString();
@@ -82,7 +83,7 @@ public class NoteAction extends CRUDAction {
     }
     String type = context.getPath().equals(NOTE_PATH) ? "notes" : "tasks";
     String topic = newNote.getPatientId() + ":" + type + ":update";
-    context.getStreamingConnection().sendMessageToOtherClients(new Stream.Message(topic, newNote));
+    context.postMessageToStream(new Stream.Message(topic, newNote.getNoteId()));
 
     JsonObjectBuilder resp = Json.createObjectBuilder();
     resp.add("noteId", id);

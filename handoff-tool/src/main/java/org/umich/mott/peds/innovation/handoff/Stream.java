@@ -1,4 +1,4 @@
-package org.umich.mott.peds.innovation.handoff.patient;
+package org.umich.mott.peds.innovation.handoff;
 
 import java.io.IOException;
 import java.util.Set;
@@ -15,7 +15,6 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.util.ConcurrentHashSet;
-import org.umich.mott.peds.innovation.handoff.GetHttpSessionConfigurator;
 
 import com.google.gson.Gson;
 
@@ -75,8 +74,8 @@ public class Stream implements HttpSessionBindingListener {
     }
   }
 
-  public void sendMessageToOtherClients(Message msg) {
-    logger.info("Sending message to other listeners");
+  public synchronized void sendMessageToOtherClients(Message msg) {
+    logger.info("Sending message to other listeners. Skipping session " + this.ourHttpSession.getId());
     logger.info("Message: " + gson.toJson(msg));
     for (Session client : clients) {
       if (client != this.ourSession && client.isOpen() && client.isSecure()) {

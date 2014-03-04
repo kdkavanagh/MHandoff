@@ -32,7 +32,6 @@ define([
 
             this.notes = this.options.collection;
             this.noteViews = new Array();
-            this.garbageViews = new Array();
             this.gridsterOpts = this.options.gridsterOpts;
             this.gridsterID = this.options.gridsterID;
             this.templates = this.options.templates;
@@ -40,15 +39,14 @@ define([
             this.gridsterObj = this.$el.find(this.gridsterID+" > ul").gridster(this.gridsterOpts).data('gridster');
 
             this.notes.fetch({ reset:true,});
-            this.notes.on('reset', this.generateViews, this);
-            //this.notes.on('change', this.render);
-            this.notes.on('add', this.newItemAdded, this);
+            this.listenTo(this.notes, 'reset', this.generateViews);
+            this.listenTo(this.notes, 'add', this.newItemAdded);
         },
 
         createView: function(note, row, col, self) {
             var noteView = new NoteTileView({parent : self, noteModel:note,templates:this.templates, row:row, col:col, gridster : self.gridsterObj});
             self.noteViews.push(noteView);
-            noteView.on('remove', self.noteRemoved, self);
+            self.listenTo(noteView, 'remove', self.noteRemoved);
             return noteView;
 
         },
@@ -57,7 +55,7 @@ define([
         generateViews: function() {
             //Destroy existing views
             while (this.noteViews.length > 0) {
-                this.garbageViews.push(this.noteViews.pop());
+                this.noteViews.pop().destroy_full(null);
             }
 
             var row = 0;
@@ -69,10 +67,6 @@ define([
                 }
                 self.createView(note, row, col, self);
             });
-
-            // var addNewItemHtml="<div class=\"note addNewTile\"><div id=\"addNewTileInner\" class=\"\"><span class=\"glyphicon glyphicon-plus addNewTileIcon ignoreDrag\"></span>Add New Item</div><div>";
-            // this.$addNewNoteWidget= this.gridsterObj.add_widget(addNewItemHtml);
-            //  this.gridsterObj.disable_widget(this.$addNewNoteWidget);
             this.render();
         },
 
@@ -88,11 +82,6 @@ define([
         },
 
         newItemAdded:function(note) {
-            //get the next free position
-            //var gridsterObj = $("#noteGrid ul").gridster().data('gridster');
-
-            //Move the add new note item to the next free position
-            //This is safe because the space is guarenteed to be empty
             var newView = this.createView(note, 0, 0, this).render();
             newView.openNote().toggleEditing();
             this.trigger('gridchange');
@@ -108,7 +97,6 @@ define([
                 this.trigger('gridchange');
             }
         },
-
 
 
         noteRemoved:function(event) {
@@ -132,17 +120,23 @@ define([
             for (var i = 0; i < this.noteViews.length; i++) {
                 this.noteViews[i].render();
             }
-            //delete any garbage we have (must be done after remove_all_widgets()
-            while(this.garbageViews.length > 0) {
-                this.garbageViews.pop().destroy_full(null);
-            }
-
             return this;
-        }
+        },
+
+        destroyView : function() {
+            this.undelegateEvents();
+
+            this.$el.removeData().unbind(); 
+            //destroy the tiles
+            for (var i = 0; i < this.noteViews.length; i++) {
+                this.noteViews[i].destroy_full();
+            }
+            //Remove view from DOM
+            this.remove();  
+            Backbone.View.prototype.remove.call(this);
+
+        },
     });
 
-
-
     return NoteGridView;
-    // What we return here will be used by other modules
 });

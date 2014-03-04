@@ -7,8 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.umich.mott.peds.innovation.handoff.patient.Stream;
-
 /**
  * Wrapper class for HttpServletRequest/Response to simplify access to
  * request/response methods
@@ -39,8 +37,16 @@ public class ActionContext {
     return response;
   }
 
-  public Stream getStreamingConnection() {
-    return (Stream) this.request.getSession().getAttribute(Stream.STREAM);
+  public void postMessageToStream(Stream.Message msg) {
+    // Streaming not yet enabled
+    // Stream s = (Stream)
+    // this.request.getSession().getAttribute(Stream.STREAM);
+    // if (s != null) {
+    // s.sendMessageToOtherClients(msg);
+    // } else {
+    // // This user isnt using the stream (maybe they dont support websockets)
+    // Stream.sendMessageToAllClients(msg);
+    // }
   }
 
   /**

@@ -16,12 +16,16 @@ define([
 
         initialize: function(patientId) {
             this.patientId = patientId;
+            
+        },
+        
+        initStream : function(patientId) {
             this.stream = require("MHandoff").stream();
 
             var self = this;
             this.stream.on(patientId+":tasks:create", function(e) {
                 console.log("Received create note topic message");
-                var newTask = new Task(e);
+                var newTask = new Task({noteId:e});
                 newTask.fetch();
                 self.add(newTask);
             }, this);
@@ -30,7 +34,7 @@ define([
                 if(self.get(e) !== undefined) {
                     self.get(e).fetch();
                 } else {
-                    var newTask = new Task(e);
+                    var newTask = new Task({noteId:e});
                     newTask.fetch();
                     self.add(newTask);
                 }
