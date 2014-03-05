@@ -6,9 +6,11 @@ define([
   'bootstrap',
   'moment',
   'bootstrap_editable',
+  'bootstrap_slider',
   'Models/PatientInfo',
+  'require'
 
-], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, PatientInfo){
+], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Bootstrap_slider, PatientInfo, require){
     
     
     var PatientInfoView = Backbone.View.extend({
@@ -52,6 +54,17 @@ define([
 
         render:function() {
             console.log("Rendering patient view");
+            
+            $("#filterSlider").slider({
+                min : 0,
+                max : 200,
+                step : 50,
+                value:[0,200],
+                formater : function(first, second) {
+                    var handoff = require("MHandoff");
+                    return handoff.priorityLevels[first] + ' to ' + handoff.priorityLevels[second];
+                },
+            });
             //this.$el.html("<div>TESTING</div>");
             
             //var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html

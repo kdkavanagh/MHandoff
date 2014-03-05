@@ -14,6 +14,7 @@ define([
         $noteText:null,
         $notePriorityBadge:null,
         $closeIcon:null,
+        hidden:true,
 
         events: {
             'click span#closeIcon': "removeClickHandler",
@@ -61,6 +62,7 @@ define([
             this.gridster.add_widget(this.el);
             this.$closeIcon = this.$el.find("span.closeIcon");
             this.$closeIcon.tooltip({ container: 'body'});
+            this.hidden = false;
             return this;
         },
 
@@ -73,15 +75,21 @@ define([
         removeClickHandler : function(event){
             console.log("Removing...");
             this.$closeIcon.tooltip('hide');
-            this.gridster.remove_widget(this.$el);
             this.remove();
-
+            this.trigger('remove', this);
             return false;
+        },
+        
+        hide:function() {
+            this.remove();
+            this.trigger('hidden', this);
+            
         },
 
         remove: function() {
+            this.gridster.remove_widget(this.$el);
             Backbone.View.prototype.remove.apply(this, arguments);
-            this.trigger('remove', this);
+            this.hidden = true;
             return this;
         },
 

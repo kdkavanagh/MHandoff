@@ -14,6 +14,7 @@ require.config({
         bootstrap_select : "../bootstrap-select.min",
         text:"../libs/text",
         domReady:"../libs/domReady",
+        bootstrap_slider:'../libs/bootstrap-slider',
 
     },
 
@@ -40,6 +41,10 @@ require.config({
         "bootstrap_editable": {
             deps:['jquery', 'bootstrap'],
             exports: "Bootstrap_editable"
+        },
+        "bootstrap_slider": {
+            deps:['jquery', 'bootstrap'],
+            exports: "Bootstrap_slider"
         }
 
     },

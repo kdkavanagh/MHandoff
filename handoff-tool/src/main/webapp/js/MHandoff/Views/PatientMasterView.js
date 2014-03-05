@@ -83,9 +83,31 @@ define([
                     max_cols: 1,
                     namespace:"#taskGrid",
                 }});
+            var self = this;
+            var sliderMin =0; sliderMax=200;
+            this.$el.find("#filterSlider").on('slide', function(e){
+                //only filter if we need to
+                if(sliderMin !== e.value[0] || sliderMax !==e.value[1]) {
+                    self.noteGrid.filter(self.createPriorityFilter( e.value[0], e.value[1]));
+                    self.taskGrid.filter(self.createPriorityFilter( e.value[0], e.value[1]));
+                    sliderMin = e.value[0];
+                    sliderMax = e.value[1];
+                }
+                
+            });
+            
             
             return this;
         },
+        
+        //Returns a function that takes in the notemodel as an arg and returns a bool with whether or not the item is out-of-bounds
+        createPriorityFilter:function(sliderMin, sliderMax) {
+            return function(noteModel) {
+                return (noteModel.get("priorityCode") < sliderMin || noteModel.get("priorityCode") > sliderMax);
+            };
+        },
+        
+       
         
         destroyView : function() {
             this.undelegateEvents();
