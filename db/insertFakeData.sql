@@ -1,5 +1,5 @@
 INSERT INTO Patient (patientId)
-VALUES ('1');
+VALUES ('1'),('2');
 
 INSERT INTO HandoffUser (uniqname, first, last, position)
 VALUES ('collsain', 'Colleen', 'Sain', 'student'),

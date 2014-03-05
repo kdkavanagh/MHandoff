@@ -4,8 +4,9 @@ define([
         'backbone',
         'gridster',
         'Views/PatientMasterView',
+        'Views/MainView',
 
-        ], function($, _, Backbone,Gridster,PatientMasterView){
+        ], function($, _, Backbone,Gridster,PatientMasterView, MainView){
     var AppRouter = Backbone.Router.extend({
         routes: {
             // Define some URL routes
@@ -17,7 +18,8 @@ define([
     });
 
     var initialize = function(){
-        var view = new PatientMasterView({patientId:"1"}).render();
+        var view = new MainView().render();
+        //var view = new PatientMasterView({patientId:"1"}).render();
         
         Backbone.history.start();
     };

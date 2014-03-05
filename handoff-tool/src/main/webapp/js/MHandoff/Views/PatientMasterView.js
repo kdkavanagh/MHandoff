@@ -13,9 +13,10 @@ define([
         'text!Views/templates/taskModal.html',
         "Views/PatientInfoView",
         'text!Views/templates/patientInfoModal.html',
+        'text!Views/templates/patientMasterTemplate.html',
 
 
-        ], function($, _, Backbone,Bootstrap, TaskCollection,NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientInfoModal){
+        ], function($, _, Backbone,Bootstrap, TaskCollection,NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientInfoModal, patientMasterTemplate){
 
     function equalHeight(group) {
         tallest = 0;
@@ -38,21 +39,22 @@ define([
         initialize : function (options) {
             this.options = options || {};
             this.patientId = this.options.patientId;
+            this.taskCollection = new TaskCollection(this.patientId);
+            this.noteCollection = new NoteCollection(this.patientId);
             return this;
         },
 
         render : function() {
+            this.$el.html(patientMasterTemplate);
+            this.info = new PatientInfoView({el:this.$el.find("#patientInfo")});
 
-            this.info = new PatientInfoView({el:$("#patientInfo")});
-
-
-            this.noteGrid = new NoteGridView({el:$("#patientNotes"),
+            this.noteGrid = new NoteGridView({el:this.$el.find("#patientNotes"),
                 gridsterID:"#noteGrid", 
                 templates:{
                     tile:noteTile,
                     modal:noteModal,
                 }, 
-                collection:new NoteCollection(this.patientId),
+                collection:this.noteCollection,
                 gridsterOpts:{
                     widget_margins : [ 12, 12 ],
                     widget_base_dimensions : [ 230, 130 ],
@@ -67,13 +69,13 @@ define([
 
 
 
-            this.taskGrid = new NoteGridView({el:$("#patientTasks"),
+            this.taskGrid = new NoteGridView({el:this.$el.find("#patientTasks"),
                 gridsterID:"#taskGrid",
                 templates:{
                     tile:taskTile,
                     modal:taskModal,
                 }, 
-                collection:new TaskCollection(this.patientId),
+                collection:this.taskCollection,
                 gridsterOpts:{
                     widget_margins : [ 10, 12 ],
                     widget_base_dimensions : [ 230, 120 ],
@@ -81,6 +83,8 @@ define([
                     max_cols: 1,
                     namespace:"#taskGrid",
                 }});
+            
+            return this;
         },
         
         destroyView : function() {

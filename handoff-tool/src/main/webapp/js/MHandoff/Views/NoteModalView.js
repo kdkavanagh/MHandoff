@@ -7,10 +7,11 @@ define([
         'bootstrap',
         'moment',
         'bootstrap_editable',
+        'utils',
         'Models/Note',
         "Collections/NoteCollection",
 
-        ], function(require, $, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Note, NoteCollection){
+        ], function(require, $, _, Backbone,Bootstrap,Moment, Bootstrap_editable,Utils, Note, NoteCollection){
 
 
     var NoteModalView = Backbone.View.extend({
@@ -75,17 +76,8 @@ define([
                     self.noteModel.set("priorityCode", newValue);
                     var text = self.MHandoff.priorityLevels[newValue];
                     self.noteModel.set("priority",  _.template.getPriorityStringFromCode(newValue));
-                    if(newValue == 200) {
-                        self.noteModel.set("badgeLevel", "badge-critical");
-                    } else if(newValue == 150 ) {
-                        self.noteModel.set("badgeLevel", "badge-high");
-                    } else if(newValue == 100) {
-                        self.noteModel.set("badgeLevel", "badge-med");
-                    }else if(newValue == 50) {
-                        self.noteModel.set("badgeLevel", "badge-low");
-                    } else {
-                        self.noteModel.set("badgeLevel","");
-                    }
+                    self.noteModel.set("badgeLevel", Utils.priorityLevelToBadge(newValue));
+
                     if(self.$priorityBadge == null) {
                         self.$priorityBadge = self.$el.find("#priorityBadge");
                     }

@@ -29,18 +29,8 @@ define([
             this.templates = this.options.templates;
             this.template = this.templates.tile;
             var priorityCode = this.noteModel.get("priorityCode");
-            if(priorityCode == 200) {
-                this.noteModel.set("badgeLevel", "badge-critical");
-            } else if(priorityCode == 150 ) {
-                this.noteModel.set("badgeLevel", "badge-high");
-            } else if(priorityCode == 100) {
-                this.noteModel.set("badgeLevel", "badge-med");
-            }else if(priorityCode == 50) {
-                this.noteModel.set("badgeLevel", "badge-low");
-            } else {
-                this.noteModel.set("badgeLevel","");
-            }
-            
+            this.noteModel.set("badgeLevel", Utils.priorityLevelToBadge(priorityCode));
+
             this.listenTo(this.noteModel, 'change', this.updateView);
             this.listenTo(this.noteModel, 'change:badgeLevel', this.updateBadge);
             this.listenTo(this.noteModel, 'change:priorityCode', this.updateBadge);

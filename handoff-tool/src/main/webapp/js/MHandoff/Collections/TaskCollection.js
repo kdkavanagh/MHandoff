@@ -42,7 +42,8 @@ define([
         },
 
         createNewItem : function() {
-            this.add(new this.model());
+            var task = new this.model({patientId:this.patientId});
+            this.add(task);
         },
 
 

@@ -42,7 +42,7 @@ define([
         },
 
         createNewItem : function() {
-            var note = new this.model();
+            var note = new this.model({patientId:this.patientId});
             this.add(note);
         },
 

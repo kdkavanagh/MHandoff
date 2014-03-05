@@ -23,16 +23,7 @@ define([
 
         baseUrl:"/patient/note.do",
 
-        url : function() {
-            return this.baseUrl+"?noteId=" 
-            + this.get("noteId")
-            +"&patientId="+this.get("patientId")
-            + "&reporter="+this.get("reporter")
-            + "&reportedDate="+this.get("reportedDate")
-            + "&expiration="+this.get("expiration")
-            + "&priorityCode="+this.get("priorityCode")
-            + "&text="+this.get("text"); 
-        },
+ 
 
         sync: function(method, model, options) {
             options = options || {};

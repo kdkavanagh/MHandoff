@@ -34,14 +34,16 @@ define([
                 //We only need to send the noteId
                 options.url= this.baseUrl+"?noteId="+ this.get("noteId");
             } else {
-                options.url = this.baseUrl+"?noteId=" 
+                options.url =  this.baseUrl+"?noteId=" 
                 + this.get("noteId")
-                +"&patientId="+this.get("patientId")
+                + "&patientId="+this.get("patientId")
                 + "&reporter="+this.get("reporter")
                 + "&reportedDate="+this.get("reportedDate")
                 + "&expiration="+this.get("expiration")
                 + "&priorityCode="+this.get("priorityCode")
-                + "&text="+this.get("text"); 
+                + "&assignee="+this.get("assignee")
+                + "&status="+this.get("status")
+                + "&text="+this.get("text");
             }
             return  Backbone.sync(method, model, options);
         },

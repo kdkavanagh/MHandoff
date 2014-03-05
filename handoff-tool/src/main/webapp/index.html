@@ -23,6 +23,7 @@
 
 <script src="js/libs/jquery-2.1.0.js" type="text/javascript"></script>
 <script src="js/libs/gridster.js" type="text/javascript"></script>
+<script src="js/libs/bootstrap.min.js" type="text/javascript"></script>
 <script data-main="js/MHandoff/main" src="js/libs/require.js"></script>
 
 
@@ -40,42 +41,11 @@
    </div>
   </div>
   <ul class="nav nav-tabs tabContainer"
-   style="margin-bottom: 10px; padding-left: 20px;">
-   <li><a href="#">Dashboard</a></li>
-   <li class="active"><a href="#patient">Kyle Kavanagh</a></li>
-   <li><a href="#">Min Kim</a></li>
+   style="margin-bottom: 10px; padding-left: 20px;" id="tabs">
   </ul>
-  <div class="container-fluid mainView">
-   <div class="row">
-    <div class="col-md-3 patientPanel">
-     <span style="display: inline-block"><h3>Patient Info</h3></span>
-     <div id="patientInfo">Under Construction</div>
-    </div>
-    <div id="patientNotes" class="col-md-7 patientPanel">
-     <span style="display: inline-block"><h3>Notes</h3></span>
-     <button type="button" id="addNewButton" class="btn btn-primary newButton">
-      <span class="glyphicon glyphicon-plus"></span> Add Note
-     </button>
+  <div class="tab-content" id="tabContents"></div>
 
-     <div class="gridster" id="noteGrid">
-      <ul></ul>
-     </div>
-    </div>
-    <div id="patientTasks" class="col-md-2 patientPanel">
-     <span style="display: inline-block"><h3>Tasks</h3></span>
-     <button type="button" id="addNewButton" class="btn btn-primary newButton">
-      <span class="glyphicon glyphicon-plus"></span> Add Task
-     </button>
-     <div class="gridster" id="taskGrid">
-      <ul></ul>
-     </div>
-    </div>
-   </div>
-  </div>
- </div>
-
- <div id="undoAlertHolder" style="width: 100px;"></div>
-
+  <div id="undoAlertHolder" style="width: 100px;"></div>
 </body>
 <footer class="page-footer">
  <div class="footerText">
