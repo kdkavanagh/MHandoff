@@ -13,31 +13,30 @@
 }
 
 .modalNoteBody {
-    padding-bottom: 0px;
-    width:533px;
+	padding-bottom: 0px;
+	width: 533px;
 }
 
 .modalNote {
-    padding-bottom: 0px;
-    width:570px;
+	padding-bottom: 0px;
+	width: 570px;
 }
 
 .modalNoteFooter {
-	padding-top:10px; 
-	padding-bottom:10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 .movable:hover {
-	cursor:move;
+	cursor: move;
 }
 
 .noteFooter {
 	position: absolute;
 	bottom: 0;
-	padding-top:5px;
-	padding-bottom:5px;
-	width:100%;
-	
+	padding-top: 5px;
+	padding-bottom: 5px;
+	width: 100%;
 }
 
 .mottHeader {
@@ -46,26 +45,20 @@
 	padding-top: 0px;
 	padding-bottom: 10px;
 	border-bottom: 0px;
-	
 }
 
 .mottHeader h1 {
-	display:inline-block;
+	display: inline-block;
 }
 
 #userSection {
-	padding-right:10px;
-	padding-top:20px;
+	padding-right: 10px;
+	padding-top: 20px;
 }
 
-.tabContainer {
-	/* background-color:#617FAD; */
-	
-}
-
-.tabContainer>li {
-	/* background-color:#FFFFFF; */
-	
+.nav-tabs>li .close {
+	margin: -6px 0 0 5px;
+	font-size: 26px;
 }
 
 .tileHeading {
@@ -74,22 +67,22 @@
 }
 
 .noteTextArea {
-	padding-left:10px;
-	padding-right:10px;
-	height:100%;
-	   padding-top:10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	height: 100%;
+	padding-top: 10px;
 }
 
 .noteTextArea:hover {
-	cursor:pointer;
+	cursor: pointer;
 }
 
 .noteTextArea p {
-    padding: 0;
-    margin: 0;
-    float: left;
-    overflow: hidden;
-    font-size:10pt;
+	padding: 0;
+	margin: 0;
+	float: left;
+	overflow: hidden;
+	font-size: 10pt;
 }
 
 .patientPanel {
@@ -114,16 +107,17 @@
 	margin-top: 15%;
 	color: #999999;
 }
-#addNewTileInner:hover {
-    cursor:pointer;
-}
 
+#addNewTileInner:hover {
+	cursor: pointer;
+}
 
 #addNewTileInner:hover {
 	color: #000000;
 }
 
 .ignoreDrag {
+	
 }
 
 .staticGridItem {
@@ -144,8 +138,9 @@
 }
 
 .newButton {
-	margin-left:15px;
+	margin-left: 15px;
 }
+
 .badge-critical {
 	background-color: #d9534f;
 }
@@ -155,28 +150,27 @@
 }
 
 .badge-low {
-	background-color:#5bc0de;
+	background-color: #5bc0de;
 }
 
 .badge-med {
-    background-color:#428bca;
+	background-color: #428bca;
 }
 
 .modal.fade .modal-dialog {
-  -webkit-transition: -webkit-transform .1s ease-out;
-     -moz-transition:    -moz-transform .1s ease-out;
-       -o-transition:      -o-transform .1s ease-out;
-          transition:         transform .1s ease-out;
+	-webkit-transition: -webkit-transform .1s ease-out;
+	-moz-transition: -moz-transform .1s ease-out;
+	-o-transition: -o-transform .1s ease-out;
+	transition: transform .1s ease-out;
 }
 
 .closeIcon,.closeIcon a {
 	color: #999999;
-	
 }
 
 .closeIcon:hover {
 	color: #000000;
-	cursor:default;
+	cursor: default;
 }
 
 .noteReporter {

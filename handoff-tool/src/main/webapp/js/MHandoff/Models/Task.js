@@ -34,7 +34,7 @@ define([
                 //We only need to send the noteId
                 options.url= this.baseUrl+"?noteId="+ this.get("noteId");
             } else {
-                options.url =  this.baseUrl+"?noteId=" 
+                options.url = this.baseUrl+"?noteId=" 
                 + this.get("noteId")
                 + "&patientId="+this.get("patientId")
                 + "&reporter="+this.get("reporter")
