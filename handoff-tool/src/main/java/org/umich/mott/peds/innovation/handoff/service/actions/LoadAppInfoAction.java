@@ -24,8 +24,17 @@ public class LoadAppInfoAction extends CRUDAction {
 
   @Override
   public String read(ActionContext context) throws Exception {
+
     JsonObjectBuilder builder = Json.createObjectBuilder();
     logger.info("Backchannel request for application info received.");
+
+    // get the logged in user
+    JsonObjectBuilder userInfo = Json.createObjectBuilder();
+    User user = persistenceService.getUser(context.getRequest().getUserPrincipal().getName());
+    userInfo.add("uniqname", user.getUniqname());
+    userInfo.add("first", user.getFirst());
+    userInfo.add("last", user.getLast());
+
     // get the priority levels
     List<Pair<Integer, String>> pLevels = persistenceService.getPriorityLevels();
 
@@ -50,6 +59,7 @@ public class LoadAppInfoAction extends CRUDAction {
       userBuilder.add(u.getUniqname(), u.getFirst() + " " + u.getLast());
     }
 
+    builder.add("userInfo", userInfo);
     builder.add("priorityLevels", priorityLevels);
     builder.add("taskStatuses", taskLevels);
     builder.add("handoffUsers", userBuilder);

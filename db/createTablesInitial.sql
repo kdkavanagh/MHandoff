@@ -13,15 +13,37 @@ PRIMARY KEY ( patientId ));
 
 GRANT ALL PRIVILEGES ON TABLE Patient TO handoffUser;
 
-\echo Creating HandoffUser table
-CREATE TABLE HandoffUser 
-(uniqname VARCHAR(123) not NULL, 
-first VARCHAR(255),  
-last VARCHAR(255),  
-position VARCHAR(255), 
-PRIMARY KEY ( uniqname )); 
 
-GRANT ALL PRIVILEGES ON TABLE HandoffUser TO handoffUser;
+\echo Creating Users and Roles tables
+
+CREATE TABLE users
+(
+  id SERIAL,
+  username varchar(100) NOT NULL UNIQUE,
+  first VARCHAR(255),  
+  last VARCHAR(255), 
+  pwd varchar(50) NOT NULL,
+  PRIMARY KEY ( id )
+);
+
+CREATE TABLE roles
+(
+  id SERIAL,
+  role varchar(100) NOT NULL,
+PRIMARY KEY ( id )
+);
+
+CREATE TABLE user_roles
+(
+  user_id SERIAL NOT NULL,
+  role_id SERIAL NOT NULL,
+  FOREIGN KEY(user_id) REFERENCES users(id),
+  FOREIGN KEY(role_id) REFERENCES roles(id)
+);
+
+GRANT ALL PRIVILEGES ON TABLE user_roles TO handoffUser;
+GRANT ALL PRIVILEGES ON TABLE users TO handoffUser;
+GRANT ALL PRIVILEGES ON TABLE roles TO handoffUser;
 
 \echo Creating TaskStatus table
 CREATE TABLE TaskStatus(
@@ -51,8 +73,8 @@ reportedDate TIMESTAMP,
 expiration TIMESTAMP,  
 priority INTEGER, 
 patientId VARCHAR(255), 
-FOREIGN KEY(assignee) REFERENCES HandoffUser(uniqname), 
-FOREIGN KEY(reporter) REFERENCES HandoffUser(uniqname), 
+FOREIGN KEY(assignee) REFERENCES users(username), 
+FOREIGN KEY(reporter) REFERENCES users(username), 
 FOREIGN KEY(status) REFERENCES TaskStatus(code), 
 FOREIGN KEY(priority) REFERENCES PriorityLevel(code), 
 FOREIGN KEY(patientId) REFERENCES Patient(patientId), 
@@ -72,7 +94,7 @@ expiration TIMESTAMP,
 priority INTEGER, 
 patientId VARCHAR(255), 
 FOREIGN KEY(patientId) REFERENCES Patient(patientId), 
-FOREIGN KEY(reporter) REFERENCES HandoffUser(uniqname), 
+FOREIGN KEY(reporter) REFERENCES users(username), 
 FOREIGN KEY(priority) REFERENCES PriorityLevel(code), 
 PRIMARY KEY ( noteId )); 
 

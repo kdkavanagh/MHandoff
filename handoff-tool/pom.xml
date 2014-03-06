@@ -120,7 +120,21 @@
 				<configuration>
 					<scanIntervalSeconds>5</scanIntervalSeconds>
 					<jettyXml>src/main/resources/jettyResources/jetty.xml,src/main/resources/jettyResources/jetty-ssl.xml,src/main/resources/jettyResources/jetty-https.xml</jettyXml>
+					<systemProperties>
+						<systemProperty>
+							<name>authProps</name>
+							<value>src/main/resources/jettyResources/auth.properties</value>
+						</systemProperty>
+						...
+					</systemProperties>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+						<version>9.3-1100-jdbc41</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

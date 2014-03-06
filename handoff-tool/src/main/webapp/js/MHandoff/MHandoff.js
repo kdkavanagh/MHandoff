@@ -12,6 +12,7 @@ define([
     var priorityLevels = {};
     var taskStatuses={};
     var handoffUsers={};
+    var loggedInUser={};
     
     var stream;
 
@@ -39,6 +40,14 @@ define([
 //        $(document).bind('keyup', function(e) {
 //            console.log(e.type, e.keyCode);
 //        });
+        
+        //Bind logout functionality
+        $("#logoutLink").click(function() {
+            $.ajax( "/logout" )
+            .always(function() {
+              location.reload();
+            });
+        });
 
         $.getJSON("/backchannel/pull.do", function(data){
             //Load the priority levels 
@@ -51,6 +60,11 @@ define([
 
             for( var key in data.handoffUsers )
                 handoffUsers[ key ] = data.handoffUsers[ key ];
+            
+            for( var key in data.userInfo )
+                loggedInUser[ key ] = data.userInfo[ key ];
+            
+            $("#username").html(loggedInUser.first + " "+  loggedInUser.last);
 
             //stream  = new Stream();
             Router.initialize();
@@ -71,6 +85,7 @@ define([
         priorityLevels:priorityLevels,
         taskStatuses:taskStatuses,
         handoffUsers:handoffUsers,
+        loggedInUser:loggedInUser,
         stream : function() {return stream},
     };
 });

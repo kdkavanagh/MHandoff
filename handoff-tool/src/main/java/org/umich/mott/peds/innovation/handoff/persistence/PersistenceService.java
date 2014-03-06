@@ -114,4 +114,11 @@ public interface PersistenceService {
    */
   public List<User> getAllUsers();
 
+  /**
+   * 
+   * @param username
+   * @return the user for the specified username
+   */
+  public User getUser(String username);
+
 }

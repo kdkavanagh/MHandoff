@@ -185,7 +185,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     try {
       connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
       statement = connection.createStatement();
-      resultSet = statement.executeQuery("SELECT HandoffUser.uniqname, HandoffUser.first, HandoffUser.last FROM HandoffUser ");
+      resultSet = statement.executeQuery("SELECT username, first, last FROM users ");
 
       while (resultSet.next()) {
         int index = 1;
@@ -194,6 +194,34 @@ public class PersistenceServiceImpl implements PersistenceService {
         String last = resultSet.getString(index++);
 
         tbr.add(new User(uniq, first, last));
+      }
+
+    } catch (SQLException e) {
+      logger.error("Failed to execute query", e);
+      throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
+    }
+    return tbr;
+  }
+
+  public User getUser(String username) {
+    User tbr = null;
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
+    try {
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
+      resultSet = statement.executeQuery("SELECT username, first, last FROM users WHERE username='" + username + "'");
+
+      while (resultSet.next()) {
+        int index = 1;
+        String uniq = resultSet.getString(index++);
+        String first = resultSet.getString(index++);
+        String last = resultSet.getString(index++);
+
+        tbr = new User(uniq, first, last);
       }
 
     } catch (SQLException e) {

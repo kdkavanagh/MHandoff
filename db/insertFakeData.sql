@@ -1,13 +1,6 @@
 INSERT INTO Patient (patientId)
 VALUES ('1'),('2');
 
-INSERT INTO HandoffUser (uniqname, first, last, position)
-VALUES ('collsain', 'Colleen', 'Sain', 'student'),
-('kminchan', 'Minchan', 'Kim', 'student'),
-('johntyu', 'John', 'Yu', 'student'),
-('mcspeak', 'Matt', 'Speakman', 'student'),
-('kdkav', 'Kyle', 'Kavanagh', 'student');
-
 INSERT INTO BaseNote (text, reporter, reportedDate, expiration, priority, patientId)
 VALUES ('No steroids unless absolutely necessary - compromises tx', 'collsain', current_date, current_date + 10, 200, '1'),
 ('Large emesis. Decreased bolus feeds and increased frequency.', 'collsain', current_date, current_date + 10, 200, '1'),
