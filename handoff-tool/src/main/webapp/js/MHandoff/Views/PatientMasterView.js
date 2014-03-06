@@ -39,8 +39,9 @@ define([
         initialize : function (options) {
             this.options = options || {};
             this.patientId = this.options.patientId;
-            this.taskCollection = new TaskCollection(this.patientId);
-            this.noteCollection = new NoteCollection(this.patientId);
+            this.username = this.options.username;
+            this.taskCollection = new TaskCollection(this.username, this.patientId);
+            this.noteCollection = new NoteCollection(this.username, this.patientId);
             return this;
         },
 

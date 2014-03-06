@@ -5,8 +5,9 @@ define([
         'backbone',
         'Models/Task',
         'utils',
-        'stream'
-        ], function($, _, Backbone, Task, Utils, Stream){
+        'stream',
+        'moment'
+        ], function($, _, Backbone, Task, Utils, Stream, moment){
 
 
     var TaskCollection = Backbone.Collection.extend({
@@ -14,11 +15,12 @@ define([
         itemType:"task",
         patientId:null,
 
-        initialize: function(patientId) {
+        initialize: function(username, patientId) {
             this.patientId = patientId;
-            
+            this.user = username;
+
         },
-        
+
         initStream : function(patientId) {
             this.stream = require("MHandoff").stream();
 
@@ -42,7 +44,8 @@ define([
         },
 
         createNewItem : function() {
-            var task = new this.model({patientId:this.patientId});
+            var task = new this.model({patientId:this.patientId, reporter:this.user,  reportedDate:moment().valueOf()/1000,
+                expiration:moment().add('days', 1).valueOf()/1000,});
             this.add(task);
         },
 

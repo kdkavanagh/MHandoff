@@ -13,8 +13,9 @@ define([
         itemType:"note",
         patientId:null,
 
-        initialize: function(patientId) {
+        initialize: function(username, patientId) {
             this.patientId = patientId;
+            this.user = username;
             
 
         },
@@ -42,7 +43,8 @@ define([
         },
 
         createNewItem : function() {
-            var note = new this.model({patientId:this.patientId});
+            var note = new this.model({patientId:this.patientId, reporter:this.user,  reportedDate:moment().valueOf()/1000,
+                expiration:moment().add('days', 1).valueOf()/1000,});
             this.add(note);
         },
 

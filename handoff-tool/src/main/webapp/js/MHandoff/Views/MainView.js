@@ -1,11 +1,11 @@
 define([
-        // These are path alias that we configured in our bootstrap
+        'require',
         'jquery',     
         'underscore', 
         'backbone',
         'bootstrap',
         "Views/PatientMasterView",
-        ], function($, _, Backbone,Bootstrap, PatientMasterView){
+        ], function(require, $, _, Backbone,Bootstrap, PatientMasterView){
 
     var MainView = Backbone.View.extend({        
         events: {
@@ -44,7 +44,9 @@ define([
                 $(this).tab('show');
             });
             
-            var theView = new PatientMasterView({patientId:patientId, el:$patientTab});
+            
+            
+            var theView = new PatientMasterView({patientId:patientId, username:require('MHandoff').loggedInUser.uniqname, el:$patientTab});
  
             $patientNavTabLi.find("button#closeTab").click(function() {
                 $patientTab.remove();
