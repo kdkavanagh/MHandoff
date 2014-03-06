@@ -11,9 +11,6 @@ define([
     var NoteTileView = Backbone.View.extend({
         tagName: 'li',
         template:null,
-        $noteText:null,
-        $notePriorityBadge:null,
-        $closeIcon:null,
         hidden:true,
 
         events: {
@@ -32,7 +29,7 @@ define([
             var priorityCode = this.noteModel.get("priorityCode");
             this.noteModel.set("badgeLevel", Utils.priorityLevelToBadge(priorityCode));
 
-            this.listenTo(this.noteModel, 'change', this.updateView);
+            this.listenTo(this.noteModel, 'change:text', this.updateView);
             this.listenTo(this.noteModel, 'change:badgeLevel', this.updateBadge);
             this.listenTo(this.noteModel, 'change:priorityCode', this.updateBadge);
 
@@ -45,24 +42,23 @@ define([
         },
 
         updateView:function() {
-            //init our cached selectors
-            this.$noteText = this.$el.find("p#noteText");
-            this.$notePriorityBadge = this.$el.find("#priorityBadge");
             this.$noteText.html(this.noteModel.get("text"));
-
         },
 
         render: function(){
 
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             this.setElement(tmpl(this.noteModel.toJSON()));
-
+            //init our cached selectors
+            this.$noteText = this.$el.find("p#noteText");
+            this.$notePriorityBadge = this.$el.find("#priorityBadge");
             this.updateView();
             this.updateBadge();
             this.gridster.add_widget(this.el);
             this.$closeIcon = this.$el.find("span.closeIcon");
             this.$closeIcon.tooltip({ container: 'body'});
             this.hidden = false;
+            this.trigger('render', this);
             return this;
         },
 
@@ -79,11 +75,11 @@ define([
             this.trigger('remove', this);
             return false;
         },
-        
+
         hide:function() {
             this.remove();
             this.trigger('hidden', this);
-            
+
         },
 
         remove: function() {
@@ -113,5 +109,4 @@ define([
 
 
     return NoteTileView;
-    // What we return here will be used by other modules
 });

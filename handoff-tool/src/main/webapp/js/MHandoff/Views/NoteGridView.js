@@ -15,7 +15,7 @@ define([
 
         mostRecentlyDeletedView : null,
         $addNewNoteWidget:null,
-        gridsterOpts:null,
+    
         gridsterObj:null,
 
         events: {
@@ -33,11 +33,8 @@ define([
             this.notes = this.options.collection;
             this.noteViews = new Array();
             this.activeNoteViews = new Array();
-            this.gridsterOpts = this.options.gridsterOpts;
-            this.gridsterID = this.options.gridsterID;
             this.templates = this.options.templates;
-
-            this.gridsterObj = this.$el.find(this.gridsterID+" > ul").gridster(this.gridsterOpts).data('gridster');
+            this.gridsterObj = this.$el.find(this.options.gridsterID+" > ul").gridster(this.options.gridsterOpts).data('gridster');
 
             this.notes.fetch({ reset:true,});
             this.listenTo(this.notes, 'reset', this.generateViews);
@@ -53,16 +50,16 @@ define([
             return noteView;
 
         },
+        
+
 
         filter: function(filterFn) {
-
+            this.currentFilter = filterFn;
             for (var i = 0; i < this.noteViews.length; i++) {
                 var view = this.noteViews[i]; 
-                var priority = view.noteModel.get("priorityCode");
                 var outOfBounds = filterFn(view.noteModel);
                 if(outOfBounds && !view.hidden) {
                     view.hide();
-                    console.log("removing view");
                 } else if(!outOfBounds && view.hidden){
                     this.activeNoteViews.push(view.render());
                 }
@@ -89,12 +86,6 @@ define([
             this.render();
         },
 
-        getItems: function() {
-            console.log("Getting all items");
-            this.notes.fetch({ data: $.param({ patient: "kyle",}) 
-                ,reset:true,});
-
-        },
         addItem: function() {
             console.log("Adding item");
             this.notes.createNewItem();

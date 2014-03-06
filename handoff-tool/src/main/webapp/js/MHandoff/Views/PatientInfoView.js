@@ -53,8 +53,7 @@ define([
         },
 
         render:function() {
-            console.log("Rendering patient view");
-            console.log(this.el);
+
             this.$el.find("#filterSlider").slider({
                 min : 0,
                 max : 200,
