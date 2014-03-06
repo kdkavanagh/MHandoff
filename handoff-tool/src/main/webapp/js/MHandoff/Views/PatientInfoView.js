@@ -54,8 +54,8 @@ define([
 
         render:function() {
             console.log("Rendering patient view");
-            
-            $("#filterSlider").slider({
+            console.log(this.el);
+            this.$el.find("#filterSlider").slider({
                 min : 0,
                 max : 200,
                 step : 50,

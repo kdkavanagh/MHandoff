@@ -178,11 +178,24 @@
 	width: 100%;
 }
 
-.more {
-	position: absolute;
-	right: 0;
-	bottom: 5px;
-	padding-left: 2em;
+.filter {
+	display: table;
+}
+
+.filter div {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.filterBox {
+	width:60%;
+	padding-left:13px;
+	padding-right:13px;
+}
+
+.filterLabelLeft,
+.filterLabelRight {
+	width:20%;
 }
 
 .page-footer {
