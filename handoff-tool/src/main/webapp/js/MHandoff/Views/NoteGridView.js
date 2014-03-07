@@ -29,7 +29,6 @@ define([
             _.bindAll(this, 'render');
             //_.bindAll(this);
 
-
             this.notes = this.options.collection;
             this.noteViews = new Array();
             this.activeNoteViews = new Array();
@@ -92,8 +91,11 @@ define([
         },
 
         newItemAdded:function(note) {
-            var newView = this.createView(note, 0, 0, this).render();
-            newView.openNote().toggleEditing();
+            var newView = this.createView(note, 0, 0, this);//.render();
+            var modal = newView.openNote();
+            modal.toggleEditing();
+            //Once we save the note for the first time, render the tile
+            newView.listenToOnce( modal,'noteSaved', newView.render);
             this.trigger('gridchange');
         },
 

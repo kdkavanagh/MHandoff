@@ -141,11 +141,12 @@ define([
             if(this.editing) {
                 //we were editing, set the text back to edit
                 if(this.hasChanged) {
-                    //Dont need to save if were dont have any changes
+                    //Dont need to save if we dont have any changes
                     this.noteModel.save(this.tempModel);
                     this.tempModel = {};
                     this.hasChanged = false;
                 }
+                this.trigger('noteSaved');
                 this.$editButton.html("Edit");
                 this.$closeButton.html("Close");
             } else {
