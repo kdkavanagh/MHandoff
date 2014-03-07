@@ -22,6 +22,7 @@ define([
         $editables:null,
         $priorityBadge:null,
         tempModel: {},
+        hasChanged:false,
 
         events : {
             'hidden.bs.modal':'destroy_full',
@@ -51,7 +52,8 @@ define([
                 onblur:'submit',
                 success: function (response, newValue) {
                     self.tempModel.text = newValue;
-                   // self.noteModel.set("text", newValue);
+                    self.hasChanged = true;
+                    // self.noteModel.set("text", newValue);
                 },
             });
             this.$el.find("a#expiration").editable({
@@ -65,6 +67,7 @@ define([
                 template:"MMM D YYYY  hh:mm A",
                 success: function (response, newValue) {
                     self.tempModel.expiration = newValue/1000;
+                    self.hasChanged = true;
                     //self.noteModel.set("expiration", newValue/1000);
                 },
             });
@@ -79,12 +82,13 @@ define([
                     self.tempModel.priorityCode = newValue;
                     self.tempModel.priority = _.template.getPriorityStringFromCode(newValue);
                     self.tempModel.badgeLevel = Utils.priorityLevelToBadge(newValue);
-                   // self.noteModel.set("priorityCode", newValue);                    
-                   // self.noteModel.set("priority",  _.template.getPriorityStringFromCode(newValue));
-                   // self.noteModel.set("badgeLevel", Utils.priorityLevelToBadge(newValue));
+                    // self.noteModel.set("priorityCode", newValue);                    
+                    // self.noteModel.set("priority",  _.template.getPriorityStringFromCode(newValue));
+                    // self.noteModel.set("badgeLevel", Utils.priorityLevelToBadge(newValue));
 
                     self.$priorityBadge.html(self.tempModel.priority);
                     self.$priorityBadge.attr("class", "badge "+self.tempModel.badgeLevel+" pull-right");
+                    self.hasChanged = true;
 
                 },
             });
@@ -101,11 +105,12 @@ define([
                     source: this.MHandoff.taskStatuses,
                     success: function (response, newValue) {
                         self.tempModel.status = newValue;
+                        self.hasChanged = true;
                         //self.noteModel.set("status", newValue);
                     },
                 });
             }
-            
+
             var $taskAssignee = this.$el.find("a#assignee");
             if($taskAssignee.length !== 0) {
                 //We have a task status field
@@ -118,6 +123,7 @@ define([
                     source: this.MHandoff.handoffUsers,
                     success: function (response, newValue) {
                         self.tempModel.assignee = newValue;
+                        self.hasChanged = true;
                         //self.noteModel.set("assignee", newValue);
                     },
                 });
@@ -134,7 +140,12 @@ define([
             this.$editables.editable('toggleDisabled');
             if(this.editing) {
                 //we were editing, set the text back to edit
-                this.noteModel.save(this.tempModel);
+                if(this.hasChanged) {
+                    //Dont need to save if were dont have any changes
+                    this.noteModel.save(this.tempModel);
+                    this.tempModel = {};
+                    this.hasChanged = false;
+                }
                 this.$editButton.html("Edit");
                 this.$closeButton.html("Close");
             } else {
