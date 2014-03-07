@@ -18,30 +18,12 @@ define([
 
         ], function($, _, Backbone,Bootstrap, TaskCollection,NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientInfoModal, patientMasterTemplate){
 
-    function equalHeight(group) {
-        tallest = 0;
-        group.each(function() {
-            thisHeight = $(this).height();
-            console.log("Height "+thisHeight);
-            if(thisHeight > tallest) {
-                tallest = thisHeight;
-            }
-        });
-        //group.height(tallest);
-        return tallest;
-    }
-
-
     var PatientMasterView = Backbone.View.extend({
-
-        patientId:null,
 
         initialize : function (options) {
             this.options = options || {};
-            this.patientId = this.options.patientId;
-            this.username = this.options.username;
-            this.taskCollection = new TaskCollection(this.username, this.patientId);
-            this.noteCollection = new NoteCollection(this.username, this.patientId);
+            this.taskCollection = new TaskCollection(this.options.username, this.options.patientId);
+            this.noteCollection = new NoteCollection(this.options.username, this.options.patientId);
             return this;
         },
 
@@ -65,7 +47,7 @@ define([
                         enabled: true,
                         max_size: [2, 2],
                         min_size: [1, 1]
-                      }
+                    }
                 }});
 
 
@@ -84,37 +66,22 @@ define([
                     max_cols: 1,
                     namespace:"#taskGrid",
                 }});
-            var self = this;
-            var sliderMin =0; sliderMax=200;
-            this.$el.find("#filterSlider").on('slide', function(e){
-                //only filter if we need to
-                if(sliderMin !== e.value[0] || sliderMax !==e.value[1]) {
-                    self.noteGrid.filter(self.createPriorityFilter( e.value[0], e.value[1]));
-                    self.taskGrid.filter(self.createPriorityFilter( e.value[0], e.value[1]));
-                    sliderMin = e.value[0];
-                    sliderMax = e.value[1];
-                }
-                
-            });
-            
-            
+
+            this.taskGrid.listenTo(this.info, 'filter', this.taskGrid.filter);
+            this.noteGrid.listenTo(this.info, 'filter', this.noteGrid.filter);
+
+
+
+
             return this;
-        },
-        
-        //Returns a function that takes in the notemodel as an arg and returns a bool with whether or not the item is out-of-bounds
-        createPriorityFilter:function(sliderMin, sliderMax) {
-            return function(noteModel) {
-                return (noteModel.get("priorityCode") < sliderMin || noteModel.get("priorityCode") > sliderMax);
-            };
-        },
-        
-       
-        
+        },       
+
+
         destroyView : function() {
             this.undelegateEvents();
 
             this.$el.removeData().unbind(); 
-            
+
             this.noteGrid.destroyView();
             this.TaskGrid.destroyView();
             //Remove view from DOM

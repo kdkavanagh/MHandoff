@@ -12,49 +12,43 @@ define([
 
         ], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Bootstrap_slider, PatientInfo, require){
 
+    //Returns a function that takes in the notemodel as an arg and returns a bool with whether or not the item is out-of-bounds
+    var createPriorityFilter = function(sliderMin, sliderMax) {
+        return function(noteModel) {
+            return (noteModel.get("priorityCode") < sliderMin || noteModel.get("priorityCode") > sliderMax);
+        };
+    };
 
     var PatientInfoView = Backbone.View.extend({
 
-        el: $('#patientInfoDetails'),
-        //template : _.template($('#patientInfoDetails').html()),
-        events:{
-            //"click #buttonPress": "render",           
-
+        events:{        
+            "click button#resetFilters":"resetFilters",
         },
 
         initialize : function (options) {
             console.log("Creating patientView for element "+this.$el.selector);
-
-            //this.options = options || {};
-            //this.patientInfoModel = this.options.patientInfoModel;
-            //this.template = this.options.template;
             this.render();
-
             this.on('change', this.render, this);
 
 
-            //return model;
-            // this.patientInfoModel.fetch({reset:true});
+        },
 
-            //return this;
+        //Should trigger both 'filter' event and 'filtersReset' event
+        resetFilters:function() {
+            console.log("Resetting filters");
+            this.$priorityFilterSlider.slider('setValue', [0,200]);
+            this.trigger('filtersReset');
+        },
 
-
-            /*
-            var model = new PatientInfo(); //Create the model
-            model.fetch();
-
-
-            model.collection.on('reset', model.render, model);
-
-            //model.patientInfo.on('change', this.render);
-            //.fetch({reset:true,});
-             */            
-
+        triggerFilter : function(filter) {
+            this.trigger('filter', filter);
         },
 
         render:function() {
-
-            this.$el.find("#filterSlider").slider({
+            this.$priorityFilterSlider = this.$el.find("#filterSlider");
+            var sliderMin =0; sliderMax=200;
+            var self = this;
+            this.$priorityFilterSlider.slider({
                 min : 0,
                 max : 200,
                 step : 50,
@@ -67,14 +61,16 @@ define([
                         return handoff.priorityLevels[first] +" only";
                     }
                 },
+            }).on('slide',  function(e){
+                //only filter if we need to
+                if(!(sliderMin === e.value[0] && sliderMax === e.value[1])) {
+                    self.triggerFilter(createPriorityFilter( e.value[0], e.value[1]));
+                    sliderMin = e.value[0];
+                    sliderMax = e.value[1];
+                }
             });
-            //this.$el.html("<div>TESTING</div>");
 
-            //var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
-            //this.setElement(tmpl(this.patientInfoModel.toJSON()));
-            //this.$el.modal('show');
-            // this.patientInfo.each(function())
-            //return this;
+            return this;
         }
 
     });

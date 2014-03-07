@@ -21,6 +21,7 @@ define([
         $editButton:null,
         $editables:null,
         $priorityBadge:null,
+        tempModel: {},
 
         events : {
             'hidden.bs.modal':'destroy_full',
@@ -49,7 +50,8 @@ define([
                 mode:'inline',
                 onblur:'submit',
                 success: function (response, newValue) {
-                    self.noteModel.set("text", newValue);
+                    self.tempModel.text = newValue;
+                   // self.noteModel.set("text", newValue);
                 },
             });
             this.$el.find("a#expiration").editable({
@@ -62,7 +64,8 @@ define([
                 viewformat:"MMM D, YYYY, hh:mm A",
                 template:"MMM D YYYY  hh:mm A",
                 success: function (response, newValue) {
-                    self.noteModel.set("expiration", newValue/1000);
+                    self.tempModel.expiration = newValue/1000;
+                    //self.noteModel.set("expiration", newValue/1000);
                 },
             });
             this.$el.find("a#priority").editable({
@@ -73,16 +76,15 @@ define([
                 source: this.MHandoff.priorityLevels,
                 showbuttons: false,
                 success: function (response, newValue) {
-                    self.noteModel.set("priorityCode", newValue);
-                    var text = self.MHandoff.priorityLevels[newValue];
-                    self.noteModel.set("priority",  _.template.getPriorityStringFromCode(newValue));
-                    self.noteModel.set("badgeLevel", Utils.priorityLevelToBadge(newValue));
+                    self.tempModel.priorityCode = newValue;
+                    self.tempModel.priority = _.template.getPriorityStringFromCode(newValue);
+                    self.tempModel.badgeLevel = Utils.priorityLevelToBadge(newValue);
+                   // self.noteModel.set("priorityCode", newValue);                    
+                   // self.noteModel.set("priority",  _.template.getPriorityStringFromCode(newValue));
+                   // self.noteModel.set("badgeLevel", Utils.priorityLevelToBadge(newValue));
 
-                    if(self.$priorityBadge == null) {
-                        self.$priorityBadge = self.$el.find("#priorityBadge");
-                    }
-                    self.$priorityBadge.html(text);
-                    self.$priorityBadge.attr("class", "badge "+self.noteModel.get("badgeLevel")+" pull-right");
+                    self.$priorityBadge.html(self.tempModel.priority);
+                    self.$priorityBadge.attr("class", "badge "+self.tempModel.badgeLevel+" pull-right");
 
                 },
             });
@@ -98,7 +100,8 @@ define([
                     showbuttons: false ,
                     source: this.MHandoff.taskStatuses,
                     success: function (response, newValue) {
-                        self.noteModel.set("status", newValue);
+                        self.tempModel.status = newValue;
+                        //self.noteModel.set("status", newValue);
                     },
                 });
             }
@@ -114,13 +117,16 @@ define([
                     showbuttons: false ,
                     source: this.MHandoff.handoffUsers,
                     success: function (response, newValue) {
-                        self.noteModel.set("assignee", newValue);
+                        self.tempModel.assignee = newValue;
+                        //self.noteModel.set("assignee", newValue);
                     },
                 });
             }
 
             this.$editButton = this.$el.find("button#editButton");
             this.$editables = this.$el.find(".editable");
+            this.$closeButton = this.$el.find("button#closeButton");
+            this.$priorityBadge = this.$el.find("#priorityBadge");
 
         },
 
@@ -128,12 +134,12 @@ define([
             this.$editables.editable('toggleDisabled');
             if(this.editing) {
                 //we were editing, set the text back to edit
-                console.log(this.noteModel);
-                this.noteModel.save();
+                this.noteModel.save(this.tempModel);
                 this.$editButton.html("Edit");
+                this.$closeButton.html("Close");
             } else {
                 //we were not editing, change text to done
-
+                this.$closeButton.html("Close without saving");
                 this.$editButton.html("Save");
             }
             this.editing = !this.editing;

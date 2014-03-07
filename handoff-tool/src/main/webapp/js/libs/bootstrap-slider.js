@@ -328,6 +328,8 @@
 			}
 			return this.value[0];
 		},
+		
+		
 
 		setValue: function(val) {
 			this.value = val;
@@ -351,6 +353,14 @@
 				this.step*100/this.diff
 			];
 			this.layout();
+			var val = this.calculateValue();
+            this.element.trigger({
+                    type: 'slideStop',
+                    value: val
+                }).trigger({
+                    type: 'slide',
+                    value: val
+                });
 		}
 	};
 
