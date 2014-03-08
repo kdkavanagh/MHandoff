@@ -28,11 +28,6 @@ define([
             this.template = this.templates.tile;
             var priorityCode = this.noteModel.get("priorityCode");
             this.noteModel.set("badgeLevel", Utils.priorityLevelToBadge(priorityCode));
-
-            this.listenTo(this.noteModel, 'change:text', this.updateView);
-            this.listenTo(this.noteModel, 'change:badgeLevel', this.updateBadge);
-            this.listenTo(this.noteModel, 'change:priorityCode', this.updateBadge);
-
             return this;
         },
 
@@ -60,6 +55,10 @@ define([
             this.$closeIcon = this.$el.find("span.closeIcon");
             this.$closeIcon.tooltip({ container: 'body'});
             this.hidden = false;
+            this.listenTo(this.noteModel, 'change:text', this.updateView);
+            this.listenTo(this.noteModel, 'change:badgeLevel', this.updateBadge);
+            this.listenTo(this.noteModel, 'change:priorityCode', this.updateBadge);
+
             this.trigger('render', this);
             return this;
         },
