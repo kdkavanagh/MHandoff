@@ -75,7 +75,7 @@ public class Stream implements HttpSessionBindingListener {
   }
 
   public synchronized void sendMessageToOtherClients(Message msg) {
-    logger.info("Sending message to other listeners. Skipping session " + this.ourHttpSession.getId());
+    logger.info("Sending message to " + (clients.size() - 1) + " other listeners. Skipping session " + this.ourHttpSession.getId());
     logger.info("Message: " + gson.toJson(msg));
     for (Session client : clients) {
       if (client != this.ourSession && client.isOpen() && client.isSecure()) {

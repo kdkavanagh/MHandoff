@@ -30,7 +30,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 		<role-name>user</role-name>
 	</security-role>
 	<login-config>
-		<auth-method>DIGEST</auth-method>
+		<auth-method>FORM</auth-method>
 		<realm-name>MHandoffRealm</realm-name>
 		<form-login-config>
 			<form-login-page>/logon.html</form-login-page>

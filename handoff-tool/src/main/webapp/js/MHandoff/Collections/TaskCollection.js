@@ -7,7 +7,7 @@ define([
         'utils',
         'stream',
         'moment'
-        ], function($, _, Backbone, Task, Utils, Stream, moment){
+        ], function($, _, Backbone, Task, Utils, stream, moment){
 
 
     var TaskCollection = Backbone.Collection.extend({
@@ -18,27 +18,28 @@ define([
         initialize: function(username, patientId) {
             this.patientId = patientId;
             this.user = username;
-
+            this.initStream(patientId);
         },
 
         initStream : function(patientId) {
-            this.stream = require("MHandoff").stream();
-
+           
             var self = this;
-            this.stream.on(patientId+":tasks:create", function(e) {
+            stream.subscribe(this,patientId+":tasks:create", function(e) {
                 console.log("Received create note topic message");
                 var newTask = new Task({noteId:e});
                 newTask.fetch();
-                self.add(newTask);
+                self.add(newTask, {silent:true,});
+                this.trigger('pushAdd', newTask);
             }, this);
-            this.stream.on(patientId+":tasks:update", function(e) {
+            stream.subscribe(this, patientId+":tasks:update", function(e) {
                 console.log("Received update note topic message");
                 if(self.get(e) !== undefined) {
                     self.get(e).fetch();
                 } else {
                     var newTask = new Task({noteId:e});
                     newTask.fetch();
-                    self.add(newTask);
+                    self.add(newTask, {silent:true,});
+                    this.trigger('pushAdd', newTask);
                 }
             }, this);
         },

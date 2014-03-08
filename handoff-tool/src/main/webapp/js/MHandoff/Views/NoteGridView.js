@@ -28,7 +28,7 @@ define([
             this.options = options || {};
             _.bindAll(this, 'render');
             //_.bindAll(this);
-
+         
             this.notes = this.options.collection;
             this.noteViews = new Array();
             this.activeNoteViews = new Array();
@@ -38,6 +38,7 @@ define([
             this.notes.fetch({ reset:true,});
             this.listenTo(this.notes, 'reset', this.generateViews);
             this.listenTo(this.notes, 'add', this.newItemAdded);
+            this.listenTo(this.notes, 'pushAdd', this.newItemPushed);
         },
 
         createView: function(note, row, col, self) {
@@ -97,6 +98,10 @@ define([
             //Once we save the note for the first time, render the tile
             newView.listenToOnce( modal,'noteSaved', newView.render);
             this.trigger('gridchange');
+        },
+        
+        newItemPushed:function(note) {
+            this.createView(note, 0, 0, this).render();
         },
 
 

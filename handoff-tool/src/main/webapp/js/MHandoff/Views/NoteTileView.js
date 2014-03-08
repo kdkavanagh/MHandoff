@@ -51,9 +51,11 @@ define([
             this.setElement(tmpl(this.noteModel.toJSON()));
             //init our cached selectors
             this.$noteText = this.$el.find("p#noteText");
+            
             this.$notePriorityBadge = this.$el.find("#priorityBadge");
             this.updateView();
             this.updateBadge();
+            
             this.gridster.add_widget(this.el);
             this.$closeIcon = this.$el.find("span.closeIcon");
             this.$closeIcon.tooltip({ container: 'body'});

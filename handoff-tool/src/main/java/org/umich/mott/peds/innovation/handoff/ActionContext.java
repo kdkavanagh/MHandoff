@@ -38,15 +38,14 @@ public class ActionContext {
   }
 
   public void postMessageToStream(Stream.Message msg) {
-    // Streaming not yet enabled
-    // Stream s = (Stream)
-    // this.request.getSession().getAttribute(Stream.STREAM);
-    // if (s != null) {
-    // s.sendMessageToOtherClients(msg);
-    // } else {
-    // // This user isnt using the stream (maybe they dont support websockets)
-    // Stream.sendMessageToAllClients(msg);
-    // }
+    Stream s = (Stream)
+        this.request.getSession().getAttribute(Stream.STREAM);
+    if (s != null) {
+      s.sendMessageToOtherClients(msg);
+    } else {
+      // This user isnt using the stream (maybe they dont support websockets)
+      Stream.sendMessageToAllClients(msg);
+    }
   }
 
   /**

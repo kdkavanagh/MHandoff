@@ -4,8 +4,8 @@ define([
         'underscore', 
         'backbone',
         'Models/Note',
-        'require'
-        ], function($, _, Backbone, Note, require){
+        'stream'
+        ], function($, _, Backbone, Note, stream){
 
 
     var NoteCollection = Backbone.Collection.extend({
@@ -16,28 +16,30 @@ define([
         initialize: function(username, patientId) {
             this.patientId = patientId;
             this.user = username;
-            
+            this.initStream(patientId);
+            console.log("Creating new collection");
 
         },
         
         initStream : function(patientId) {
-            this.stream = require("MHandoff").stream();
-
+           
             var self = this;
-            this.stream.on(patientId+":notes:create", function(e) {
+            stream.subscribe(this,patientId+":notes:create", function(e) {
                 console.log("Received create note topic message");
                 var newNote = new Note({noteId:e});
                 newNote.fetch();
-                self.add(newNote);
+                self.add(newNote, {silent: true});
+                self.trigger('pushAdd', newNote);
             }, this);
-            this.stream.on(patientId+":notes:update", function(e) {
+            stream.subscribe(this, patientId+":notes:update", function(e) {
                 console.log("Received update note topic message");
                 if(self.get(e) !== undefined) {
                     self.get(e).fetch();
                 } else {
                     var newNote = new Note({noteId:e});
                     newNote.fetch();
-                    self.add(newNote);
+                    self.add(newNote, {silent: true});
+                    self.trigger('pushAdd', newNote);
                 }
             }, this);
         },
