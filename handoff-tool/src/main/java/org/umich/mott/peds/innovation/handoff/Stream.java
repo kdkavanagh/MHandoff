@@ -2,6 +2,8 @@ package org.umich.mott.peds.innovation.handoff;
 
 import java.io.IOException;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
@@ -25,6 +27,8 @@ import com.google.gson.Gson;
  */
 @ServerEndpoint(value = "/streaming", configurator = GetHttpSessionConfigurator.class)
 public class Stream implements HttpSessionBindingListener {
+
+  private static final ExecutorService executorService = Executors.newFixedThreadPool(4);
 
   public static final String STREAM = "stream";
 
@@ -56,37 +60,54 @@ public class Stream implements HttpSessionBindingListener {
   @OnMessage
   public void onMessage(String msg, Session session)
       throws IOException {
-    logger.trace("Received msg " + msg);
   }
 
-  public static synchronized void sendMessageToAllClients(Message msg) {
+  public static void sendMessageToAllClients(final Message msg) {
+    // Send message in new thread
+    executorService.submit(new Runnable() {
 
-    logger.info("Sending message to all listeners");
-    for (Session client : clients) {
-      if (client.isOpen() && client.isSecure()) {
-        try {
-          client.getBasicRemote().sendText(gson.toJson(msg));
-        } catch (IOException e) {
-          logger.error("Failed to send message to a client");
+      public void run() {
+        logger.info("Sending message to all listeners");
+        for (Session client : clients) {
+          synchronized (client) {
+            if (client.isOpen() && client.isSecure()) {
+              try {
+                client.getBasicRemote().sendText(gson.toJson(msg));
+              } catch (IOException e) {
+                logger.error("Failed to send message to a client");
+              }
+            }
+          }
         }
-
       }
-    }
+    });
+
   }
 
-  public synchronized void sendMessageToOtherClients(Message msg) {
-    logger.info("Sending message to " + (clients.size() - 1) + " other listeners. Skipping session " + this.ourHttpSession.getId());
-    logger.info("Message: " + gson.toJson(msg));
-    for (Session client : clients) {
-      if (client != this.ourSession && client.isOpen() && client.isSecure()) {
-        try {
-          client.getBasicRemote().sendText(gson.toJson(msg));
-        } catch (IOException e) {
-          logger.error("Failed to send message to a client");
+  public void sendMessageToOtherClients(final Message msg) {
+    // Send message in new thread
+    executorService.submit(new Runnable() {
+
+      public void run() {
+        logger.info("Sending message to " + (clients.size() - 1) + " other listeners. Skipping session " + Stream.this.ourHttpSession.getId());
+        logger.info("Message: " + gson.toJson(msg));
+        synchronized (Stream.this.ourSession) {
+          for (Session client : clients) {
+            if (client != Stream.this.ourSession) {
+              synchronized (client) {
+                if (client.isOpen() && client.isSecure()) {
+                  try {
+                    client.getBasicRemote().sendText(gson.toJson(msg));
+                  } catch (IOException e) {
+                    logger.error("Failed to send message to a client");
+                  }
+                }
+              }
+            }
+          }
         }
       }
-    }
-
+    });
   }
 
   @OnOpen
@@ -114,7 +135,9 @@ public class Stream implements HttpSessionBindingListener {
     // The session was invalidated or our stream was removed from the session.
     // Close the connection.
     try {
-      this.ourSession.close();
+      synchronized (this.ourSession) {
+        this.ourSession.close();
+      }
     } catch (IOException e) {
       logger.error("Unable to close session");
     }

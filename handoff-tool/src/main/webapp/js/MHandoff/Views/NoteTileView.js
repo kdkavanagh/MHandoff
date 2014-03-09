@@ -20,7 +20,6 @@ define([
         },
 
         initialize : function (options) {
-            console.log("Creating new indiv note view");
             this.options = options || {};
             this.gridster = this.options.gridster;
             this.noteModel = this.options.noteModel;

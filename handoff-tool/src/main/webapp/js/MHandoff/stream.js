@@ -47,8 +47,7 @@ define([
         this.socket.close();
     };
     
-    Stream.prototype.subscribe = function(object, event, callback) {
-        console.log("Subscription to "+event+" received");        
+    Stream.prototype.subscribe = function(object, event, callback) {      
         object.listenTo(this, event, callback);
     };
     

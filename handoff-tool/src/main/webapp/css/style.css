@@ -149,6 +149,7 @@
 	background-color: #f89406;
 }
 
+.badge-new,
 .badge-low {
 	background-color: #5bc0de;
 }
@@ -156,6 +157,7 @@
 .badge-med {
 	background-color: #428bca;
 }
+
 
 .modal.fade .modal-dialog {
 	-webkit-transition: -webkit-transform .1s ease-out;
