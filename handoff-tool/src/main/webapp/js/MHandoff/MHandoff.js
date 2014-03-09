@@ -63,11 +63,10 @@ define([
             
             $("#username").html(loggedInUser.first + " "+  loggedInUser.last);
 
-            //stream  = new Stream();
             Router.initialize();
             stream.connect();
         }).error(function() { 
-            var tmpl = _.template(errorModal); //tmpl is a function that takes a JSON and returns html
+            var tmpl = _.template(errorModal); 
             $("#modalContainer").html(tmpl({text:"Failed to connect to MHandoff server"}));
             $("#modalContainer").modal();
         });

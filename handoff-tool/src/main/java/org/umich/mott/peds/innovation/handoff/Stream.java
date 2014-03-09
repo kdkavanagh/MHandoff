@@ -28,9 +28,7 @@ import com.google.gson.Gson;
 @ServerEndpoint(value = "/streaming", configurator = GetHttpSessionConfigurator.class)
 public class Stream implements HttpSessionBindingListener {
 
-  private static final ExecutorService executorService = Executors.newFixedThreadPool(4);
-
-  public static final String STREAM = "stream";
+  private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
   private static final Logger logger = Logger.getLogger(Stream.class);
 
@@ -90,7 +88,7 @@ public class Stream implements HttpSessionBindingListener {
 
       public void run() {
         logger.info("Sending message to " + (clients.size() - 1) + " other listeners. Skipping session " + Stream.this.ourHttpSession.getId());
-        logger.info("Message: " + gson.toJson(msg));
+        logger.debug("Message: " + gson.toJson(msg));
         synchronized (Stream.this.ourSession) {
           for (Session client : clients) {
             if (client != Stream.this.ourSession) {
@@ -112,19 +110,19 @@ public class Stream implements HttpSessionBindingListener {
 
   @OnOpen
   public void open(Session session, EndpointConfig config) throws IOException {
-    logger.info("New connection to stream");
+    logger.debug("New connection to stream");
     this.ourSession = session;
     clients.add(session);
     this.ourHttpSession = (HttpSession) config.getUserProperties()
         .get(HttpSession.class.getName());
-    this.ourHttpSession.setAttribute(STREAM, this);
+    this.ourHttpSession.setAttribute(Stream.class.getName(), this);
   }
 
   @OnClose
   public void onClose(Session session) {
     // Remove session from the connected sessions set
     clients.remove(session);
-    this.ourHttpSession.removeAttribute(STREAM);
+    this.ourHttpSession.removeAttribute(Stream.class.getName());
   }
 
   public void valueBound(HttpSessionBindingEvent event) {

@@ -39,7 +39,7 @@ public class ActionContext {
 
   public void postMessageToStream(Stream.Message msg) {
     Stream s = (Stream)
-        this.request.getSession().getAttribute(Stream.STREAM);
+        this.request.getSession().getAttribute(Stream.class.getName());
     if (s != null) {
       s.sendMessageToOtherClients(msg);
     } else {
