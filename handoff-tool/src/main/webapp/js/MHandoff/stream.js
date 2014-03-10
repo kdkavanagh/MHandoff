@@ -1,13 +1,16 @@
 define([
         'jquery',
         'backbone',
-        ], function($,Backbone){
+        'bootstrap',
+        ], function($,Backbone,Bootstrap){
     var Stream = function () {
         _.extend(this, Backbone.Events);
+        this.$streamingIcon = $("div#streaming");
     };
     
     Stream.prototype.connect =function() {
         var self = this;
+        self.$streamingIcon.html('<span id="streamingBadge" class="badge">Not streaming</span>');
         
         if ("WebSocket" in window) {
             var url= "wss://" + window.location.host+"/streaming";
@@ -17,6 +20,8 @@ define([
             this.socket.onopen = function(e) {
                 self.trigger('open', e);
                 console.log('Stream opened');
+                self.$streamingIcon.html('<span id="streamingBadge" class="badge badge-streaming" title="Updates are automatically pushed to your screen">Streaming</span>');
+                $("span#streamingBadge").tooltip({ container: 'body', placement:'bottom'});
             };
 
             this.socket.onerror = function(e) {
@@ -37,10 +42,13 @@ define([
             this.socket.onclose = function(e) {
                 self.trigger('close', e);
                 console.log('Stream closed');
+                self.$streamingIcon.html('<span id="streamingBadge" class="badge">Not streaming</span>');
             };
         } else {
             console.log("Websockets not supported by this browser");
+            
         }
+        
     };
 
     Stream.prototype.close = function() {

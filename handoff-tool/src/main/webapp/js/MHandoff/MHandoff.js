@@ -66,9 +66,12 @@ define([
             Router.initialize();
             stream.connect();
         }).error(function() { 
+            
             var tmpl = _.template(errorModal); 
-            $("#modalContainer").html(tmpl({text:"Failed to connect to MHandoff server"}));
-            $("#modalContainer").modal();
+            
+            $("div#modalContainer").html(tmpl({text:"Failed to connect to MHandoff server"}));
+            $("div#modalContainer").modal('show');
+            console.log($("div#modalContainer"));
         });
 
 

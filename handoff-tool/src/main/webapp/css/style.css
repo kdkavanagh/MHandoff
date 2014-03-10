@@ -150,6 +150,7 @@
 }
 
 .badge-new,
+.badge-streaming,
 .badge-low {
 	background-color: #5bc0de;
 }
@@ -211,6 +212,7 @@
 	color: #999;
 	margin-top: 20px;
 	margin-bottom: 10px;
+	text-align: center;
 }
 
 /* long messy gradient background code */

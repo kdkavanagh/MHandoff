@@ -53,7 +53,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 		<realm-name>MHandoffRealm</realm-name>
 		<form-login-config>
 			<form-login-page>/login</form-login-page>
-			<form-error-page>/logonError.html</form-error-page>
+			<form-error-page>/login</form-error-page>
 		</form-login-config>
 	</login-config>
 

@@ -20,28 +20,35 @@ define([
             console.log("Creating new collection");
 
         },
-        
+
         initStream : function(patientId) {
-           
+
             var self = this;
             stream.subscribe(this,patientId+":notes:create", function(e) {
                 console.log("Received create note topic message");
-                var newNote = new Note({noteId:e});
-                newNote.fetch();
-                self.add(newNote, {silent: true});
-                self.trigger('pushAdd', newNote);
-            }, this);
+                var newNote = new Note({noteId:e,});
+                newNote.fetch({
+                    success: function(){
+                        self.add(newNote, {silent: true});
+                        self.trigger('pushAdd', newNote);
+                    }
+                });
+            });
             stream.subscribe(this, patientId+":notes:update", function(e) {
                 console.log("Received update note topic message");
                 if(self.get(e) !== undefined) {
+                    //We already have this note, and its handlers are already listening for changes
                     self.get(e).fetch();
                 } else {
                     var newNote = new Note({noteId:e});
-                    newNote.fetch();
-                    self.add(newNote, {silent: true});
-                    self.trigger('pushAdd', newNote);
+                    newNote.fetch({
+                        success: function(){
+                            self.add(newNote, {silent: true});
+                            self.trigger('pushAdd', newNote);
+                        }
+                    });
                 }
-            }, this);
+            });
         },
 
         createNewItem : function() {

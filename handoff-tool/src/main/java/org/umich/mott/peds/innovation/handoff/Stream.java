@@ -111,6 +111,7 @@ public class Stream implements HttpSessionBindingListener {
   @OnOpen
   public void open(Session session, EndpointConfig config) throws IOException {
     logger.debug("New connection to stream");
+    session.setMaxIdleTimeout(Long.MAX_VALUE);
     this.ourSession = session;
     clients.add(session);
     this.ourHttpSession = (HttpSession) config.getUserProperties()

@@ -22,26 +22,32 @@ define([
         },
 
         initStream : function(patientId) {
-           
+
             var self = this;
             stream.subscribe(this,patientId+":tasks:create", function(e) {
                 console.log("Received create note topic message");
                 var newTask = new Task({noteId:e});
-                newTask.fetch();
-                self.add(newTask, {silent:true,});
-                this.trigger('pushAdd', newTask);
-            }, this);
+                newTask.fetch({
+                    success: function(){
+                        self.add(newTask, {silent: true});
+                        self.trigger('pushAdd', newTask);
+                    }
+                });
+            });
             stream.subscribe(this, patientId+":tasks:update", function(e) {
                 console.log("Received update note topic message");
                 if(self.get(e) !== undefined) {
                     self.get(e).fetch();
                 } else {
                     var newTask = new Task({noteId:e});
-                    newTask.fetch();
-                    self.add(newTask, {silent:true,});
-                    this.trigger('pushAdd', newTask);
+                    newTask.fetch({
+                        success: function(){
+                            self.add(newTask, {silent: true});
+                            self.trigger('pushAdd', newTask);
+                        }
+                    });
                 }
-            }, this);
+            });
         },
 
         createNewItem : function() {
