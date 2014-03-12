@@ -21,13 +21,14 @@ public class GetNotesAndTasksAction extends CRUDAction {
   @Override
   public String read(ActionContext context) throws Exception {
     String intent = context.getParameterOrFail("type");
+    boolean getExpired = Boolean.parseBoolean(context.getParameterOrFail("getExpired"));
     String id = context.getParameterOrFail("patient");
     if (intent.equals("note")) {
       logger.info("Received request for Notes");
-      return gson.toJson(persistenceService.getNotesForPatient(id));
+      return gson.toJson(persistenceService.getNotesForPatient(id, getExpired));
     } else if (intent.equals("task")) {
       logger.info("Received request for Tasks");
-      return gson.toJson(persistenceService.getTasksForPatient(id));
+      return gson.toJson(persistenceService.getTasksForPatient(id, getExpired));
     } else {
       throw new RuntimeException("Unknown intent " + intent);
     }

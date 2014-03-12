@@ -70,7 +70,7 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   }
 
-  public List<BaseNote> getNotesForPatient(String id) {
+  public List<BaseNote> getNotesForPatient(String id, boolean getExpired) {
     List<BaseNote> tbr = new ArrayList<BaseNote>();
     Connection connection = null;
     Statement statement = null;
@@ -78,8 +78,14 @@ public class PersistenceServiceImpl implements PersistenceService {
     try {
       connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
       statement = connection.createStatement();
+      StringBuilder query = new StringBuilder();
+      query.append(NOTE_SELECT + "WHERE patientId = '" + id + "'");
+      if (!getExpired) {
+        query.append("AND expiration > now() ");
+      }
+      query.append("ORDER BY priority DESC");
       resultSet = statement
-          .executeQuery(NOTE_SELECT + "WHERE patientId = '" + id + "' ORDER BY priority DESC");
+          .executeQuery(query.toString());
 
       while (resultSet.next()) {
         tbr.add(noteFromResults(resultSet));
@@ -95,7 +101,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     return tbr;
   }
 
-  public List<Task> getTasksForPatient(String id) {
+  public List<Task> getTasksForPatient(String id, boolean getExpired) {
     List<Task> tbr = new ArrayList<Task>();
     Connection connection = null;
     Statement statement = null;
@@ -103,8 +109,14 @@ public class PersistenceServiceImpl implements PersistenceService {
     try {
       connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
       statement = connection.createStatement();
-
-      resultSet = statement.executeQuery(TASK_SELECT + "WHERE patientId = '" + id + "' ORDER BY priority DESC");
+      StringBuilder query = new StringBuilder();
+      query.append(TASK_SELECT + "WHERE patientId = '" + id + "'");
+      if (!getExpired) {
+        query.append("AND expiration > now() ");
+      }
+      query.append("ORDER BY priority DESC");
+      resultSet = statement
+          .executeQuery(query.toString());
 
       while (resultSet.next()) {
         tbr.add(taskFromResults(resultSet));

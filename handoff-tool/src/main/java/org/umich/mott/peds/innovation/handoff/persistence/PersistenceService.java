@@ -26,9 +26,11 @@ public interface PersistenceService {
    * 
    * @param id
    *          - Patient's ID
+   * @param getExpired
+   *          - Should expired notes be returned as well?
    * @return A list of all notes for the given patientId
    */
-  public List<BaseNote> getNotesForPatient(String id);
+  public List<BaseNote> getNotesForPatient(String id, boolean getExpired);
 
   /**
    * 
@@ -41,9 +43,11 @@ public interface PersistenceService {
    * 
    * @param id
    *          - Patient's ID
+   * @param getExpired
+   *          - Should expired notes be returned as well?
    * @return a list of all tasks for the given patientId
    */
-  public List<Task> getTasksForPatient(String id);
+  public List<Task> getTasksForPatient(String id, boolean getExpired);
 
   /**
    * 

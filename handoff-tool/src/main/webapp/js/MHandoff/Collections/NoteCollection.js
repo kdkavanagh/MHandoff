@@ -12,6 +12,7 @@ define([
         model:Note,
         itemType:"note",
         patientId:null,
+        getExpired : false,
 
         initialize: function(username, patientId) {
             this.patientId = patientId;
@@ -56,10 +57,12 @@ define([
                 expiration:moment().add('days', 1).valueOf()/1000,});
             this.add(note);
         },
+        
+        
 
 
         url : function() {
-            return "/patient/items/list.do?type=" + this.itemType+"&patient="+this.patientId;
+            return "/patient/items/list.do?type=" + this.itemType+"&patient="+this.patientId+"&getExpired="+this.getExpired;
         },
     });
 

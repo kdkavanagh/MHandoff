@@ -42,7 +42,7 @@ define([
         $("#logoutLink").click(function() {
             $.ajax( "/logout" )
             .always(function() {
-              location.reload();
+                location.reload();
             });
         });
 

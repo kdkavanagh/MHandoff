@@ -42,6 +42,8 @@ define([
                     widget_margins : [ 12, 12 ],
                     widget_base_dimensions : [ 230, 130 ],
                     min_cols : 3,
+                    max_cols : 3,
+                    autogrow_cols: true,
                     namespace:"#noteGrid",
                     resize: {
                         enabled: true,
