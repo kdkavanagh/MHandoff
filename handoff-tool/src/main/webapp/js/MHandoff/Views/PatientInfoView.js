@@ -25,8 +25,6 @@ define([
             console.log("Creating patientView for element "+this.$el.selector);
             this.render();
             this.on('change', this.render, this);
-
-
         },
 
         resetFilters:function() {
@@ -36,19 +34,19 @@ define([
             this.sliderMin = 0;
             this.$priorityFilterSlider.slider('setValue', [0,200], true);
             this.$nonExpiredNotes.button('toggle');
-            this.trigger('filtersReset', Filter.defaultFilters);
+            this.trigger('filtersReset');
         },
 
-        triggerFilter : function(filterName, filter) {
-            this.trigger('filter', [filterName,filter]);
+        triggerFilter : function(filter) {
+            this.trigger('filter', filter);
         },
 
         nonExpiredNotes : function() {
-           this.triggerFilter("expiration", Filter.ExcludeExpiredNotesFilter);
+           this.triggerFilter( Filter.ExcludeExpiredNotesFilter);
         },
 
         allNotes : function() {
-            this.triggerFilter("expiration", Filter.IncludeExpiredNotesFilter);
+            this.triggerFilter( Filter.IncludeExpiredNotesFilter);
         },
 
         render:function() {
@@ -74,7 +72,7 @@ define([
             }).on('slide',  function(e){
                 //only filter if we need to
                 if(!(self.sliderMin === e.value[0] && self.sliderMax === e.value[1])) {
-                    self.triggerFilter("priority", Filter.createPriorityFilter( e.value[0], e.value[1]));
+                    self.triggerFilter(Filter.createPriorityFilter( e.value[0], e.value[1]));
                     self.sliderMin = e.value[0];
                     self.sliderMax = e.value[1];
                 }

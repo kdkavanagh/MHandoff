@@ -36,6 +36,7 @@ define([
             this.templates = this.options.templates;
             this.gridsterObj = this.$el.find(this.options.gridsterID+" > ul").gridster(this.options.gridsterOpts).data('gridster');
             this.gridsterObj.generate_stylesheet();
+            this.currentFilter =  Filter.generateDefaultFilter();
             this.notes.fetch({ reset:true,});
             this.listenTo(this.notes, 'reset', this.generateViews);
             this.listenTo(this.notes, 'add', this.newItemAdded);
@@ -53,21 +54,18 @@ define([
         },
 
 
-        resetFilters : function(defaultFilters) {
-            this.currentFilter = defaultFilters;
-            console.log("Go for reseilter");
+        resetFilters : function() {
+            
+            this.currentFilter = Filter.generateDefaultFilter();
             this.filter();
         },
 
-        filter: function(event) {
+        filter: function(newFilter) {
 
-            if(event !== undefined) {
-                var filterName = event[0];
-                var filterFn = event[1];
-                console.log("Filter name "+filterName);
-                this.currentFilter[filterName] = filterFn;
+            if(newFilter !== undefined) {
+                this.currentFilter.addFilter(newFilter);
             }
-            if(this.currentFilter["expiration"] ===  Filter.IncludeExpiredNotesFilter && !this.notes.hasExpiredNotesLoaded) {
+            if(!this.notes.hasExpiredNotesLoaded && this.currentFilter.hasFilter( Filter.IncludeExpiredNotesFilter)) {
                 console.log("Pulling expired Notes");
                 //We need to pull some expired notes
                 this.notes.getExpired = true;
@@ -76,14 +74,7 @@ define([
             }
             for (var i = 0; i < this.noteViews.length; i++) {
                 var view = this.noteViews[i]; 
-                var passesFilter = true;
-                for (var key in this.currentFilter) {
-                    if(!this.currentFilter[key](view.noteModel)) {
-                        //Doesnt pass the filter
-                        passesFilter = false;
-                        break;
-                    }
-                }
+                var passesFilter = this.currentFilter.filter(view.noteModel);
                 if(!passesFilter && !view.hidden) {
                     view.hide();
                 } else if(passesFilter && view.hidden){
