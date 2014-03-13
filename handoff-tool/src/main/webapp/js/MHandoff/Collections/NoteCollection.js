@@ -13,38 +13,38 @@ define([
         itemType:"note",
         patientId:null,
         getExpired : false,
+        hasExpiredNotesLoaded : false,
 
         initialize: function(username, patientId) {
             this.patientId = patientId;
             this.user = username;
             this.initStream(patientId);
-            console.log("Creating new collection");
 
         },
 
         initStream : function(patientId) {
 
             var self = this;
-            stream.subscribe(this,patientId+":notes:create", function(e) {
-                console.log("Received create note topic message");
-                var newNote = new Note({noteId:e,});
+            stream.subscribe(this,patientId+":"+this.itemType+":create", function(e) {
+                console.log("Received create "+self.itemType+" topic message");
+                var newNote = new self.model({noteId:e,});
                 newNote.fetch({
                     success: function(){
-                        self.add(newNote, {silent: true});
+                        self.add(newNote);
                         self.trigger('pushAdd', newNote);
                     }
                 });
             });
-            stream.subscribe(this, patientId+":notes:update", function(e) {
+            stream.subscribe(this, patientId+":"+this.itemType+":update", function(e) {
                 console.log("Received update note topic message");
                 if(self.get(e) !== undefined) {
                     //We already have this note, and its handlers are already listening for changes
                     self.get(e).fetch();
                 } else {
-                    var newNote = new Note({noteId:e});
+                    var newNote = new self.model({noteId:e});
                     newNote.fetch({
                         success: function(){
-                            self.add(newNote, {silent: true});
+                            self.add(newNote);
                             self.trigger('pushAdd', newNote);
                         }
                     });
@@ -52,10 +52,11 @@ define([
             });
         },
 
-        createNewItem : function() {
+        createNewItem : function(options) {
             var note = new this.model({patientId:this.patientId, reporter:this.user,  reportedDate:moment().valueOf()/1000,
                 expiration:moment().add('days', 1).valueOf()/1000,});
-            this.add(note);
+            this.add(note, options);
+            return note;
         },
         
         

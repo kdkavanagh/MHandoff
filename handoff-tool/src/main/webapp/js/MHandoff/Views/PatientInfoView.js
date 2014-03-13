@@ -8,21 +8,17 @@ define([
         'bootstrap_editable',
         'bootstrap_slider',
         'Models/PatientInfo',
-        'require'
+        'require',
+        'Collections/filters'
 
-        ], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Bootstrap_slider, PatientInfo, require){
-
-    //Returns a function that takes in the notemodel as an arg and returns a bool with whether or not the item is out-of-bounds
-    var createPriorityFilter = function(sliderMin, sliderMax) {
-        return function(noteModel) {
-            return (noteModel.get("priorityCode") < sliderMin || noteModel.get("priorityCode") > sliderMax);
-        };
-    };
+        ], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Bootstrap_slider, PatientInfo, require, Filter){
 
     var PatientInfoView = Backbone.View.extend({
 
         events:{        
             "click button#resetFilters":"resetFilters",
+            "click label#nonExpiredNotes" : "nonExpiredNotes",
+            "click label#allNotes" : "allNotes",
         },
 
         initialize : function (options) {
@@ -33,21 +29,35 @@ define([
 
         },
 
-        //Should trigger both 'filter' event and 'filtersReset' event
         resetFilters:function() {
             console.log("Resetting filters");
-            this.$priorityFilterSlider.slider('setValue', [0,200]);
-            this.trigger('filtersReset');
+            //Silently set the value of the priority slider
+            this.sliderMax = 200;
+            this.sliderMin = 0;
+            this.$priorityFilterSlider.slider('setValue', [0,200], true);
+            this.$nonExpiredNotes.button('toggle');
+            this.trigger('filtersReset', Filter.defaultFilters);
         },
 
-        triggerFilter : function(filter) {
-            this.trigger('filter', filter);
+        triggerFilter : function(filterName, filter) {
+            this.trigger('filter', [filterName,filter]);
+        },
+
+        nonExpiredNotes : function() {
+           this.triggerFilter("expiration", Filter.ExcludeExpiredNotesFilter);
+        },
+
+        allNotes : function() {
+            this.triggerFilter("expiration", Filter.IncludeExpiredNotesFilter);
         },
 
         render:function() {
             this.$priorityFilterSlider = this.$el.find("#filterSlider");
-            var sliderMin =0; sliderMax=200;
+
+            this.sliderMin =0; this.sliderMax=200;
             var self = this;
+            this.$nonExpiredNotes=this.$el.find("#nonExpiredNotes");
+            this.$nonExpiredNotes.tooltip({ container: 'body'});
             this.$priorityFilterSlider.slider({
                 min : 0,
                 max : 200,
@@ -63,10 +73,10 @@ define([
                 },
             }).on('slide',  function(e){
                 //only filter if we need to
-                if(!(sliderMin === e.value[0] && sliderMax === e.value[1])) {
-                    self.triggerFilter(createPriorityFilter( e.value[0], e.value[1]));
-                    sliderMin = e.value[0];
-                    sliderMax = e.value[1];
+                if(!(self.sliderMin === e.value[0] && self.sliderMax === e.value[1])) {
+                    self.triggerFilter("priority", Filter.createPriorityFilter( e.value[0], e.value[1]));
+                    self.sliderMin = e.value[0];
+                    self.sliderMax = e.value[1];
                 }
             });
 

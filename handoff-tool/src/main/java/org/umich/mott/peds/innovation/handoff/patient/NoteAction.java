@@ -46,7 +46,7 @@ public class NoteAction extends CRUDAction {
       id = persistenceService.writeTask((Task) newNote, false);
     }
     newNote.setNoteId(id);
-    String type = context.getPath().equals(NOTE_PATH) ? "notes" : "tasks";
+    String type = context.getPath().equals(NOTE_PATH) ? "note" : "task";
     String topic = newNote.getPatientId() + ":" + type + ":create";
     context.postMessageToStream(new Stream.Message(topic, newNote.getNoteId()));
     JsonObjectBuilder resp = Json.createObjectBuilder();
@@ -81,7 +81,7 @@ public class NoteAction extends CRUDAction {
       newNote = new Task(context);
       id = persistenceService.writeTask((Task) newNote, true);
     }
-    String type = context.getPath().equals(NOTE_PATH) ? "notes" : "tasks";
+    String type = context.getPath().equals(NOTE_PATH) ? "note" : "task";
     String topic = newNote.getPatientId() + ":" + type + ":update";
     context.postMessageToStream(new Stream.Message(topic, newNote.getNoteId()));
 

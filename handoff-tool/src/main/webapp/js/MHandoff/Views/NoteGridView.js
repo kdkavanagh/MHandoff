@@ -8,14 +8,15 @@ define([
         'Collections/NoteCollection',
         'Collections/TaskCollection',
         'Views/NoteTileView',
-        ], function($, _, Backbone, Gridster, Note, NoteCollection,TaskCollection, NoteTileView){
+        'Collections/filters',
+        ], function($, _, Backbone, Gridster, Note, NoteCollection,TaskCollection, NoteTileView, Filter){
 
 
     var NoteGridView = Backbone.View.extend({
 
         mostRecentlyDeletedView : null,
         $addNewNoteWidget:null,
-    
+        currentFilter:{},
         gridsterObj:null,
 
         events: {
@@ -28,17 +29,17 @@ define([
             this.options = options || {};
             _.bindAll(this, 'render');
             //_.bindAll(this);
-         
+
             this.notes = this.options.collection;
             this.noteViews = new Array();
             this.activeNoteViews = new Array();
             this.templates = this.options.templates;
             this.gridsterObj = this.$el.find(this.options.gridsterID+" > ul").gridster(this.options.gridsterOpts).data('gridster');
-
+            this.gridsterObj.generate_stylesheet();
             this.notes.fetch({ reset:true,});
             this.listenTo(this.notes, 'reset', this.generateViews);
             this.listenTo(this.notes, 'add', this.newItemAdded);
-            this.listenTo(this.notes, 'pushAdd', this.newItemPushed);
+            //this.listenTo(this.notes, 'pushAdd', this.newItemPushed);
         },
 
         createView: function(note, row, col, self) {
@@ -50,17 +51,42 @@ define([
             return noteView;
 
         },
-        
 
 
-        filter: function(filterFn) {
-            this.currentFilter = filterFn;
+        resetFilters : function(defaultFilters) {
+            this.currentFilter = defaultFilters;
+            console.log("Go for reseilter");
+            this.filter();
+        },
+
+        filter: function(event) {
+
+            if(event !== undefined) {
+                var filterName = event[0];
+                var filterFn = event[1];
+                console.log("Filter name "+filterName);
+                this.currentFilter[filterName] = filterFn;
+            }
+            if(this.currentFilter["expiration"] ===  Filter.IncludeExpiredNotesFilter && !this.notes.hasExpiredNotesLoaded) {
+                console.log("Pulling expired Notes");
+                //We need to pull some expired notes
+                this.notes.getExpired = true;
+                this.notes.fetch();
+                this.notes.hasExpiredNotesLoaded = true;
+            }
             for (var i = 0; i < this.noteViews.length; i++) {
                 var view = this.noteViews[i]; 
-                var outOfBounds = filterFn(view.noteModel);
-                if(outOfBounds && !view.hidden) {
+                var passesFilter = true;
+                for (var key in this.currentFilter) {
+                    if(!this.currentFilter[key](view.noteModel)) {
+                        //Doesnt pass the filter
+                        passesFilter = false;
+                        break;
+                    }
+                }
+                if(!passesFilter && !view.hidden) {
                     view.hide();
-                } else if(!outOfBounds && view.hidden){
+                } else if(passesFilter && view.hidden){
                     this.activeNoteViews.push(view.render());
                 }
             }
@@ -88,20 +114,22 @@ define([
 
         addItem: function() {
             console.log("Adding item");
-            this.notes.createNewItem();
+            var note = this.notes.createNewItem({silent:true});
+            this.newItemAdded(note);
         },
 
-        newItemAdded:function(note) {
+        newItemAdded:function(note, fromEvent) {
+    
             var newView = this.createView(note, 0, 0, this);//.render();
-            var modal = newView.openNote();
-            modal.toggleEditing();
-            //Once we save the note for the first time, render the tile
-            newView.listenToOnce( modal,'noteSaved', newView.render);
+            if(!fromEvent) {
+                var modal = newView.openNote();
+                modal.toggleEditing();
+                //Once we save the note for the first time, render the tile
+                newView.listenToOnce( modal,'noteSaved', newView.render);
+            } else {
+                newView.render();
+            }
             this.trigger('gridchange');
-        },
-        
-        newItemPushed:function(note) {
-            this.createView(note, 0, 0, this).render();
         },
 
 

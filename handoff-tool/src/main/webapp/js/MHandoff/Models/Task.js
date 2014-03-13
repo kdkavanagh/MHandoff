@@ -27,6 +27,9 @@ define([
 
         baseUrl:"/patient/task.do",
        
+        getExpirationMoment : function() {
+            return moment(this.get("expiration") * 1000);
+        },
 
         sync: function(method, model, options) {
             options = options || {};

@@ -7,14 +7,31 @@
     <div class="well">
      Filter items:<br>
      <div class="filter">
-      <div class="filterLabelLeft"><b>Personal Note</b></div>
-      <div class="filterBox"><span>
-       <input type="text" style="width:inherit;" value=""
+     <div class="filterLabelLeft">
+       <b>Show</b>
+      </div>
+      <div class="btn-group" data-toggle="buttons">
+       <label class="btn btn-primary" id="allNotes"> <input type="radio"
+        name="expiredOptions" > All Items
+       </label> <label title="Show only non-expired items" id="nonExpiredNotes" class="btn btn-primary active" > <input type="radio"
+        name="expiredOptions"  > Current Items
+       </label>
+      </div>
+     </div>
+     <div class="filter">
+      <div class="filterLabelLeft">
+       <b>Personal Note</b>
+      </div>
+      <div class="filterBox">
+       <span> <input type="text" style="width: inherit;" value=""
         id="filterSlider"></span>
       </div>
-      <div class="filterLabelRight"><b>Critical</b></div>
+      <div class="filterLabelRight">
+       <b>Critical</b>
+      </div>
      </div>
-     <button type="button"  class="btn btn-primary" id="resetFilters" style="margin-top:10px;">Reset Filters</button>
+     <button type="button" class="btn btn-primary" id="resetFilters"
+      style="margin-top: 10px;">Reset Filters</button>
     </div>
    </div>
   </div>

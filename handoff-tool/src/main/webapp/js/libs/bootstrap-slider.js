@@ -337,7 +337,8 @@
 
 
 
-            setValue: function(val) {
+            setValue: function(val, silent) {
+                var isSilent = silent || false;
                 this.value = val;
 
                 if (this.range) {
@@ -360,17 +361,19 @@
                                    ];
                 this.layout();
                 var val = this.calculateValue();
-                this.element.trigger({
-                    type: 'slideStop',
-                    value: val
-                }).trigger({
-                    type: 'slide',
-                    value: val
-                });
+                if(!isSilent) {
+                    this.element.trigger({
+                        type: 'slideStop',
+                        value: val
+                    }).trigger({
+                        type: 'slide',
+                        value: val
+                    });
+                }
             }
     };
 
-    $.fn.slider = function ( option, val ) {
+    $.fn.slider = function ( option, val1, val2 ) {
         return this.each(function () {
             var $this = $(this),
             data = $this.data('slider'),
@@ -379,7 +382,7 @@
                 $this.data('slider', (data = new Slider(this, $.extend({}, $.fn.slider.defaults,options))));
             }
             if (typeof option == 'string') {
-                data[option](val);
+                data[option](val1, val2);
             }
         })
     };
@@ -390,7 +393,7 @@
             step: 1,
             orientation: 'horizontal',
             value: 5,
-            mouseMod:4,
+            mouseMod:1,
             selection: 'before',
             tooltip: 'show',
             handle: 'round',

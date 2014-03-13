@@ -39,6 +39,7 @@ define([
                 }, 
                 collection:this.noteCollection,
                 gridsterOpts:{
+                    autogenerate_stylesheet: false,
                     widget_margins : [ 12, 12 ],
                     widget_base_dimensions : [ 230, 130 ],
                     min_cols : 3,
@@ -62,6 +63,7 @@ define([
                 }, 
                 collection:this.taskCollection,
                 gridsterOpts:{
+                    autogenerate_stylesheet: false,
                     widget_margins : [ 10, 12 ],
                     widget_base_dimensions : [ 230, 120 ],
                     min_cols : 1,
@@ -71,6 +73,10 @@ define([
 
             this.taskGrid.listenTo(this.info, 'filter', this.taskGrid.filter);
             this.noteGrid.listenTo(this.info, 'filter', this.noteGrid.filter);
+            
+            this.taskGrid.listenTo(this.info, 'filtersReset', this.taskGrid.resetFilters);
+            this.noteGrid.listenTo(this.info, 'filtersReset', this.noteGrid.resetFilters);
+
 
 
 

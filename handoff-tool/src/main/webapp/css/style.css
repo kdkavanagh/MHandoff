@@ -183,6 +183,7 @@
 
 .filter {
 	display: table;
+	padding-bottom:10px;
 }
 
 .filter div {
