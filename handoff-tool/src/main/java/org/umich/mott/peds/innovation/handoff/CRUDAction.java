@@ -12,7 +12,7 @@ import com.google.gson.Gson;
  * @date Feb 17, 2014
  * 
  */
-public class CRUDAction {
+public abstract class CRUDAction {
 
   /**
    * Handles GET requests
@@ -58,8 +58,8 @@ public class CRUDAction {
     return null;
   }
 
-  public static final Gson gson = new Gson();
+  protected static final Gson gson = new Gson();
 
-  public static final PersistenceService persistenceService = GuiceInjectorContainer.injector.getInstance(PersistenceService.class);
+  protected static final PersistenceService persistenceService = GuiceInjectorContainer.injector.getInstance(PersistenceService.class);
 
 }

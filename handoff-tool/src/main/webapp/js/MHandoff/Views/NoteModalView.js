@@ -1,6 +1,6 @@
 define([
         // These are path alias that we configured in our bootstrap
-        'require',
+        'MHandoffCore',
         'jquery',     
         'underscore', 
         'backbone',
@@ -11,7 +11,7 @@ define([
         'Models/Note',
         "Collections/NoteCollection",
 
-        ], function(require, $, _, Backbone,Bootstrap,Moment, Bootstrap_editable,Utils, Note, NoteCollection){
+        ], function(MHandoffCore, $, _, Backbone,Bootstrap,Moment, Bootstrap_editable,Utils, Note, NoteCollection){
 
 
     var NoteModalView = Backbone.View.extend({
@@ -33,8 +33,7 @@ define([
 
             this.options = options || {};
             this.noteModel = this.options.noteModel;
-            this.template = this.options.template;
-            this.MHandoff = require("MHandoff");            
+            this.template = this.options.template;            
             return this;
         },
 
@@ -76,7 +75,7 @@ define([
                 disabled:true,
                 mode:'inline',
                 onblur:'submit',
-                source: this.MHandoff.priorityLevels,
+                source: MHandoffCore.priorityLevels,
                 showbuttons: false,
                 success: function (response, newValue) {
                     self.tempModel.priorityCode = newValue;
@@ -102,7 +101,7 @@ define([
                     mode:'inline',
                     onblur:'submit',
                     showbuttons: false ,
-                    source: this.MHandoff.taskStatuses,
+                    source: MHandoffCore.taskStatuses,
                     success: function (response, newValue) {
                         self.tempModel.status = newValue;
                         self.hasChanged = true;
@@ -120,7 +119,7 @@ define([
                     mode:'inline',
                     onblur:'submit',
                     showbuttons: false ,
-                    source: this.MHandoff.handoffUsers,
+                    source: MHandoffCore.handoffUsers,
                     success: function (response, newValue) {
                         self.tempModel.assignee = newValue;
                         self.hasChanged = true;

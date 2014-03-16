@@ -8,10 +8,10 @@ define([
         'bootstrap_editable',
         'bootstrap_slider',
         'Models/PatientInfo',
-        'require',
+        'MHandoffCore',
         'Collections/filters'
 
-        ], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Bootstrap_slider, PatientInfo, require, Filter){
+        ], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Bootstrap_slider, PatientInfo, MHandoffCore, Filter){
 
     var PatientInfoView = Backbone.View.extend({
 
@@ -62,11 +62,11 @@ define([
                 step : 50,
                 value:[0,200],
                 formater : function(first, second) {
-                    var handoff = require("MHandoff");
+
                     if(first !== second) {
-                        return handoff.priorityLevels[first] + ' to ' + handoff.priorityLevels[second];
+                        return MHandoffCore.priorityLevels[first] + ' to ' + MHandoffCore.priorityLevels[second];
                     } else {
-                        return handoff.priorityLevels[first] +" only";
+                        return MHandoffCore.priorityLevels[first] +" only";
                     }
                 },
             }).on('slide',  function(e){
