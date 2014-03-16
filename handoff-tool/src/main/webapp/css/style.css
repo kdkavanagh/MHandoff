@@ -116,8 +116,19 @@
 	color: #000000;
 }
 
+.dashboardTileFooter {
+	position: absolute;
+    bottom: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+}
+
+.dashboardCountBadge {
+	font-size:14pt;
+}
+
 .ignoreDrag {
-	
 }
 
 .staticGridItem {

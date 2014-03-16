@@ -23,7 +23,6 @@ define([
         pullItems:function() {
             console.log("Pulling patient Items");
             console.log(this);
-            var self = this;
             this.notesCollection = new NoteCollection(MHandoffCore.loggedInUser.uniqname, this.get("basicInfo").patientId);
             this.tasksCollection = new TaskCollection(MHandoffCore.loggedInUser.uniqname, this.get("basicInfo").patientId);
             return $.when(this.notesCollection.fetch({reset:true}),
