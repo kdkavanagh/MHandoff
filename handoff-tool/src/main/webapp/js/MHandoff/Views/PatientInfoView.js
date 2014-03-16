@@ -7,11 +7,11 @@ define([
         'moment',
         'bootstrap_editable',
         'bootstrap_slider',
-        'Models/PatientInfo',
+        'Models/Patient',
         'MHandoffCore',
         'Collections/filters'
 
-        ], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Bootstrap_slider, PatientInfo, MHandoffCore, Filter){
+        ], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Bootstrap_slider, Patient, MHandoffCore, Filter){
 
     var PatientInfoView = Backbone.View.extend({
 
@@ -22,7 +22,6 @@ define([
         },
 
         initialize : function (options) {
-            console.log("Creating patientView for element "+this.$el.selector);
             this.render();
             this.on('change', this.render, this);
         },

@@ -36,7 +36,7 @@
    MHandoff <small>C.S. Mott Children's Hospital</small>
   </h1>
   <div id="userSection" class="pull-right">
-   <h4 id="username" style="margin-bottom: 2px; text-align:right;"></h4>
+   <h4 id="username" style="margin-bottom: 2px; text-align: right;"></h4>
    <div id="streaming" style="float: left; margin-right: 5px;"></div>
    <div style="float: right;">
     <a id="logoutLink">Log out</a>
@@ -46,8 +46,15 @@
  </div>
  <ul class="nav nav-tabs tabContainer"
   style="margin-bottom: 10px; padding-left: 20px;" id="tabs">
+  <li class="active"><a href="#dashboard"><span class="tab">Dashboard</span></a></li>
  </ul>
- <div class="tab-content" id="tabContents"></div>
+ <div class="tab-content" id="tabContents">
+  <div class="tab-pane fade in active" id="dashboard">
+   <div class="gridster" id="dashboardGrid">
+    <ul></ul>
+   </div>
+  </div>
+ </div>
 
  <div id="undoAlertHolder" style="width: 100px;"></div>
 </body>

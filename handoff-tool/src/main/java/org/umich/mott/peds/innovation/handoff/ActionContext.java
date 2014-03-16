@@ -102,6 +102,14 @@ public class ActionContext {
     return request.getParameter(key);
   }
 
+  /**
+   * 
+   * @return the currently logged in username
+   */
+  public String getUser() {
+    return request.getUserPrincipal().getName();
+  }
+
   public String getPath() {
     return path;
   }

@@ -35,7 +35,6 @@ public class NoteAction extends CRUDAction {
   public String create(ActionContext context) throws Exception {
     String id = null;
     BaseNote newNote;
-    logger.info(context.getPath());
     if (context.getPath().equals(NOTE_PATH)) {
       logger.info("Creating new note for session " + context.getRequest().getSession().getId());
       newNote = new BaseNote(context);

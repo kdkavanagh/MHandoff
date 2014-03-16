@@ -22,22 +22,20 @@ define([
 
         initialize : function (options) {
             this.options = options || {};
-            this.taskCollection = new TaskCollection(this.options.username, this.options.patientId);
-            this.noteCollection = new NoteCollection(this.options.username, this.options.patientId);
+            this.patient = options.patient;
             return this;
         },
 
         render : function() {
             this.$el.html(patientMasterTemplate);
             this.info = new PatientInfoView({el:this.$el.find("#patientInfo")});
-
             this.noteGrid = new NoteGridView({el:this.$el.find("#patientNotes"),
                 gridsterID:"#noteGrid", 
                 templates:{
                     tile:noteTile,
                     modal:noteModal,
                 }, 
-                collection:this.noteCollection,
+                collection:this.patient.notesCollection,
                 gridsterOpts:{
                     autogenerate_stylesheet: false,
                     widget_margins : [ 12, 12 ],
@@ -61,7 +59,7 @@ define([
                     tile:taskTile,
                     modal:taskModal,
                 }, 
-                collection:this.taskCollection,
+                collection:this.patient.tasksCollection,
                 gridsterOpts:{
                     autogenerate_stylesheet: false,
                     widget_margins : [ 10, 12 ],

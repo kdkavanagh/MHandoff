@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -151,9 +152,7 @@ public class PersistenceServiceImpl implements PersistenceService {
       resultSet = statement.executeQuery(query.toString());
 
       while (resultSet.next()) {
-        int noteCount = resultSet.getInt("noteCount");
-        int taskCount = resultSet.getInt("taskCount");
-        tbr = new PatientTile(new Patient.BasicInfo(id), "nopic", noteCount, taskCount);
+        tbr = patientTileFromResultSet(resultSet);
       }
 
     } catch (SQLException e) {
@@ -163,6 +162,44 @@ public class PersistenceServiceImpl implements PersistenceService {
       closeDBConnection(connection, statement, resultSet);
     }
     return tbr;
+  }
+
+  public List<PatientTile> getAllPatientTiles(String handoffUser, boolean activePatientsOnly) {
+    List<PatientTile> tbr = new LinkedList<PatientTile>();
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
+    try {
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT Patient.patientId, COUNT(DISTINCT BaseNote.noteId) AS noteCount, COUNT(DISTINCT Task.noteId) AS taskCount FROM Patient");
+      query.append(" LEFT JOIN BaseNote ON Patient.patientId=BaseNote.patientId ");
+      query.append(" LEFT JOIN Task ON Patient.patientId=Task.patientId ");
+      query.append("WHERE Patient.active='" + Boolean.toString(activePatientsOnly) + "' ");
+      query.append("GROUP BY Patient.patientId");
+      logger.info(query.toString());
+      resultSet = statement.executeQuery(query.toString());
+
+      while (resultSet.next()) {
+        tbr.add(patientTileFromResultSet(resultSet));
+      }
+
+    } catch (SQLException e) {
+      logger.error("Failed to execute query", e);
+      throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
+    }
+    return tbr;
+  }
+
+  private PatientTile patientTileFromResultSet(ResultSet resultSet) throws SQLException {
+    int noteCount = resultSet.getInt("noteCount");
+    int taskCount = resultSet.getInt("taskCount");
+    String id = resultSet.getString("patientId");
+    return new PatientTile(new Patient.BasicInfo(id), "nopic", noteCount, taskCount);
+
   }
 
   public List<Pair<Integer, String>> getPriorityLevels() {

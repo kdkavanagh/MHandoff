@@ -54,10 +54,10 @@ public class Patient {
 
   public static class BasicInfo {
 
-    public final String idNum, name, dateOfBirth, location;
+    public final String patientId, name, dateOfBirth, location;
 
     public BasicInfo(String idNum, String name, String dateOfBirth, String location) {
-      this.idNum = idNum;
+      this.patientId = idNum;
       this.name = name;
       this.dateOfBirth = dateOfBirth;
       this.location = location;

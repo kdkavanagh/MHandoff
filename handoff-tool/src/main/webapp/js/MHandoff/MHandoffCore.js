@@ -1,9 +1,6 @@
 define([
         'jquery',
-        'underscore',
-        'backbone',
-        'bootstrap',
-        ], function($, _, Backbone,Bootstrap){    
+        ], function($){    
 
     var MHandoffCore = function() {
         this.priorityLevels = {};
@@ -34,8 +31,7 @@ define([
 
             for( var key in data.userInfo )
                 self.loggedInUser[ key ] = data.userInfo[ key ];
-
-            $("#username").html(self.loggedInUser.first + " "+  self.loggedInUser.last);
+            
             if(callback !== undefined) {
                 callback();
             }

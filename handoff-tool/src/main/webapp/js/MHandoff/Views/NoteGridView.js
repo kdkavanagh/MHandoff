@@ -29,7 +29,6 @@ define([
             this.options = options || {};
             _.bindAll(this, 'render');
             //_.bindAll(this);
-
             this.notes = this.options.collection;
             this.noteViews = new Array();
             this.activeNoteViews = new Array();
@@ -37,9 +36,9 @@ define([
             this.gridsterObj = this.$el.find(this.options.gridsterID+" > ul").gridster(this.options.gridsterOpts).data('gridster');
             this.gridsterObj.generate_stylesheet();
             this.currentFilter =  Filter.generateDefaultFilter();
-            this.notes.fetch({ reset:true,});
             this.listenTo(this.notes, 'reset', this.generateViews);
             this.listenTo(this.notes, 'add', this.newItemAdded);
+            this.generateViews();
             //this.listenTo(this.notes, 'pushAdd', this.newItemPushed);
         },
 

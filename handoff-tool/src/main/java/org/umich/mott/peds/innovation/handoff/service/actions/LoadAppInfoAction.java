@@ -34,6 +34,7 @@ public class LoadAppInfoAction extends CRUDAction {
     userInfo.add("uniqname", user.getUniqname());
     userInfo.add("first", user.getFirst());
     userInfo.add("last", user.getLast());
+    userInfo.add("JSESSIONID", context.getRequest().getSession().getId());
 
     // get the priority levels
     List<Pair<Integer, String>> pLevels = persistenceService.getPriorityLevels();

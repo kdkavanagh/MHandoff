@@ -20,27 +20,29 @@ define([
             return moment(stamp *1000).format('ddd, MM/DD/YY');
         };
 
+        $("#logoutLink").click(function() {
+            MHandoffCore.logout();
+        });
         console.log(MHandoffCore);
         MHandoffCore.load(function() {
             
             _.template.getPriorityStringFromCode = function (code) {
-                return MHandoffCore.getPriorityDisplayName[code];
+                return MHandoffCore.getPriorityDisplayName(code);
             };
 
             _.template.getTaskStatusStringFromCode = function (code) {
-                return MHandoffCore.getTaskStatusDisplayName[code];
+                return MHandoffCore.getTaskStatusDisplayName(code);
             };
             _.template.getUser = function(user) {
-                return MHandoffCore.getUserDisplayName[user];
+                return MHandoffCore.getUserDisplayName(user);
             };
             
+            $("#username").html(MHandoffCore.loggedInUser.first + " "+  MHandoffCore.loggedInUser.last);
             Router.initialize();
             stream.connect();
             
         });
     };
-
-
 
     return {
         initialize: initialize,

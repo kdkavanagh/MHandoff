@@ -5,7 +5,8 @@ define([
         'backbone',
         'bootstrap',
         "Views/PatientMasterView",
-        ], function(MHandoffCore, $, _, Backbone,Bootstrap, PatientMasterView){
+        'Views/DashboardView',
+        ], function(MHandoffCore, $, _, Backbone,Bootstrap, PatientMasterView, DashboardView){
 
     var MainView = Backbone.View.extend({        
 
@@ -16,27 +17,26 @@ define([
         },
 
         render : function() {
-            this.$tabs.append('<li class="active"><a href="#dashboard"><span class="tab">Dashboard</span></a></li>');
-            this.$tabContents.append('<div class="tab-pane fade in active" id="dashboard">Dashboard goes here</div>');
+            var dashboard = new DashboardView({parent:this, el:$("div#dashboard")}).render();
             $('#tabs a').click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
             });
                        
-            this.addPatientTab("1", "Kyle Kavanagh");
-            this.addPatientTab("2", "Minchan Kim");
+            //this.addPatientTab("1", "Kyle Kavanagh");
+            //this.addPatientTab("2", "Minchan Kim");
         },
 
-        addPatientTab : function(patientId, name) {
-            var $patientTab = $('<div class="tab-pane fade" id="'+patientId+'"></div>').appendTo(this.$tabContents);
-            var $patientNavTabLi = $('<li><a href="#'+patientId+'">'+name+'<button class="close closeTab" id="closeTab" type="button" title="Close patient">×</button></a></li>').appendTo(this.$tabs);
+        addPatientTab : function(patientModel) {
+            var $patientTab = $('<div class="tab-pane fade" id="'+patientModel.get("basicInfo").patientId+'"></div>').appendTo(this.$tabContents);
+            var $patientNavTabLi = $('<li><a href="#'+patientModel.get("basicInfo").patientId+'">'+patientModel.get("basicInfo").name+'<button class="close closeTab" id="closeTab" type="button" title="Close patient">×</button></a></li>').appendTo(this.$tabs);
             
             $patientNavTabLi.find("a").click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
             });
               
-            var theView = new PatientMasterView({patientId:patientId, username:MHandoffCore.loggedInUser.uniqname, el:$patientTab});
+            var theView = new PatientMasterView({patient:patientModel, username:MHandoffCore.loggedInUser.uniqname, el:$patientTab});
             var $closeButton = $patientNavTabLi.find("button#closeTab");
             $closeButton.tooltip({ container: 'body'});
             $closeButton.click(function() {

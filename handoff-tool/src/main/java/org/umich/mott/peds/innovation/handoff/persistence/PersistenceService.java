@@ -19,7 +19,6 @@ import com.google.inject.ImplementedBy;
  * 
  */
 
-// @ImplementedBy(DummyPersistenceService.class)
 @ImplementedBy(PersistenceServiceImpl.class)
 public interface PersistenceService {
 
@@ -98,6 +97,16 @@ public interface PersistenceService {
    * @return the patient tile associated with the ID
    */
   public PatientTile getPatientTile(String id);
+
+  /**
+   * 
+   * @param handoffUser
+   *          - The handoff user requesting the tiles
+   * @param activePatientsOnly
+   *          - should only active patients be returned?
+   * @return a list of all the patient tiles to display on the dashboard
+   */
+  public List<PatientTile> getAllPatientTiles(String handoffUser, boolean activePatientsOnly);
 
   /**
    * 
