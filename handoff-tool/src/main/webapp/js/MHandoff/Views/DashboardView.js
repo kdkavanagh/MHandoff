@@ -66,12 +66,17 @@ define([
             this.tiles.push(tile);
             var self = this;
             this.parent.listenTo(tile, 'patientOpenRequest', function(event) {
-                event.pullItems().then(function() {
-                    console.log("Loaded");
-                    self.parent.addPatientTab(event);
-                });
-
+                if(event.$tabObject) {
+                    //Weve already generated this view. just open the tab
+                    event.$tabObject.tab('show');
+                } else {
+                    event.pullItems().then(function() {
+                        console.log("Loaded");
+                        self.parent.addPatientTab(event);
+                    });
+                }
             });
+
             return tile;
 
         },

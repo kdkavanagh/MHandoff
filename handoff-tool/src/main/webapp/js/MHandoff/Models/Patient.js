@@ -9,7 +9,7 @@ define([
         ], function($, _, Backbone, MHandoffCore, TaskCollection, NoteCollection){
 
     var Patient = Backbone.Model.extend({
-        idAttribute: 'patientId',
+        idAttribute: 'basicInfo.patientId',
         notesCollection:undefined,
         tasksCollection:undefined,
 

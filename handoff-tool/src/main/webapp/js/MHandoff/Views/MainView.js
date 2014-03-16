@@ -14,6 +14,7 @@ define([
             this.patients = new Array();
             this.$tabs = $("#tabs");
             this.$tabContents = $("#tabContents");
+            this.visiblePatients = {};
         },
 
         render : function() {
@@ -28,6 +29,7 @@ define([
         },
 
         addPatientTab : function(patientModel) {
+
             var $patientTab = $('<div class="tab-pane fade" id="'+patientModel.get("basicInfo").patientId+'"></div>').appendTo(this.$tabContents);
             var $patientNavTabLi = $('<li><a href="#'+patientModel.get("basicInfo").patientId+'">'+patientModel.get("basicInfo").name+'<button class="close closeTab" id="closeTab" type="button" title="Close patient">×</button></a></li>').appendTo(this.$tabs);
             
@@ -43,10 +45,13 @@ define([
                 $closeButton.tooltip('destroy');
                 $patientTab.remove();
                 $patientNavTabLi.remove();
+                delete patientModel.$tabObject;
                 $('#tabs a:last').tab('show'); // Select last tab
             });
             
-            
+
+            patientModel.$tabObject = $patientNavTabLi.find("a");
+            patientModel.$tabObject.tab('show');
             this.patients.push(theView.render());
         }
 
