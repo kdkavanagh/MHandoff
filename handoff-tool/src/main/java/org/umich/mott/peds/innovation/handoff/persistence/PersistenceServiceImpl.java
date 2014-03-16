@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
 import org.umich.mott.peds.innovation.handoff.common.Pair;
 import org.umich.mott.peds.innovation.handoff.common.Patient;
+import org.umich.mott.peds.innovation.handoff.common.PatientTile;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 import org.umich.mott.peds.innovation.handoff.common.User;
 
@@ -132,8 +133,36 @@ public class PersistenceServiceImpl implements PersistenceService {
     return tbr;
   }
 
-  public Patient getPatient(String id) {
-    return null;
+  public PatientTile getPatientTile(String id) {
+    PatientTile tbr = null;
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
+    try {
+      connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
+      statement = connection.createStatement();
+      StringBuilder query = new StringBuilder();
+      query.append("SELECT Patient.patientId, COUNT(DISTINCT BaseNote.noteId) AS noteCount, COUNT(DISTINCT Task.noteId) AS taskCount FROM Patient");
+      query.append(" LEFT JOIN BaseNote ON Patient.patientId=BaseNote.patientId ");
+      query.append(" LEFT JOIN Task ON Patient.patientId=Task.patientId ");
+      query.append("WHERE Patient.patientId='" + id + "' ");
+      query.append("GROUP BY Patient.patientId");
+      logger.info(query.toString());
+      resultSet = statement.executeQuery(query.toString());
+
+      while (resultSet.next()) {
+        int noteCount = resultSet.getInt("noteCount");
+        int taskCount = resultSet.getInt("taskCount");
+        tbr = new PatientTile(new Patient.BasicInfo(id), "nopic", noteCount, taskCount);
+      }
+
+    } catch (SQLException e) {
+      logger.error("Failed to execute query", e);
+      throw new RuntimeException(e);
+    } finally {
+      closeDBConnection(connection, statement, resultSet);
+    }
+    return tbr;
   }
 
   public List<Pair<Integer, String>> getPriorityLevels() {
@@ -445,6 +474,11 @@ public class PersistenceServiceImpl implements PersistenceService {
         connection.close();
       } catch (SQLException ignore) {
       }
+  }
+
+  public List<Patient> getAllPatients() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

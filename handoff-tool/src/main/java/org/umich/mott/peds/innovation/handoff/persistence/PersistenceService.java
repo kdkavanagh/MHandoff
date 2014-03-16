@@ -5,6 +5,7 @@ import java.util.List;
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
 import org.umich.mott.peds.innovation.handoff.common.Pair;
 import org.umich.mott.peds.innovation.handoff.common.Patient;
+import org.umich.mott.peds.innovation.handoff.common.PatientTile;
 import org.umich.mott.peds.innovation.handoff.common.Task;
 import org.umich.mott.peds.innovation.handoff.common.User;
 
@@ -94,9 +95,15 @@ public interface PersistenceService {
    * 
    * @param id
    *          - Patient's ID
-   * @return the patient associated with the ID
+   * @return the patient tile associated with the ID
    */
-  public Patient getPatient(String id);
+  public PatientTile getPatientTile(String id);
+
+  /**
+   * 
+   * @return A list of all active patients in the db
+   */
+  public List<Patient> getAllPatients();
 
   /**
    * 

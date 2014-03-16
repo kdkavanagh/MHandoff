@@ -16,8 +16,6 @@ import org.umich.mott.peds.innovation.handoff.common.PatientTile;
  * 
  * @param patient
  *          - Patient ID
- * @param level
- *          - the amount of information to get from the server
  * 
  */
 @ActionMapping(path = "dashboard/patientInfo.do")
@@ -26,11 +24,7 @@ public class GetTileAction extends CRUDAction {
   @Override
   public String read(ActionContext context) throws Exception {
     String id = context.getParameterOrFail("patient");
-    int detailLevel = Integer.parseInt(context.getParameterOrFail("level"));
-    // Go to the database
-    // format the data and return
-
-    PatientTile tile = new PatientTile(id, "Kyle Kavanagh", "06/20/1992", "1234A", "null", 3, 2, 0, detailLevel);
+    PatientTile tile = persistenceService.getPatientTile(id);
     return CRUDAction.gson.toJson(tile);
 
   }

@@ -16,7 +16,7 @@ public class GetPatientInfoAction extends CRUDAction {
 
   @Override
   public String read(ActionContext context) throws Exception {
-    return gson.toJson(persistenceService.getPatient(context.getParameterOrFail("patient")));
+    return gson.toJson(persistenceService.getPatientTile(context.getParameterOrFail("patient")));
   }
 
 }

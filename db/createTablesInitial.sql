@@ -9,6 +9,8 @@ GRANT ALL PRIVILEGES ON DATABASE "handoff" to handoffUser;
 \echo Creating Patient table
 CREATE TABLE Patient 
 (patientId VARCHAR(255) not NULL, 
+ active not null default 0,
+ picBase64 VARCHAR(255),
 PRIMARY KEY ( patientId )); 
 
 GRANT ALL PRIVILEGES ON TABLE Patient TO handoffUser;

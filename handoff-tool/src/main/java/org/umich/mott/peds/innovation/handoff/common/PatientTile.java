@@ -7,21 +7,33 @@ package org.umich.mott.peds.innovation.handoff.common;
  * 
  */
 public class PatientTile {
-  private final String idNum, name, dateOfBirth, location;
+
+  private final Patient.BasicInfo basicInfo;
+
   private final String picBase64;
-  private int numNotes = 0, numTasks = 0, numAlerts = 0;
 
-  private transient int level = 0;
+  private final int numNotes, numTasks;
 
-  public PatientTile(String idNum, String name, String dateOfBirth, String location, String picBase64, int numNotes, int numTasks, int numAlerts, int level) {
-    this.name = name;
-    this.dateOfBirth = dateOfBirth;
-    this.location = location;
-    this.idNum = idNum;
+  public PatientTile(Patient.BasicInfo info, String picBase64, int numNotes, int numTasks) {
+    this.basicInfo = info;
     this.picBase64 = picBase64;
     this.numNotes = numNotes;
     this.numTasks = numTasks;
-    this.numAlerts = numAlerts;
-    this.level = level;
+  }
+
+  public Patient.BasicInfo getBasicInfo() {
+    return basicInfo;
+  }
+
+  public String getPicBase64() {
+    return picBase64;
+  }
+
+  public int getNumNotes() {
+    return numNotes;
+  }
+
+  public int getNumTasks() {
+    return numTasks;
   }
 }

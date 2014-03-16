@@ -5,7 +5,7 @@ import org.umich.mott.peds.innovation.handoff.persistence.PersistenceService;
 import com.google.gson.Gson;
 
 /**
- * Actions are provide code that runs when an associated request is received by
+ * Actions are code that runs when an associated request is received by
  * the ActionDispatcher
  * 
  * @author Kyle D. Kavanagh

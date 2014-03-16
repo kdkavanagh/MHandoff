@@ -63,6 +63,10 @@ public class Patient {
       this.location = location;
     }
 
+    public BasicInfo(String idNum) {
+      this(idNum, "N/A", "N/A", "N/A");
+    }
+
   }
 
   public static class LabInfo extends HashMap<String, Double> {

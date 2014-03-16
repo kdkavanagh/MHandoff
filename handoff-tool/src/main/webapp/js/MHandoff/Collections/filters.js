@@ -81,7 +81,7 @@ define([
     Filter.IncludeExpiredNotesFilter = Filter.createExpirationFilter(true);
     Filter.ExcludeExpiredNotesFilter = Filter.createExpirationFilter(false);
     Filter.DefaultPriorityFilter = Filter.createPriorityFilter(0, 200);
-    CompoundFilter.generateDefaultFilter = function() {return new CompoundFilter().addFilter(Filter.ExcludeExpiredNotesFilter).addFilter(Filter.DefaultPriorityFilter);}
+    CompoundFilter.generateDefaultFilter = function() {return new CompoundFilter().addFilter(Filter.ExcludeExpiredNotesFilter).addFilter(Filter.DefaultPriorityFilter);};
     return {
         "Filter":Filter,
         "CompoundFilter":CompoundFilter,
