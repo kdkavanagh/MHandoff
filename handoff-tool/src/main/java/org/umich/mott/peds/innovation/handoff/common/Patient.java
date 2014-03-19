@@ -64,7 +64,7 @@ public class Patient {
     }
 
     public BasicInfo(String idNum) {
-      this(idNum, "N/A", "N/A", "N/A");
+      this(idNum, "John Doe", "N/A", "N/A");
     }
 
   }
