@@ -64,6 +64,7 @@ define([
             if(newFilter !== undefined) {
                 this.currentFilter.addFilter(newFilter);
             }
+            console.log(this.currentFilter.toString());
             if(!this.notes.hasExpiredNotesLoaded && this.currentFilter.hasFilter( Filter.IncludeExpiredNotesFilter)) {
                 console.log("Pulling expired Notes");
                 //We need to pull some expired notes

@@ -24,15 +24,8 @@ define([
                 max_cols : 3,
                 autogrow_cols: true,
                 namespace:"#dashboardGrid",
-                resize: {
-                    enabled: true,
-                    max_size: [2, 2],
-                    min_size: [1, 1]
-                }
             }).data('gridster');
             this.gridsterObj.generate_stylesheet();
-
-
         },
 
         render : function() {
@@ -71,7 +64,6 @@ define([
                     event.$tabObject.tab('show');
                 } else {
                     event.pullItems().then(function() {
-                        console.log("Loaded");
                         self.parent.addPatientTab(event);
                     });
                 }

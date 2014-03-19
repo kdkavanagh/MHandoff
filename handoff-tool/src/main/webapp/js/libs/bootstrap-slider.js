@@ -121,7 +121,7 @@
         this.offset = this.picker.offset();
         this.size = this.picker[0][this.sizePos];
 
-        this.formater = options.formater;
+        this.formatter = options.formatter;
         this.mouseMod = this.element.data('mouseMod')||options.mouseMod;
 
         this.layout();
@@ -181,13 +181,13 @@
                 }
                 if (this.range) {
                     this.tooltipInner.text(
-                            this.formater(this.value[0], this.value[1])
+                            this.formatter(this.value[0], this.value[1])
 
                     );
                     this.tooltip[0].style[this.stylePos] = this.size * (this.percentage[0] + (this.percentage[1] - this.percentage[0])/2)/100 - (this.orientation === 'vertical' ? this.tooltip.outerHeight()/2 : this.tooltip.outerWidth()/2) +'px';
                 } else {
                     this.tooltipInner.text(
-                            this.formater(this.value[0])
+                            this.formatter(this.value[0])
                     );
                     this.tooltip[0].style[this.stylePos] = this.size * this.percentage[0]/100 - (this.orientation === 'vertical' ? this.tooltip.outerHeight()/2 : this.tooltip.outerWidth()/2) +'px';
                 }
@@ -397,7 +397,7 @@
             selection: 'before',
             tooltip: 'show',
             handle: 'round',
-            formater: function(value) {
+            formatter: function(value) {
                 return value;
             }
     };

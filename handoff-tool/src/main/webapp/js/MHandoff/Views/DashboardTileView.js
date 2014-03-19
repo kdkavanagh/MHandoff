@@ -28,9 +28,8 @@ define([
         },   
         
         openPatient : function() {
-            console.log("Opening patient");
             this.trigger('patientOpenRequest', this.patientModel);
-        }
+        },
 
     });
 

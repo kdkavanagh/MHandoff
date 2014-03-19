@@ -90,6 +90,9 @@ define([
 
             this.noteGrid.destroyView();
             this.TaskGrid.destroyView();
+            //Clean up our patient model
+            delete this.patient.notesCollection;
+            delete this.patient.tasksCollection;
             //Remove view from DOM
             this.remove();  
             Backbone.View.prototype.remove.call(this);

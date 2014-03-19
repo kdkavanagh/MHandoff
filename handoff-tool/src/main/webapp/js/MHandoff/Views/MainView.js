@@ -46,7 +46,9 @@ define([
                 $patientTab.remove();
                 $patientNavTabLi.remove();
                 delete patientModel.$tabObject;
+                
                 $('#tabs a:last').tab('show'); // Select last tab
+                theView.destroyView();
             });
             
 
