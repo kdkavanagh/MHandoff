@@ -6,17 +6,16 @@
     <button type="button" class="close" data-dismiss="modal"
      aria-hidden="true">&times;</button>
     <h4 class="modal-title" id="myModalLabel">
-     Note Details <span id="priorityBadge"
-      class="badge <%=badgeLevel%> pull-right"
-      style="font-size: inherit; margin-right: 5px;">
+     Note 
+     <span id="priorityBadge" class="badge <%=badgeLevel%> pull-right" style="font-size: inherit; margin-right: 5px;">
       <%= _.template.getPriorityStringFromCode(priorityCode)%></span>
     </h4>
    </div>
    <div class="modal-body modalNoteBody">
-    <p>Content: <a id="noteText"><%=text%></a></p>
+    <p id="noteTextModal"><a id="noteText"><%=text%></a></p>
     <p>Priority: <a id="priority"><%= _.template.getPriorityStringFromCode(priorityCode)%></a></p>
     <p>Expires: <a id="expiration"></a></p>
-    <p>Reported by <%=_.template.getUser(reporter)%> on <%= _.template.formatdate(reportedDate) %></p>
+    <p id="reportingInfo">Reported by <%=_.template.getUser(reporter)%> on <%= _.template.formatdate(reportedDate) %></p>
    </div>
    <div class="modal-footer modalNoteFooter" >
     <button id="saveCloseButton" type="button" class="btn btn-primary">Save & Close</button>

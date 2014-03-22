@@ -85,6 +85,14 @@
 	font-size: 10pt;
 }
 
+#reportingInfo {
+	font-style: italic;
+}
+
+#noteTextModal {
+	font-size: 18px
+}
+
 .patientPanel {
 	border-left: 2px solid #eee;
 	display: table-cell;
@@ -192,6 +200,8 @@
 	font-size: 8pt;
 	width: 100%;
 }
+
+
 
 .filter {
 	display: table;

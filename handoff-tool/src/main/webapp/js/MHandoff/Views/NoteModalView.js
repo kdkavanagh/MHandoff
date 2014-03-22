@@ -144,6 +144,7 @@ define([
             this.$editables.editable('toggleDisabled');
             if(this.editing) {
                 // we WERE editing, set the text back to edit
+                // press SAVE -> EDIT
                 if(this.hasChanged) {
                     //Dont need to save if we dont have any changes
                     this.noteModel.save(this.tempModel);
@@ -173,7 +174,6 @@ define([
             this.trigger('noteSaved');
 
             // this.destroy_full();
-
         },
 
         destroy_full: function(event) {
@@ -185,13 +185,8 @@ define([
 
             delete this.$el; // Delete the jQuery wrapped object variable
             delete this.el; // Delete the variable reference to this node
-
         }
-
-
     });
-
-
 
     return NoteModalView;
 });
