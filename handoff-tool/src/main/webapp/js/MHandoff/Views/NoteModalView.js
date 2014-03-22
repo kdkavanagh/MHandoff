@@ -172,7 +172,7 @@ define([
             }
             this.trigger('noteSaved');
 
-            this.destroy_full();
+            // this.destroy_full();
 
         },
 

@@ -14,7 +14,7 @@ define([
         // Pass in our Router module and call it's initialize function
         console.log("Initializing MHandoff");
         _.template.formatdate = function (stamp) {
-            return moment(stamp *1000).format('ddd, MMM Do YYYY, h:mm A');
+            return moment(stamp *1000).format('ddd, MMM Do YYYY') + ' at ' + moment(stamp *1000).format('h:mma');
         };
         _.template.formatdate_noTime = function (stamp) {
             return moment(stamp *1000).format('ddd, MM/DD/YY');
