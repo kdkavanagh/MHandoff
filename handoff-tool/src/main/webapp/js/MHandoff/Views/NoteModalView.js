@@ -19,6 +19,7 @@ define([
         template:null,
         editing :false,
         $editButton:null,
+        $saveCloseButton:null,
         $editables:null,
         $priorityBadge:null,
         tempModel: {},
@@ -33,7 +34,7 @@ define([
 
             this.options = options || {};
             this.noteModel = this.options.noteModel;
-            this.template = this.options.template;            
+            this.template = this.options.template;    
             return this;
         },
 
@@ -129,8 +130,11 @@ define([
             }
 
             this.$editButton = this.$el.find("button#editButton");
-            this.$editables = this.$el.find(".editable");
             this.$closeButton = this.$el.find("button#closeButton");
+            this.$saveCloseButton = this.$el.find("button#saveCloseButton");
+            this.$saveCloseButton.hide();
+            
+            this.$editables = this.$el.find(".editable");
             this.$priorityBadge = this.$el.find("#priorityBadge");
 
         },
@@ -148,10 +152,12 @@ define([
                 this.trigger('noteSaved');
                 this.$editButton.html("Edit");
                 this.$closeButton.html("Close");
+                this.$saveCloseButton.toggle();
             } else {
                 //we were not editing, change text to done
                 this.$closeButton.html("Close without saving");
                 this.$editButton.html("Save");
+                this.$saveCloseButton.toggle();
             }
             this.editing = !this.editing;
         },
