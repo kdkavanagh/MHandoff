@@ -18,7 +18,7 @@ define([
 
         template: null,
         editing: false,
-        $editButton: null,
+        $saveButton: null,
         $editables: null,
         $priorityBadge: null,
         tempModel: {},
@@ -26,7 +26,7 @@ define([
 
         events : {
             'hidden.bs.modal':'destroy_full',
-            'click button#editButton' : 'toggleEditing',
+            'click button#saveButton' : 'saveItem',
         },
 
         initialize : function (options) {
@@ -47,6 +47,7 @@ define([
                 pk: 1,
                 title: 'Note Text',
                 disabled: false,
+                showbuttons: false,
                 mode:'inline',
                 onblur:'submit',
                 success: function (response, newValue) {
@@ -58,6 +59,7 @@ define([
             this.$el.find("a#expiration").editable({
                 type:'combodate',
                 disabled: false,
+                showbuttons: false,
                 mode:'inline',
                 onblur:'submit',
                 value: moment.unix(this.noteModel.get("expiration")),
@@ -128,16 +130,16 @@ define([
                 });
             }
 
-            this.$editButton = this.$el.find("button#editButton");
+            this.$saveButton = this.$el.find("button#saveButton");
             this.$closeButton = this.$el.find("button#closeButton");
-
             this.$editables = this.$el.find(".editable");
             this.$priorityBadge = this.$el.find("#priorityBadge");
 
         },
 
-        toggleEditing:function() {
-
+        saveItem:function() {
+            // this.$el.find("a#noteText")
+            this.$editables.submit();
             this.noteModel.save(this.tempModel);
             this.tempModel = {};
             this.hasChanged = false;
