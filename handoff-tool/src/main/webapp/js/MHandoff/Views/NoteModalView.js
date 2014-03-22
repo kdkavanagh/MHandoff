@@ -28,6 +28,7 @@ define([
         events : {
             'hidden.bs.modal':'destroy_full',
             'click button#editButton' : 'toggleEditing',
+            'click button#saveCloseButton' : 'saveAndClose',
         },
 
         initialize : function (options) {
@@ -142,7 +143,7 @@ define([
         toggleEditing:function() {
             this.$editables.editable('toggleDisabled');
             if(this.editing) {
-                //we were editing, set the text back to edit
+                // we WERE editing, set the text back to edit
                 if(this.hasChanged) {
                     //Dont need to save if we dont have any changes
                     this.noteModel.save(this.tempModel);
@@ -160,6 +161,19 @@ define([
                 this.$saveCloseButton.toggle();
             }
             this.editing = !this.editing;
+        },
+
+        saveAndClose:function() {
+            if(this.hasChanged) {
+                //Dont need to save if we dont have any changes
+                this.noteModel.save(this.tempModel);
+                this.tempModel = {};
+                this.hasChanged = false;
+            }
+            this.trigger('noteSaved');
+
+            this.destroy_full();
+
         },
 
         destroy_full: function(event) {
