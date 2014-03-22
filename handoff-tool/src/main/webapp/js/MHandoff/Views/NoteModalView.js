@@ -16,19 +16,17 @@ define([
 
     var NoteModalView = Backbone.View.extend({
 
-        template:null,
-        editing :false,
-        $editButton:null,
-        $saveCloseButton:null,
-        $editables:null,
-        $priorityBadge:null,
+        template: null,
+        editing: false,
+        $editButton: null,
+        $editables: null,
+        $priorityBadge: null,
         tempModel: {},
-        hasChanged:false,
+        hasChanged: false,
 
         events : {
             'hidden.bs.modal':'destroy_full',
             'click button#editButton' : 'toggleEditing',
-            'click button#saveCloseButton' : 'saveAndClose',
         },
 
         initialize : function (options) {
@@ -48,7 +46,7 @@ define([
                 type: 'textarea',
                 pk: 1,
                 title: 'Note Text',
-                disabled:true,
+                disabled: false,
                 mode:'inline',
                 onblur:'submit',
                 success: function (response, newValue) {
@@ -59,13 +57,13 @@ define([
             });
             this.$el.find("a#expiration").editable({
                 type:'combodate',
-                disabled:true,
+                disabled: false,
                 mode:'inline',
                 onblur:'submit',
                 value: moment.unix(this.noteModel.get("expiration")),
                 format:"X",
-                viewformat:"MMM D, YYYY, hh:mm A",
-                template:"MMM D YYYY  hh:mm A",
+                viewformat: "MMM D, YYYY, hh:mm A",
+                template: "MMM D YYYY  hh:mm A",
                 success: function (response, newValue) {
                     self.tempModel.expiration = newValue/1000;
                     self.hasChanged = true;
@@ -73,10 +71,10 @@ define([
                 },
             });
             this.$el.find("a#priority").editable({
-                type:'select',
-                disabled:true,
-                mode:'inline',
-                onblur:'submit',
+                type: 'select',
+                disabled: false,
+                mode: 'inline',
+                onblur: 'submit',
                 source: MHandoffCore.priorityLevels,
                 showbuttons: false,
                 success: function (response, newValue) {
@@ -132,49 +130,20 @@ define([
 
             this.$editButton = this.$el.find("button#editButton");
             this.$closeButton = this.$el.find("button#closeButton");
-            this.$saveCloseButton = this.$el.find("button#saveCloseButton");
-            this.$saveCloseButton.hide();
-            
+
             this.$editables = this.$el.find(".editable");
             this.$priorityBadge = this.$el.find("#priorityBadge");
 
         },
 
         toggleEditing:function() {
-            this.$editables.editable('toggleDisabled');
-            if(this.editing) {
-                // we WERE editing, set the text back to edit
-                // press SAVE -> EDIT
-                if(this.hasChanged) {
-                    //Dont need to save if we dont have any changes
-                    this.noteModel.save(this.tempModel);
-                    this.tempModel = {};
-                    this.hasChanged = false;
-                }
-                this.trigger('noteSaved');
-                this.$editButton.html("Edit");
-                this.$closeButton.html("Close");
-                this.$saveCloseButton.toggle();
-            } else {
-                //we were not editing, change text to done
-                this.$closeButton.html("Close without saving");
-                this.$editButton.html("Save");
-                this.$saveCloseButton.toggle();
-            }
-            this.editing = !this.editing;
-        },
 
-        saveAndClose:function() {
-            if(this.hasChanged) {
-                //Dont need to save if we dont have any changes
-                this.noteModel.save(this.tempModel);
-                this.tempModel = {};
-                this.hasChanged = false;
-            }
+            this.noteModel.save(this.tempModel);
+            this.tempModel = {};
+            this.hasChanged = false;
             this.trigger('noteSaved');
-
-            // this.destroy_full();
         },
+
 
         destroy_full: function(event) {
             console.log("Destroying item");
