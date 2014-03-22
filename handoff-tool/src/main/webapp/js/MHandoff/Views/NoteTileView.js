@@ -96,7 +96,7 @@ define([
             delete this.$notePriorityBadge;
             delete this.$noteText;
             this.unbind(); // Unbind all local event bindings
-            this.noteModel.destroy();
+            this.noteModel.collection.remove(this.noteModel);  //Remove this note from our collection
             this.options.parent.unbind( 'close:all', this.close, this ); // Unbind reference to the parent view
 
             this.remove(); // Remove view from DOM

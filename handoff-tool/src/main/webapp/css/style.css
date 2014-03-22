@@ -162,7 +162,8 @@
 
 .badge-new,
 .badge-streaming,
-.badge-low {
+.badge-low,
+.badge-count {
 	background-color: #5bc0de;
 }
 

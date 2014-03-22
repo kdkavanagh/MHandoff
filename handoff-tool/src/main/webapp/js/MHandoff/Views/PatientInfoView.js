@@ -60,7 +60,7 @@ define([
                 max : 200,
                 step : 50,
                 value:[0,200],
-                formater : function(first, second) {
+                formatter : function(first, second) {
 
                     if(first !== second) {
                         return MHandoffCore.priorityLevels[first] + ' to ' + MHandoffCore.priorityLevels[second];
