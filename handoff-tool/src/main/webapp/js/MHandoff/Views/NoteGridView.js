@@ -58,20 +58,8 @@ define([
             this.currentFilter = Filter.generateDefaultFilter();
             this.filter();
         },
-
-        filter: function(newFilter) {
-
-            if(newFilter !== undefined) {
-                this.currentFilter.addFilter(newFilter);
-            }
-            console.log(this.currentFilter.toString());
-            if(!this.notes.hasExpiredNotesLoaded && this.currentFilter.hasFilter( Filter.IncludeExpiredNotesFilter)) {
-                console.log("Pulling expired Notes");
-                //We need to pull some expired notes
-                this.notes.getExpired = true;
-                this.notes.fetch();
-                this.notes.hasExpiredNotesLoaded = true;
-            }
+        
+        doFilter : function() {
             for (var i = 0; i < this.noteViews.length; i++) {
                 var view = this.noteViews[i]; 
                 var passesFilter = this.currentFilter.filter(view.noteModel);
@@ -81,6 +69,30 @@ define([
                     this.activeNoteViews.push(view.render());
                 }
             }
+        },
+
+        filter: function(newFilter) {
+
+            if(newFilter !== undefined) {
+                this.currentFilter.addFilter(newFilter);
+            }
+            
+            if(!this.notes.hasExpiredNotesLoaded && this.currentFilter.hasFilter( Filter.IncludeExpiredNotesFilter)) {
+                console.log("Pulling expired Notes");
+                //We need to pull some expired notes
+                this.notes.getExpired = true;
+                var self = this;
+                this.notes.fetch().done(function() {
+                    
+                    self.doFilter();
+                    self.notes.hasExpiredNotesLoaded = true;
+                });
+                
+            } else {
+                this.doFilter();
+            }
+            console.log(this.currentFilter.toString());
+          
 
         },
 
