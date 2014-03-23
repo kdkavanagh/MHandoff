@@ -114,7 +114,6 @@ define([
             var newView = this.createView(note, 0, 0, this);//.render();
             if(!fromEvent) {
                 var modal = newView.openNote();
-                modal.toggleEditing();
                 //Once we save the note for the first time, render the tile
                 newView.listenToOnce( modal,'noteSaved', newView.render);
             } else {
