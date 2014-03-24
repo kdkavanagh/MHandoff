@@ -11,6 +11,7 @@ define([
 
     var Note = Backbone.Model.extend({
         idAttribute: 'noteId',
+
         defaults : {
             patientId:"1",  //Will need to get the patient from the view
             priorityCode:0,
@@ -43,12 +44,9 @@ define([
                 + "&text="+this.get("text"); 
             }
  
-
             return  Backbone.sync(method, model, options);
         },
-
     });
-
 
     return Note;
 });

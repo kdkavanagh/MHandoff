@@ -6,18 +6,30 @@ CREATE DATABASE "handoff" WITH OWNER handoffUser;
 GRANT ALL PRIVILEGES ON DATABASE "handoff" to handoffUser;
 
 \c handoff;
-\echo Creating Patient table
+\echo Creating Patient table with BasicInfo
 CREATE TABLE Patient 
-(patientId VARCHAR(255) not NULL, 
- active BOOLEAN DEFAULT TRUE,
- picBase64 VARCHAR(255),
-PRIMARY KEY ( patientId )); 
+(
+  patientId VARCHAR(255) not NULL, 
+  active BOOLEAN DEFAULT TRUE,
+  picBase64 VARCHAR(255),
+  PRIMARY KEY ( patientId )
+); 
+
+CREATE TABLE BasicInfo
+(
+  id SERIAL,
+  name VARCHAR(255) not NULL, 
+  patientId VARCHAR(255),
+  dateOfBirth TIMESTAMP,
+  location VARCHAR(255),
+  FOREIGN KEY(patientId) REFERENCES patient(patientId),
+  PRIMARY KEY ( id )
+);
 
 GRANT ALL PRIVILEGES ON TABLE Patient TO handoffUser;
-
+GRANT ALL PRIVILEGES ON TABLE BasicInfo TO handoffUser;
 
 \echo Creating Users and Roles tables
-
 CREATE TABLE users
 (
   id SERIAL,
@@ -49,56 +61,58 @@ GRANT ALL PRIVILEGES ON TABLE roles TO handoffUser;
 
 \echo Creating TaskStatus table
 CREATE TABLE TaskStatus(
-displayText VARCHAR(255),
-code INTEGER,
-PRIMARY KEY ( code )
+  displayText VARCHAR(255),
+  code INTEGER,
+  PRIMARY KEY ( code )
 );
 GRANT ALL PRIVILEGES ON TABLE TaskStatus TO handoffUser;
 
 \echo Creating PriorityLevel table
 CREATE TABLE PriorityLevel(
-displayText VARCHAR(255),
-code INTEGER,
-PRIMARY KEY ( code )
+  displayText VARCHAR(255),
+  code INTEGER,
+  PRIMARY KEY ( code )
 );
 GRANT ALL PRIVILEGES ON TABLE PriorityLevel TO handoffUser;
 
 
 \echo Creating Task table
 CREATE TABLE Task 
-(noteId SERIAL, 
-text VARCHAR(255),  
-reporter VARCHAR(255), 
-assignee VARCHAR(255),
-status INTEGER, 
-reportedDate TIMESTAMP,  
-expiration TIMESTAMP,  
-priority INTEGER, 
-patientId VARCHAR(255), 
-FOREIGN KEY(assignee) REFERENCES users(username), 
-FOREIGN KEY(reporter) REFERENCES users(username), 
-FOREIGN KEY(status) REFERENCES TaskStatus(code), 
-FOREIGN KEY(priority) REFERENCES PriorityLevel(code), 
-FOREIGN KEY(patientId) REFERENCES Patient(patientId), 
-PRIMARY KEY ( noteId )); 
-
-
+(
+  noteId SERIAL, 
+  text VARCHAR(255),  
+  reporter VARCHAR(255), 
+  assignee VARCHAR(255),
+  status INTEGER, 
+  reportedDate TIMESTAMP,  
+  expiration TIMESTAMP,  
+  priority INTEGER, 
+  patientId VARCHAR(255), 
+  FOREIGN KEY(assignee) REFERENCES users(username), 
+  FOREIGN KEY(reporter) REFERENCES users(username), 
+  FOREIGN KEY(status) REFERENCES TaskStatus(code), 
+  FOREIGN KEY(priority) REFERENCES PriorityLevel(code), 
+  FOREIGN KEY(patientId) REFERENCES Patient(patientId), 
+  PRIMARY KEY ( noteId )
+); 
 
 GRANT ALL PRIVILEGES ON TABLE Task TO handoffUser;
 
 \echo Creating BaseNote table
 CREATE TABLE BaseNote 
-(noteId SERIAL, 
-text VARCHAR(255),  
-reporter VARCHAR(255),  
-reportedDate TIMESTAMP,  
-expiration TIMESTAMP,  
-priority INTEGER, 
-patientId VARCHAR(255), 
-FOREIGN KEY(patientId) REFERENCES Patient(patientId), 
-FOREIGN KEY(reporter) REFERENCES users(username), 
-FOREIGN KEY(priority) REFERENCES PriorityLevel(code), 
-PRIMARY KEY ( noteId )); 
+(
+  noteId SERIAL, 
+  text VARCHAR(255),  
+  reporter VARCHAR(255),  
+  reportedDate TIMESTAMP,  
+  expiration TIMESTAMP,  
+  priority INTEGER, 
+  patientId VARCHAR(255), 
+  FOREIGN KEY(patientId) REFERENCES Patient(patientId), 
+  FOREIGN KEY(reporter) REFERENCES users(username), 
+  FOREIGN KEY(priority) REFERENCES PriorityLevel(code), 
+  PRIMARY KEY ( noteId )
+); 
 
 GRANT ALL PRIVILEGES ON TABLE BaseNote TO handoffUser;
 GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO handoffUser;

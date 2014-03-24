@@ -25,12 +25,14 @@ define([
         hasChanged: false,
 
         events : {
-            'hidden.bs.modal':'destroy_full',
             'click button#saveButton' : 'saveItem',
+            'hidden.bs.modal':'destroy_full',
+            // 'hidden.bs.modal button#saveButton' : 'saveItem'
+
         },
 
         initialize : function (options) {
-
+            _.bindAll(this, 'render', 'saveItem');
             this.options = options || {};
             this.noteModel = this.options.noteModel;
             this.template = this.options.template;    
@@ -38,10 +40,12 @@ define([
         },
 
         render:function() {
+
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             this.setElement(tmpl(this.noteModel.toJSON()));
             this.$el.modal('show');
             var self = this;
+
             this.$el.find("a#noteText").editable({
                 type: 'textarea',
                 pk: 1,
@@ -53,9 +57,11 @@ define([
                 success: function (response, newValue) {
                     self.tempModel.text = newValue;
                     self.hasChanged = true;
+                    // this.$noteText.trigger('blur');
                     // self.noteModel.set("text", newValue);
                 },
             });
+
             this.$el.find("a#expiration").editable({
                 type:'combodate',
                 disabled: false,
@@ -72,6 +78,7 @@ define([
                     //self.noteModel.set("expiration", newValue/1000);
                 },
             });
+
             this.$el.find("a#priority").editable({
                 type: 'select',
                 disabled: false,
@@ -134,20 +141,28 @@ define([
             this.$closeButton = this.$el.find("button#closeButton");
             this.$editables = this.$el.find(".editable");
             this.$priorityBadge = this.$el.find("#priorityBadge");
-
+            this.$noteText = this.$el.find("#noteText");
         },
 
         saveItem:function() {
-            // this.$el.find("a#noteText")
+            console.log("Saving item")
+
+            
+            // this.trigger('blur');
+            // $('a').trigger('blur');
+
             this.$editables.submit();
             this.noteModel.save(this.tempModel);
             this.tempModel = {};
             this.hasChanged = false;
+            // this.$el.modal('hide');
             this.trigger('noteSaved');
+            // this.destroy_full();
         },
 
-
         destroy_full: function(event) {
+            // console.log("Submitting all")
+            // this.$editables.submit();
             console.log("Destroying item");
             this.unbind(); // Unbind all local event bindings
             this.noteModel.unbind( 'change', this.render, this ); // Unbind reference to the model

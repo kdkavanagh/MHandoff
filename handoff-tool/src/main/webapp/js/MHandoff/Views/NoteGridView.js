@@ -122,7 +122,7 @@ define([
         },
 
         newItemAdded:function(note, fromEvent) {
-    
+
             var newView = this.createView(note, 0, 0, this);//.render();
             if(!fromEvent) {
                 var modal = newView.openNote();
