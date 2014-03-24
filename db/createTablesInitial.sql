@@ -19,8 +19,9 @@ CREATE TABLE BasicInfo
 (
   id SERIAL,
   name VARCHAR(255) not NULL, 
+  dateOfBirth TIMESTAMP not NULL,
+  gender VARCHAR(1)  not NULL,
   patientId VARCHAR(255),
-  dateOfBirth TIMESTAMP,
   location VARCHAR(255),
   FOREIGN KEY(patientId) REFERENCES patient(patientId),
   PRIMARY KEY ( id )
