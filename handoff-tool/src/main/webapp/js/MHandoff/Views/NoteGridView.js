@@ -150,12 +150,13 @@ define([
             if(this.mostRecentlyDeletedView != null) {
                 //There was a previously deleted note, lets get rid of it for good
                 console.log("Permanently deleting note");
+                console.log("Testing stuff");
                 this.mostRecentlyDeletedView.destroy_full(null);                
             }
 
             this.mostRecentlyDeletedView = event;
             $('#undoAlertHolder').html('<div id="undoAlert" class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span><button class="btn btn-default" id="undoButton">Undo..</button></span></div>');
-            this.noteRemoved(event);
+            this.noteRemove(event);
         },
 
         noteHidden:function(event) {
@@ -166,7 +167,7 @@ define([
             }
         },
 
-        noteRemoved:function(event) {
+        noteRemove:function(event) {
             //remove the view from our list of views to render
             this.noteHidden(event);
             var index = this.noteViews.indexOf(event);
