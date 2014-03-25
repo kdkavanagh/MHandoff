@@ -144,7 +144,8 @@ define([
                 this.mostRecentlyDeletedView = null;
                 this.trigger('gridchange');
             }
-        },
+            console.log("undoRemove NoteGridVIew.js Done!");
+        },  
 
         updateUndoAndRemove:function(event) {
             if(this.mostRecentlyDeletedView != null) {
@@ -152,10 +153,10 @@ define([
                 console.log("Permanently deleting note");
                 console.log("Testing stuff");
                 this.mostRecentlyDeletedView.destroy_full(null);                
-            }
+             }
 
             this.mostRecentlyDeletedView = event;
-            $('#undoAlertHolder').html('<div id="undoAlert" class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span><button class="btn btn-default" id="undoButton">Undo..</button></span></div>');
+            $('#undoAlertHolder').html('<div id="undoAlert" class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span><button onclick={this.undoRemove} class="btn btn-default" id="undoButton">Undo..</button></span></div>');
             this.noteRemove(event);
         },
 
