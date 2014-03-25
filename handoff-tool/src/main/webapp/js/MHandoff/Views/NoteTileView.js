@@ -92,6 +92,7 @@ define([
         destroy_full: function(event) {
             console.log("Destroying item" );
             this.$closeIcon.tooltip('destroy');
+            
             delete this.$closeIcon;
             delete this.$notePriorityBadge;
             delete this.$noteText;

@@ -137,6 +137,7 @@ define([
 
         undoRemove:function() {
             if(this.mostRecentlyDeletedView != null) {
+                console.log("Testing Undo Remove");
                 $('#undoAlert').alert('close'); 
                 this.noteViews.push(this.mostRecentlyDeletedView);
                 this.mostRecentlyDeletedView.render();
@@ -167,7 +168,7 @@ define([
 
         noteRemoved:function(event) {
             //remove the view from our list of views to render
-            noteHidden(event);
+            this.noteHidden(event);
             var index = this.noteViews.indexOf(event);
             if (index > -1) {
                 this.noteViews.splice(index, 1);
