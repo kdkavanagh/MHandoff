@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -173,11 +174,12 @@ public class PersistenceServiceImpl implements PersistenceService {
       connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
       statement = connection.createStatement();
       StringBuilder query = new StringBuilder();
-      query.append("SELECT Patient.patientId, COUNT(DISTINCT BaseNote.noteId) AS noteCount, COUNT(DISTINCT Task.noteId) AS taskCount FROM Patient");
+      query.append("SELECT Patient.patientId, COUNT(DISTINCT BaseNote.noteId) AS noteCount, COUNT(DISTINCT Task.noteId) AS taskCount, BasicInfo.location, BasicInfo.dateofbirth FROM Patient");
       query.append(" LEFT JOIN BaseNote ON Patient.patientId=BaseNote.patientId ");
       query.append(" LEFT JOIN Task ON Patient.patientId=Task.patientId ");
+      query.append(" LEFT JOIN BasicInfo ON Patient.patientId=BasicInfo.patientId ");
       query.append("WHERE Patient.active='" + Boolean.toString(activePatientsOnly) + "' ");
-      query.append("GROUP BY Patient.patientId");
+      query.append("GROUP BY Patient.patientId, BasicInfo.location, BasicInfo.dateofbirth");
       logger.info(query.toString());
       resultSet = statement.executeQuery(query.toString());
 
@@ -198,7 +200,15 @@ public class PersistenceServiceImpl implements PersistenceService {
     int noteCount = resultSet.getInt("noteCount");
     int taskCount = resultSet.getInt("taskCount");
     String id = resultSet.getString("patientId");
-    return new PatientTile(new Patient.BasicInfo(id), "nopic", noteCount, taskCount);
+  
+    //String dob = "199999";
+    
+    String loc = resultSet.getString("location");
+    Timestamp time = resultSet.getTimestamp("dateofbirth");
+    String dob = time.toString().substring(0, 10);
+    
+    
+    return new PatientTile(new Patient.BasicInfo(id, dob, loc), "nopic", noteCount, taskCount);
 
   }
 
