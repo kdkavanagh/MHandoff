@@ -146,10 +146,9 @@ define([
 
             // this.$el.find("a#noteText").trigger('blur');
             // this.$el.find("a#noteText").blur();
-
-            
             // this.trigger('blur');
             // $('a').trigger('blur');
+            this.noteModel.save(this.tempModel);
 
             this.$editables.submit();
             
