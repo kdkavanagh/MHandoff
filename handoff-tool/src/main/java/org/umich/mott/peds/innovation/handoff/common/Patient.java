@@ -63,8 +63,8 @@ public class Patient {
       this.location = location;
     }
 
-    public BasicInfo(String idNum, String dateOfBirth, String location) {
-      this(idNum, "Patient ID: " + idNum, dateOfBirth, location);
+    public BasicInfo(String idNum) {
+      this(idNum, "Patient ID: " + idNum, "01/01/1901", "Bed 12345");
     }
 
   }

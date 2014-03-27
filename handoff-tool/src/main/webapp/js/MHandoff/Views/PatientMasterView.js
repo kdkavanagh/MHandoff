@@ -4,6 +4,7 @@ define([
         'underscore', 
         'backbone',
         'bootstrap',
+        'Models/Patient',
         "Collections/TaskCollection",
         "Collections/NoteCollection",
         'Views/NoteGridView',
@@ -14,19 +15,22 @@ define([
         "Views/PatientInfoView",
         'text!Views/templates/patientInfoModal.html',
         'text!Views/templates/patientMasterTemplate.html',
-
-
-        ], function($, _, Backbone,Bootstrap, TaskCollection,NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientInfoModal, patientMasterTemplate){
+        ], function($, _, Backbone, Bootstrap, Patient, TaskCollection, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientInfoModal, patientMasterTemplate){
 
     var PatientMasterView = Backbone.View.extend({
 
         initialize : function (options) {
+            console.log("Test patient master view - initialize");
             this.options = options || {};
             this.patient = options.patient;
+            this.patientModel = options.patientModel;
             return this;
         },
 
         render : function() {
+            console.log("Test patient master view - render");
+            console.log(this.pateint);
+            // console.log(this.patientModel.toJSON());
             this.$el.html(patientMasterTemplate);
             this.info = new PatientInfoView({el:this.$el.find("#patientInfo")});
             this.noteGrid = new NoteGridView({el:this.$el.find("#patientNotes"),
@@ -51,8 +55,6 @@ define([
                     }
                 }});
 
-
-
             this.taskGrid = new NoteGridView({el:this.$el.find("#patientTasks"),
                 gridsterID:"#taskGrid",
                 templates:{
@@ -75,13 +77,8 @@ define([
             this.taskGrid.listenTo(this.info, 'filtersReset', this.taskGrid.resetFilters);
             this.noteGrid.listenTo(this.info, 'filtersReset', this.noteGrid.resetFilters);
 
-
-
-
-
             return this;
         },       
-
 
         destroyView : function() {
             this.undelegateEvents();
@@ -96,10 +93,7 @@ define([
             //Remove view from DOM
             this.remove();  
             Backbone.View.prototype.remove.call(this);
-
         },
-
-
     });
 
 

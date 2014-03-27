@@ -10,9 +10,8 @@ define([
 
     var Patient = Backbone.Model.extend({
         idAttribute: 'basicInfo.patientId',
-        notesCollection:undefined,
-        tasksCollection:undefined,
-
+        notesCollection: undefined,
+        tasksCollection: undefined,
 
         baseUrl:"/dashboard/tiles/patient.do",
 

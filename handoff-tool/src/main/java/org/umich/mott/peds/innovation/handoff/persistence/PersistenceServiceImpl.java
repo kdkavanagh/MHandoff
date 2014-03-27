@@ -174,12 +174,12 @@ public class PersistenceServiceImpl implements PersistenceService {
       connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
       statement = connection.createStatement();
       StringBuilder query = new StringBuilder();
-      query.append("SELECT Patient.patientId, COUNT(DISTINCT BaseNote.noteId) AS noteCount, COUNT(DISTINCT Task.noteId) AS taskCount, BasicInfo.location, BasicInfo.dateofbirth FROM Patient");
+      query.append("SELECT Patient.patientId, COUNT(DISTINCT BaseNote.noteId) AS noteCount, COUNT(DISTINCT Task.noteId) AS taskCount, BasicInfo.name, BasicInfo.location, BasicInfo.dateofbirth FROM Patient");
       query.append(" LEFT JOIN BaseNote ON Patient.patientId=BaseNote.patientId ");
       query.append(" LEFT JOIN Task ON Patient.patientId=Task.patientId ");
       query.append(" LEFT JOIN BasicInfo ON Patient.patientId=BasicInfo.patientId ");
       query.append("WHERE Patient.active='" + Boolean.toString(activePatientsOnly) + "' ");
-      query.append("GROUP BY Patient.patientId, BasicInfo.location, BasicInfo.dateofbirth");
+      query.append("GROUP BY Patient.patientId, BasicInfo.location, BasicInfo.dateofbirth, BasicInfo.name");
       logger.info(query.toString());
       resultSet = statement.executeQuery(query.toString());
 
@@ -200,15 +200,14 @@ public class PersistenceServiceImpl implements PersistenceService {
     int noteCount = resultSet.getInt("noteCount");
     int taskCount = resultSet.getInt("taskCount");
     String id = resultSet.getString("patientId");
-  
-    //String dob = "199999";
-    
+
+    String name = resultSet.getString("name");    
     String loc = resultSet.getString("location");
     Timestamp time = resultSet.getTimestamp("dateofbirth");
     String dob = time.toString().substring(0, 10);
     
     
-    return new PatientTile(new Patient.BasicInfo(id, dob, loc), "nopic", noteCount, taskCount);
+    return new PatientTile(new Patient.BasicInfo(id, name, dob, loc), "nopic", noteCount, taskCount);
 
   }
 
