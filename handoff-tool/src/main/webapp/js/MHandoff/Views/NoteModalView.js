@@ -13,7 +13,6 @@ define([
 
         ], function(MHandoffCore, $, _, Backbone,Bootstrap,Moment, Bootstrap_editable,Utils, Note, NoteCollection){
 
-
     var NoteModalView = Backbone.View.extend({
 
         template: null,
@@ -27,8 +26,6 @@ define([
         events : {
             'click button#saveButton' : 'saveItem',
             'hidden.bs.modal':'destroy_full',
-            // 'hidden.bs.modal button#saveButton' : 'saveItem'
-
         },
 
         initialize : function (options) {
@@ -147,12 +144,15 @@ define([
         saveItem:function() {
             console.log("Saving item")
 
+            // this.$el.find("a#noteText").trigger('blur');
+            // this.$el.find("a#noteText").blur();
+
             
             // this.trigger('blur');
             // $('a').trigger('blur');
 
             this.$editables.submit();
-            this.noteModel.save(this.tempModel);
+            
             this.tempModel = {};
             this.hasChanged = false;
             // this.$el.modal('hide');

@@ -5,9 +5,7 @@ define([
         'backbone',
         'utils',
         'moment',
-        ], function($, _, Backbone, Utils, moment){
-
-
+        ], function($, _, Backbone, Utils, moment) {
 
     var Note = Backbone.Model.extend({
         idAttribute: 'noteId',

@@ -29,7 +29,7 @@ define([
 
         render : function() {
             console.log("Test patient master view - render");
-            console.log(this.pateint);
+            console.log(this.patient);
             // console.log(this.patientModel.toJSON());
             this.$el.html(patientMasterTemplate);
             this.info = new PatientInfoView({el:this.$el.find("#patientInfo")});
