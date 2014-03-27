@@ -2,7 +2,8 @@
 
 #### Beta Release
 * Repository: https://github.com/johntyu/EECS481_EPIC
-* There is no executable file for this project. Please follow the setup instructions below.
+	* The private repository has been shared with Chris (chriscm2006) & David (davidjns)
+* There is **no executable file** for this project. Please follow the setup instructions below.
 
 ## EECS 481 Epic/MHandoff Team
 * Kyle Kavanagh | kdkav@umich.edu | 248-914-8864
@@ -15,7 +16,7 @@
 ###Install Java
 * The server requires java 1.7+. To check your existing java version, run `java -version` from the command line.  If you need to update, you can download [java7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html).
 
-### Setup Eclipse/IntelliJ
+### Setup Eclipse
 * Install the [Eclipse for Java (Kepler)](http://www.eclipse.org/kepler/)
 * Install the maven plugin (m2e) if using eclipse
 	* Only if you are using a previous version of Eclipse, e.g. Indigo
@@ -33,7 +34,7 @@
 
 ### Running the Server (Eclipse)
 
-1. From eclipse, create a `new maven build configuration` with the goals `clean install jetty:run` and run this configuration to start up the server
-2. The server starts up at `https://localhost:8443` and will continue to run until you kill it from the eclipse console
-
-The server checks for code updates every 10 seconds and will hotswap in your new code.
+1. From Eclipse, select **Run > Run Configuartions…** and create a `new maven build configuration` with the goals `clean install jetty:run` 
+2. Running this configuration will start the server at `https://localhost:8443` 
+	* It will continue to run until you kill it from the eclipse console
+	* The server checks for code updates every 10 seconds and will hotswap in your new code.
