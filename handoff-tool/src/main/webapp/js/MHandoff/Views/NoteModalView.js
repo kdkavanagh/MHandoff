@@ -97,6 +97,23 @@ define([
 
                 },
             });
+            var $taskAssignee = this.$el.find("a#assignee");
+            if($taskAssignee.length !== 0) {
+                //We have a task status field
+                $taskAssignee.editable({
+                    type:'select',
+                    disabled:false,
+                    mode:'inline',
+                    onblur:'submit',
+                    showbuttons: false ,
+                    source: MHandoffCore.handoffUsers,
+                    success: function (response, newValue) {
+                        self.tempModel.assignee = newValue;
+                        self.hasChanged = true;
+                        //self.noteModel.set("assignee", newValue);
+                    },
+                });
+            }
 
             var $taskStatus = this.$el.find("a#status");
             if($taskStatus.length !== 0) {
@@ -116,23 +133,6 @@ define([
                 });
             }
 
-            var $taskAssignee = this.$el.find("a#assignee");
-            if($taskAssignee.length !== 0) {
-                //We have a task status field
-                $taskAssignee.editable({
-                    type:'select',
-                    disabled:true,
-                    mode:'inline',
-                    onblur:'submit',
-                    showbuttons: false ,
-                    source: MHandoffCore.handoffUsers,
-                    success: function (response, newValue) {
-                        self.tempModel.assignee = newValue;
-                        self.hasChanged = true;
-                        //self.noteModel.set("assignee", newValue);
-                    },
-                });
-            }
 
             this.$saveButton = this.$el.find("button#saveButton");
             this.$closeButton = this.$el.find("button#closeButton");
