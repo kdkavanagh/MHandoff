@@ -15,7 +15,8 @@ require.config({
         text:"../libs/text",
         domReady:"../libs/domReady",
         bootstrap_slider:'../libs/bootstrap-slider',
-
+        backbone_hotkeys:'../libs/backbone-hotkeys',
+        keymaster:"../libs/keymaster",
     },
 
     shim: {
