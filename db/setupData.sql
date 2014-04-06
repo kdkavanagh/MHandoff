@@ -16,7 +16,8 @@ VALUES ('collsain', 'Colleen', 'Sain', 'password'),
 ('kminchan', 'Minchan', 'Kim', 'password'),
 ('johntyu', 'John', 'Yu', 'password'),
 ('mcspeak', 'Matt', 'Speakman', 'password'),
-('kdkav', 'Kyle', 'Kavanagh', 'password');
+('kdkav', 'Kyle', 'Kavanagh', 'password'),
+('chesneyd', 'Dr. David', 'Chesney', 'password');
 
 INSERT INTO user_roles (user_id, role_id)
 SELECT users.id, 2 FROM users;

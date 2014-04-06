@@ -143,6 +143,8 @@ define([
                 this.mostRecentlyDeletedView.render();
                 this.mostRecentlyDeletedView = null;
                 this.trigger('gridchange');
+                var undoButton = document.getElementById("undoButton");
+            	undoButton.style.display = 'none';
             }
             console.log("undoRemove NoteGridVIew.js Done!");
         },  
@@ -156,7 +158,6 @@ define([
              }
 
             this.mostRecentlyDeletedView = event;
-            $('#undoAlertHolder').html('<div id="undoAlert" class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span><button onclick={this.undoRemove} class="btn btn-default" id="undoButton">Undo..</button></span></div>');
             this.noteRemove(event);
         },
 
@@ -170,6 +171,9 @@ define([
 
         noteRemove:function(event) {
             //remove the view from our list of views to render
+        	var undoButton = document.getElementById("undoButton");
+        	undoButton.style.display = '';
+        	this.mostRecentlyDeletedView = event;
             this.noteHidden(event);
             var index = this.noteViews.indexOf(event);
             if (index > -1) {
@@ -194,7 +198,8 @@ define([
                 this.noteViews[i].destroy_full();
             }
             //Remove view from DOM
-            this.remove();  
+            this.remove();
+            
             Backbone.View.prototype.remove.call(this);
 
         },

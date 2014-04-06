@@ -13,7 +13,6 @@ define([
 
         ], function(MHandoffCore, $, _, Backbone,Bootstrap,Moment, Bootstrap_editable,Utils, Note, NoteCollection){
 
-
     var NoteModalView = Backbone.View.extend({
 
         template: null,
@@ -27,8 +26,6 @@ define([
         events : {
             'click button#saveButton' : 'saveItem',
             'hidden.bs.modal':'destroy_full',
-            // 'hidden.bs.modal button#saveButton' : 'saveItem'
-
         },
 
         initialize : function (options) {
@@ -100,6 +97,23 @@ define([
 
                 },
             });
+            var $taskAssignee = this.$el.find("a#assignee");
+            if($taskAssignee.length !== 0) {
+                //We have a task status field
+                $taskAssignee.editable({
+                    type:'select',
+                    disabled:false,
+                    mode:'inline',
+                    onblur:'submit',
+                    showbuttons: false ,
+                    source: MHandoffCore.handoffUsers,
+                    success: function (response, newValue) {
+                        self.tempModel.assignee = newValue;
+                        self.hasChanged = true;
+                        //self.noteModel.set("assignee", newValue);
+                    },
+                });
+            }
 
             var $taskStatus = this.$el.find("a#status");
             if($taskStatus.length !== 0) {
@@ -119,23 +133,6 @@ define([
                 });
             }
 
-            var $taskAssignee = this.$el.find("a#assignee");
-            if($taskAssignee.length !== 0) {
-                //We have a task status field
-                $taskAssignee.editable({
-                    type:'select',
-                    disabled:true,
-                    mode:'inline',
-                    onblur:'submit',
-                    showbuttons: false ,
-                    source: MHandoffCore.handoffUsers,
-                    success: function (response, newValue) {
-                        self.tempModel.assignee = newValue;
-                        self.hasChanged = true;
-                        //self.noteModel.set("assignee", newValue);
-                    },
-                });
-            }
 
             this.$saveButton = this.$el.find("button#saveButton");
             this.$closeButton = this.$el.find("button#closeButton");
@@ -147,12 +144,14 @@ define([
         saveItem:function() {
             console.log("Saving item")
 
-            
+            // this.$el.find("a#noteText").trigger('blur');
+            // this.$el.find("a#noteText").blur();
             // this.trigger('blur');
             // $('a').trigger('blur');
+            this.noteModel.save(this.tempModel);
 
             this.$editables.submit();
-            this.noteModel.save(this.tempModel);
+            
             this.tempModel = {};
             this.hasChanged = false;
             // this.$el.modal('hide');

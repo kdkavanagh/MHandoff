@@ -32,3 +32,4 @@ release.properties
 *.launch
 
 *.DS_Store
+/db/scratch_pad.sql

@@ -1,63 +1,40 @@
-# HandOff Tool for Pediatric Surgeons at Mott
+# MHandOff Tool for Pediatric Surgeons at Mott
 
-## EECS 481 Team
+#### Beta Release
+* Repository: https://github.com/johntyu/EECS481_EPIC
+	* The private repository has been shared with Chris (chriscm2006) & David (davidjns)
+* There is **no executable file** for this project. Please follow the setup instructions below.
+
+## EECS 481 Epic/MHandoff Team
 * Kyle Kavanagh | kdkav@umich.edu | 248-914-8864
 * Minchan Kim | kminchan@umich.edu | 973-518-2544
 * Colleen Sain | collsain@umich.edu | 734-395-1877
 * Matt Speakman | mcspeak@umich.edu | 734-755-9763
 * John Yu | johntyu@umich.edu | 734-834-1206
 
-### Project Links
-* [Google Drive](https://drive.google.com/a/umich.edu/folderview?id=0B8zz7U-1l1l4Zm1DV01NU1Q4N1U&usp=sharing)
-* [Google Group - Dev Team](https://groups.google.com/forum/#!forum/mott-handoff-project-dev-team)
-* [Google Group - HCID](https://groups.google.com/forum/#!forum/hcid-2014)
-
 ## Setup
-* Install Java
-The server requires java 1.7+. To check your existing java version, run java -version from the cmdline.  If you need to update, you can get java7 from here
-http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
+###Install Java
+* The server requires java 1.7+. To check your existing java version, run `java -version` from the command line.  If you need to update, you can download [java7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html).
 
-Setup Eclipse/IntelliJ
-* Install the IDE, install the maven plugin (m2e) if using eclipse. (This may be already installed if you have the most recent version of eclipse).
-* Setup code formatting
-*  --Navigate to preferences->java->code style->code Templates->comments->types and set to
-    /**
-     * @author <Name>
-     * @date ${date}
-     *
-     * ${tags}
-    */
-*  --Navigate to preferences->java->code style->code formatter->line wrapping and set max line width to 160
-*  --Navigate to preferences->java->editor->save actions and check all of the boxes
-* If using eclipse, to import the project, go to File->import->maven project, then navigate to the handoff-tool folder in the repo.  I would reccomend after importing the project to right click on the project and choose maven->Update project and maven->download javadoc
+### Setup Eclipse
+* Install the [Eclipse for Java (Kepler)](http://www.eclipse.org/kepler/)
+* Install the maven plugin (m2e) if using eclipse
+	* Only if you are using a previous version of Eclipse, e.g. Indigo
 
-* If you want to use maven on the command line, you will have to install it separately from http://maven.apache.org/
+### Clone the directory
+* From the terminal, run `git clone https://github.com/johntyu/EECS481_EPIC.git`
 
-* To run the server:
-1. From eclipse, create a new maven build configuration with the goals "clean install jetty:run"
-2. Run this configuration to start up the server.  This starts a server at https://localhost:8443 and will continue to run until you kill it from the eclipse console
 
-* The server checks for code updates every 10 seconds and will hotswap in your new code.
-Servlets can be access at https://localhost:8443/<servletname>.
---To test the hello world servlet, call https://localhost:8443/hello?name=<yournamehere>
---To test the hello Json servlet, call https://localhost:8443/helloJson?name=<yournamehere>
+### Create Tables & Populate DB
+
+* From the PostgreSQL terminal, change into the database directory `\cd /PATH_TO_PROJECT/EECS481_EPIC/db/`
+* Run the master database script `\i masterSetup.sql`
 
 
 
-## Documentation
-Please leave links to useful documentation and any other information relevant to the project
+### Running the Server (Eclipse)
 
-### Backbone
-* [backbonejs.org](http://backbonejs.org/)
-* [Backbone Tutorials](http://backbonetutorials.com/)
-* [Backbone Overview](http://documentcloud.github.io/backbone/docs/backbone.html)
-* [Learn Backbone.js Completely](http://javascriptissexy.com/learn-backbone-js-completely/)
-
-
-### PostgreSQL
-* Set username and password in the java file and create a database in postgres called "handoff"
-* Make sure to export the path for the postgresql.jar file
-  * `export CLASSPATH=/Users/colleensain/Desktop/eecs481_handoff/db/postgresql-9.3-1100-jdbc41.jar:.`
-  * `export CLASSPATH=/Users/colleensain/Desktop/eecs481_handoff/db/postgresql.jar:.`
-*  Compile `javac db/CreateTablesInitial.java`
-*  Then run `java -cp CreateTablesInitial`
+1. From Eclipse, select **Run > Run Configuartions…** and create a `new maven build configuration` with the goals `clean install jetty:run` 
+2. Running this configuration will start the server at `https://localhost:8443` 
+	* It will continue to run until you kill it from the eclipse console
+	* The server checks for code updates every 10 seconds and will hotswap in your new code.

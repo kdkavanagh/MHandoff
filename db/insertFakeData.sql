@@ -4,7 +4,7 @@ VALUES ('1'),('2'),('3'),('4'), ('5');
 INSERT INTO BasicInfo (patientId, name, dateOfBirth, gender, location)
 VALUES
 	('1', 'Rachel S. Ramos', current_date - 1000, 'f', 'Bed D340'),
-	('2', 'Ju Hsüeh', current_date - 2000, 'm', 'Bed B123'),
+	('2', 'Ju Hsueh', current_date - 2000, 'm', 'Bed B123'),
 	('3', 'Virginia Harrison', current_date - 2300, 'f', 'Bed F112'),
 	('4', 'Michael Sherman', current_date - 400, 'm', 'Bed C014'),
 	('5', 'Esther Christie', current_date - 750, 'f', 'Bed A233');
