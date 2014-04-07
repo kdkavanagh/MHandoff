@@ -8,7 +8,9 @@ define([
         'Collections/TaskCollection',
         'Views/NoteTileView',
         'Collections/filters',
-        ], function($, _, Backbone, Isotope, Note, NoteCollection,TaskCollection, NoteTileView, Filter){
+        'backbone_hotkeys',
+        'keymaster',
+        ], function($, _, Backbone, Isotope, Note, NoteCollection,TaskCollection, NoteTileView, Filter, Backbone_hotkeys, Keymaster){
 
 
     var NoteGridView = Backbone.View.extend({
@@ -19,9 +21,12 @@ define([
         isotopeObj:null,
 
         events: {
+
             'click button#addNewButton': "addItem",
             'click #undoButton' : "undoRemove",
             'click #addNewTileInner' :"addItem",
+            'keyup[Ctrl+m]' : "addItem",
+        
         },
 
         initialize: function (options) {

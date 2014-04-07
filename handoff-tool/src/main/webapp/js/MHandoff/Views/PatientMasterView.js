@@ -15,10 +15,13 @@ define([
         "Views/PatientInfoView",
         'text!Views/templates/patientInfoModal.html',
         'text!Views/templates/patientMasterTemplate.html',
-        'isotope',
-        ], function($, _, Backbone, Bootstrap, Patient, TaskCollection, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientInfoModal, patientMasterTemplate, Isotope){
+        'backbone_hotkeys',
+        'keymaster',
+	'isotope',
+        ], function($, _, Backbone, Bootstrap, Patient, TaskCollection, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientInfoModal, patientMasterTemplate, Backbone_hotkeys, Keymaster, Isotope){
 
     var PatientMasterView = Backbone.View.extend({
+
 
         initialize : function (options) {
             this.options = options || {};
@@ -55,6 +58,8 @@ define([
             this.taskGrid.listenTo(this.info, 'filtersReset', this.taskGrid.resetFilters);
             this.noteGrid.listenTo(this.info, 'filtersReset', this.noteGrid.resetFilters);
 
+            this.listenTo(this, 'addItem', this.noteGrid.addItem);
+
             return this;
         },       
 
@@ -72,6 +77,8 @@ define([
             this.remove();  
             Backbone.View.prototype.remove.call(this);
         },
+
+
     });
 
 

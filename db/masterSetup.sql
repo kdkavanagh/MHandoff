@@ -1,5 +1,6 @@
-﻿--\cd /Users/e19105/views/EECS481_EPIC/db/
--- \cd /Users/John/Desktop/School/EECS_494/EECS481_EPIC/db
+-- \cd /Users/e19105/views/EECS481_EPIC/db/
+-- \cd /Users/colleensain/Desktop/eecs481_handoff/db/
+\cd /Users/Min/Documents/EECS481_EPIC/db/
 
 \c postgres
 

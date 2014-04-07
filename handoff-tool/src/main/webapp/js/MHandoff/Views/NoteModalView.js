@@ -120,7 +120,7 @@ define([
                 //We have a task status field
                 $taskStatus.editable({
                     type:'select',
-                    disabled:true,
+                    disabled:false,
                     mode:'inline',
                     onblur:'submit',
                     showbuttons: false ,
