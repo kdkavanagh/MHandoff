@@ -1,4 +1,4 @@
-<li class="panel panel-default note clickable" >
+<div class="panel panel-default note clickable" >
  <div class="panel-heading tileHeading ">
   <h3 class="panel-title">
    Task<span id="closeIcon"
@@ -13,7 +13,7 @@
  </div>
  <div class="panel-footer noteFooter ">
   <div class="noteReporter">
-  <%=_.template.getUser(reporter)%> on <%= _.template.formatdate_noTime(reportedDate) %>
+ Currently: <%= _.template.getTaskStatusStringFromCode(status) %>
   </div>
  </div>
  <div class="panel-footer noteFooter ">
@@ -21,4 +21,4 @@
   <%=_.template.getUser(reporter)%> on <%= _.template.formatdate_noTime(reportedDate) %>
   </div>
  </div>
-</li>
+</div>
