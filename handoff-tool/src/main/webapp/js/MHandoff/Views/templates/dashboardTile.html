@@ -1,16 +1,16 @@
-<li class="panel panel-default note">
- <div class="panel-heading tileHeading movable">
+<div class="panel panel-default note clickable">
+ <div class="panel-heading tileHeading">
   <h3 class="panel-title">
    <%= basicInfo.name %><span id="priorityBadge"
     class="badge pull-right"><%= basicInfo.patientId %></span>
   </h3>
  </div>
- <div id="patientInfoArea" class="panel-body ignoreDrag">
-  <p>DOB: <%= basicInfo.dateOfBirth %></p>
-  <p>LOC: <%= basicInfo.location %></p>
+ <div id="patientInfoArea" class="panel-body">
+  <p class="ignoreDrag">DOB: <%= basicInfo.dateOfBirth %></p>
+  <p class="ignoreDrag">LOC: <%= basicInfo.location %></p>
  </div>
- <div class="panel-footer dashboardTileFooter movable">
+ <div class="panel-footer dashboardTileFooter">
   <span id="priorityBadge" class="badge badge-count dashboardCountBadge" style="float:left;"><%=numNotes%> <%=numNotes==1?'Note':'Notes'%></span>
   <span id="priorityBadge" class="badge badge-count dashboardCountBadge pull-right"><%=numTasks%> <%=numTasks==1?'Task':'Tasks'%></span>
  </div>
-</li>
+</div>

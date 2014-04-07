@@ -1,15 +1,14 @@
 define([
-        // These are path alias that we configured in our bootstrap
         'jquery',     
         'underscore', 
         'backbone',
-        'gridster',
+        'isotope',
         'Models/Note',
         'Collections/NoteCollection',
         'Collections/TaskCollection',
         'Views/NoteTileView',
         'Collections/filters',
-        ], function($, _, Backbone, Gridster, Note, NoteCollection,TaskCollection, NoteTileView, Filter){
+        ], function($, _, Backbone, Isotope, Note, NoteCollection,TaskCollection, NoteTileView, Filter){
 
 
     var NoteGridView = Backbone.View.extend({
@@ -17,7 +16,7 @@ define([
         mostRecentlyDeletedView : null,
         $addNewNoteWidget:null,
         currentFilter:{},
-        gridsterObj:null,
+        isotopeObj:null,
 
         events: {
             'click button#addNewButton': "addItem",
@@ -28,47 +27,48 @@ define([
         initialize: function (options) {
             this.options = options || {};
             _.bindAll(this, 'render');
-            //_.bindAll(this);
+
             this.notes = this.options.collection;
             this.noteViews = new Array();
             this.activeNoteViews = new Array();
             this.templates = this.options.templates;
-            this.gridsterObj = this.$el.find(this.options.gridsterID+" > ul").gridster(this.options.gridsterOpts).data('gridster');
-            this.gridsterObj.generate_stylesheet();
             this.currentFilter =  Filter.generateDefaultFilter();
             this.listenTo(this.notes, 'reset', this.generateViews);
             this.listenTo(this.notes, 'add', this.newItemAdded);
-            this.generateViews();
+            var self = this;
+            //Delay generating views till Isotope has loaded (shitty fix)
+            setTimeout(function() {
+                self.generateViews();
+            }, 250);
+
             //this.listenTo(this.notes, 'pushAdd', this.newItemPushed);
         },
 
         createView: function(note, row, col, self) {
-            var noteView = new NoteTileView({parent : self, noteModel:note,templates:this.templates, row:row, col:col, gridster : self.gridsterObj});
+            var noteView = new NoteTileView({parent : self, noteModel:note,templates:this.templates, row:row, col:col});
             self.noteViews.push(noteView);
             self.activeNoteViews.push(noteView);
-            self.listenTo(noteView, 'hidden', self.noteHidden);
             self.listenTo(noteView, 'remove', self.updateUndoAndRemove);
+
             return noteView;
 
         },
 
 
         resetFilters : function() {
-            
+
             this.currentFilter = Filter.generateDefaultFilter();
             this.filter();
         },
-        
+
         doFilter : function() {
-            for (var i = 0; i < this.noteViews.length; i++) {
-                var view = this.noteViews[i]; 
-                var passesFilter = this.currentFilter.filter(view.noteModel);
-                if(!passesFilter && !view.hidden) {
-                    view.hide();
-                } else if(passesFilter && view.hidden){
-                    this.activeNoteViews.push(view.render());
-                }
-            }
+            var self = this;
+            this.isotopeObj.arrange({
+                filter: function( itemElem ) {
+                    return self.currentFilter.filter($(this).data('model'));
+                },
+
+            });
         },
 
         filter: function(newFilter) {
@@ -76,24 +76,21 @@ define([
             if(newFilter !== undefined) {
                 this.currentFilter.addFilter(newFilter);
             }
-            
+
             if(!this.notes.hasExpiredNotesLoaded && this.currentFilter.hasFilter( Filter.IncludeExpiredNotesFilter)) {
                 console.log("Pulling expired Notes");
                 //We need to pull some expired notes
                 this.notes.getExpired = true;
                 var self = this;
                 this.notes.fetch().done(function() {
-                    
+
                     self.doFilter();
                     self.notes.hasExpiredNotesLoaded = true;
                 });
-                
+
             } else {
                 this.doFilter();
             }
-            console.log(this.currentFilter.toString());
-          
-
         },
 
 
@@ -127,9 +124,11 @@ define([
             if(!fromEvent) {
                 var modal = newView.openNote();
                 //Once we save the note for the first time, render the tile
-                newView.listenToOnce( modal,'noteSaved', newView.render);
+                var self = this;
+                newView.listenToOnce( modal,'noteSaved',function() { newView.render( self.isotopeObj);});
             } else {
-                newView.render();
+                newView.render( this.isotopeObj);
+
             }
             this.trigger('gridchange');
         },
@@ -137,16 +136,14 @@ define([
 
         undoRemove:function() {
             if(this.mostRecentlyDeletedView != null) {
-                console.log("Testing Undo Remove");
                 $('#undoAlert').alert('close'); 
                 this.noteViews.push(this.mostRecentlyDeletedView);
                 this.mostRecentlyDeletedView.render();
                 this.mostRecentlyDeletedView = null;
                 this.trigger('gridchange');
                 var undoButton = document.getElementById("undoButton");
-            	undoButton.style.display = 'none';
+                undoButton.style.display = 'none';
             }
-            console.log("undoRemove NoteGridVIew.js Done!");
         },  
 
         updateUndoAndRemove:function(event) {
@@ -155,37 +152,39 @@ define([
                 console.log("Permanently deleting note");
                 console.log("Testing stuff");
                 this.mostRecentlyDeletedView.destroy_full(null);                
-             }
+            }
 
             this.mostRecentlyDeletedView = event;
             this.noteRemove(event);
         },
 
-        noteHidden:function(event) {
-
+        noteRemove:function(event) {
+            //remove the view from our list of views to render
+            var undoButton = document.getElementById("undoButton");
+            undoButton.style.display = '';
+            this.mostRecentlyDeletedView = event;
             var index = this.activeNoteViews.indexOf(event);
             if (index > -1) {
                 this.activeNoteViews.splice(index, 1);
             }
-        },
-
-        noteRemove:function(event) {
-            //remove the view from our list of views to render
-        	var undoButton = document.getElementById("undoButton");
-        	undoButton.style.display = '';
-        	this.mostRecentlyDeletedView = event;
-            this.noteHidden(event);
             var index = this.noteViews.indexOf(event);
             if (index > -1) {
                 this.noteViews.splice(index, 1);
             }
-            this.trigger('gridchange');
+            this.isotopeObj.layout();
         },
 
         render: function(){
+            this.isotopeObj = this.$el.find(this.options.gridId).isotope({
+                layoutMode:'masonry',
+                itemSelector:'.note',
+            }).data('isotope');
             for (var i = 0; i < this.activeNoteViews.length; i++) {
-                this.activeNoteViews[i].render();
+                this.activeNoteViews[i].render(this.isotopeObj);
             }
+            this.isotopeObj.layout();
+            $(window).resize();
+
             return this;
         },
 
@@ -199,7 +198,7 @@ define([
             }
             //Remove view from DOM
             this.remove();
-            
+
             Backbone.View.prototype.remove.call(this);
 
         },

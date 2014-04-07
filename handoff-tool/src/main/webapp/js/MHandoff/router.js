@@ -2,15 +2,13 @@ define([
         'jquery',
         'underscore',
         'backbone',
-        'gridster',
         'Views/PatientMasterView',
         'Views/MainView',
 
-        ], function($, _, Backbone,Gridster,PatientMasterView, MainView){
+        ], function($, _, Backbone,PatientMasterView, MainView){
     var AppRouter = Backbone.Router.extend({
         routes: {
             // Define some URL routes
-
 
             // Default
             '*actions': 'defaultAction'

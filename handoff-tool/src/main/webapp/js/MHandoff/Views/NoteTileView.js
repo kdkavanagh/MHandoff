@@ -2,26 +2,26 @@ define([
         'jquery',     
         'underscore', 
         'backbone',
+        'isotope',
         'Models/Note',
         'Collections/NoteCollection',
         'Views/NoteModalView',
         'utils',
-        ], function($, _, Backbone, Note, NoteCollection,NoteModalView, Utils){
+        ], function($, _, Backbone, Isotope, Note, NoteCollection,NoteModalView, Utils){
 
     var NoteTileView = Backbone.View.extend({
-        tagName: 'li',
+        tagName: 'div',
         template:null,
-        hidden:true,
 
         events: {
             'click span#closeIcon': "removeClickHandler",
             'click button#openNoteButton' : "openNote",
-            'click div.panel-body' : "openNote",
+            'click' : "openNote",
         },
 
         initialize : function (options) {
             this.options = options || {};
-            this.gridster = this.options.gridster;
+
             this.noteModel = this.options.noteModel;
             this.templates = this.options.templates;
             this.template = this.templates.tile;
@@ -39,8 +39,8 @@ define([
             this.$noteText.html(this.noteModel.get("text"));
         },
 
-        render: function(){
-
+        render: function(isotopeObj){
+            this.isotopeObj = isotopeObj;
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             this.setElement(tmpl(this.noteModel.toJSON()));
             //init our cached selectors
@@ -49,11 +49,12 @@ define([
             this.$notePriorityBadge = this.$el.find("#priorityBadge");
             this.updateView();
             this.updateBadge();
-            
-            this.gridster.add_widget(this.el);
+
             this.$closeIcon = this.$el.find("span.closeIcon");
             this.$closeIcon.tooltip({ container: 'body'});
-            this.hidden = false;
+            this.$el.data('model', this.noteModel);
+            isotopeObj.insert( this.el );
+            
             this.listenTo(this.noteModel, 'change:text', this.updateView);
             this.listenTo(this.noteModel, 'change:badgeLevel', this.updateBadge);
             this.listenTo(this.noteModel, 'change:priorityCode', this.updateBadge);
@@ -76,16 +77,11 @@ define([
             return false;
         },
 
-        hide:function() {
-            this.remove();
-            this.trigger('hidden', this);
-
-        },
-
         remove: function() {
-            this.gridster.remove_widget(this.$el);
+            this.isotopeObj.remove( this.el );
+            // layout remaining item elements
+            
             Backbone.View.prototype.remove.apply(this, arguments);
-            this.hidden = true;
             return this;
         },
 

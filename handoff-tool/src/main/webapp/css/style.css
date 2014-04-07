@@ -10,6 +10,8 @@
 	position: relative;
 	box-shadow: 5px 5px 10px #888888;
 	overflow: hidden;
+	width:250px;
+	margin:10px;
 }
 
 .modalNoteBody {
@@ -32,7 +34,7 @@
 }
 
 .noteFooter {
-	position: absolute;
+	
 	bottom: 0;
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -73,6 +75,7 @@
 	padding-top: 10px;
 }
 
+.clickable:hover,
 .noteTextArea:hover {
 	cursor: pointer;
 }
@@ -135,6 +138,7 @@
 .dashboardCountBadge {
 	font-size:14pt;
 }
+
 
 .ignoreDrag {
 }

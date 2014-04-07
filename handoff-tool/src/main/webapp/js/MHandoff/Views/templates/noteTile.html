@@ -1,5 +1,5 @@
-<li class="panel panel-default note" >
- <div class="panel-heading tileHeading movable">
+<div class="panel panel-default note clickable" >
+ <div class="panel-heading tileHeading ">
   <h3 class="panel-title">
    Note
    <span id="closeIcon" class="glyphicon glyphicon-remove-circle closeIcon pull-right ignoreDrag" style="padding-left: 5px;" title="Remove note"></span> 
@@ -8,13 +8,13 @@
     &nbsp
   </h3>
  </div>
- <div class="panel-body noteTextArea ignoreDrag" >
+ <div class="panel-body noteTextArea" >
   <p id="noteText" class="ignoreDrag" style="text-overflow: ellipsis;"></p>
  </div>
- <div class="panel-footer noteFooter movable">
+ <div class="panel-footer noteFooter">
   
   <div class="noteReporter">
    <%=_.template.getUser(reporter)%> on <%= _.template.formatdate_noTime(reportedDate) %>
   </div>
  </div>
-</li>
+</div>

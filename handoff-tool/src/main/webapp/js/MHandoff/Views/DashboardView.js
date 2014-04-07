@@ -3,9 +3,10 @@ define([
         'underscore', 
         'backbone',
         'bootstrap',
+        'isotope',
         'Collections/PatientCollection',
         'Views/DashboardTileView',
-        ], function($, _, Backbone,Bootstrap, PatientCollection, DashboardTileView){
+        ], function($, _, Backbone,Bootstrap,Isotope, PatientCollection, DashboardTileView){
 
     var DashboardView = Backbone.View.extend({        
 
@@ -16,22 +17,16 @@ define([
             this.listenTo(this.patients, 'reset', this.generateViews);
             this.patients.fetch({reset:true});
             this.tiles = new Array();
-            this.gridsterObj = this.$el.find("#dashboardGrid > ul").gridster({
-                autogenerate_stylesheet: false,
-                widget_margins : [ 12, 12 ],
-                widget_base_dimensions : [ 230, 130 ],
-                min_cols : 3,
-                max_cols : 3,
-                autogrow_cols: true,
-                namespace:"#dashboardGrid",
-            }).data('gridster');
-            this.gridsterObj.generate_stylesheet();
+            this.isotopeObj = this.$el.find("#dashboardGrid").isotope({
+                
+            }).data('isotope');
+
         },
 
         render : function() {
             //Render all the tiles
             for (var i = 0; i < this.tiles.length; i++) {
-                this.tiles[i].render();
+                this.tiles[i].render(this.isotopeObj);
             }
             return this;
         },
@@ -55,7 +50,7 @@ define([
         },
 
         createView: function(patient) {
-            var tile = new DashboardTileView({patientModel : patient, gridster : this.gridsterObj});
+            var tile = new DashboardTileView({patientModel : patient});
             this.tiles.push(tile);
             var self = this;
             this.parent.listenTo(tile, 'patientOpenRequest', function(event) {

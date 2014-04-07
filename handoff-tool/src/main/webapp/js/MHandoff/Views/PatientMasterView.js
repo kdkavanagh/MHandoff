@@ -15,12 +15,12 @@ define([
         "Views/PatientInfoView",
         'text!Views/templates/patientInfoModal.html',
         'text!Views/templates/patientMasterTemplate.html',
-        ], function($, _, Backbone, Bootstrap, Patient, TaskCollection, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientInfoModal, patientMasterTemplate){
+        'isotope',
+        ], function($, _, Backbone, Bootstrap, Patient, TaskCollection, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientInfoModal, patientMasterTemplate, Isotope){
 
     var PatientMasterView = Backbone.View.extend({
 
         initialize : function (options) {
-            console.log("Test patient master view - initialize");
             this.options = options || {};
             this.patient = options.patient;
             this.patientModel = options.patientModel;
@@ -28,52 +28,30 @@ define([
         },
 
         render : function() {
-            console.log("Test patient master view - render");
-            console.log(this.patient);
-            // console.log(this.patientModel.toJSON());
             this.$el.html(patientMasterTemplate);
+            console.log(this.$el.find("#patientInfo"));
             this.info = new PatientInfoView({el:this.$el.find("#patientInfo")});
             this.noteGrid = new NoteGridView({el:this.$el.find("#patientNotes"),
-                gridsterID:"#noteGrid", 
+                gridId:"#noteGrid", 
                 templates:{
                     tile:noteTile,
                     modal:noteModal,
                 }, 
                 collection:this.patient.notesCollection,
-                gridsterOpts:{
-                    autogenerate_stylesheet: false,
-                    widget_margins : [ 12, 12 ],
-                    widget_base_dimensions : [ 230, 130 ],
-                    min_cols : 3,
-                    max_cols : 3,
-                    autogrow_cols: true,
-                    namespace:"#noteGrid",
-                    resize: {
-                        enabled: true,
-                        max_size: [2, 2],
-                        min_size: [1, 1]
-                    }
-                }});
+            });
 
             this.taskGrid = new NoteGridView({el:this.$el.find("#patientTasks"),
-                gridsterID:"#taskGrid",
+                gridId:"#taskGrid",
                 templates:{
                     tile:taskTile,
                     modal:taskModal,
                 }, 
                 collection:this.patient.tasksCollection,
-                gridsterOpts:{
-                    autogenerate_stylesheet: false,
-                    widget_margins : [ 10, 12 ],
-                    widget_base_dimensions : [ 230, 120 ],
-                    min_cols : 1,
-                    max_cols: 1,
-                    namespace:"#taskGrid",
-                }});
+            });
 
             this.taskGrid.listenTo(this.info, 'filter', this.taskGrid.filter);
             this.noteGrid.listenTo(this.info, 'filter', this.noteGrid.filter);
-            
+
             this.taskGrid.listenTo(this.info, 'filtersReset', this.taskGrid.resetFilters);
             this.noteGrid.listenTo(this.info, 'filtersReset', this.noteGrid.resetFilters);
 
@@ -86,7 +64,7 @@ define([
             this.$el.removeData().unbind(); 
 
             this.noteGrid.destroyView();
-            this.TaskGrid.destroyView();
+            this.taskGrid.destroyView();
             //Clean up our patient model
             delete this.patient.notesCollection;
             delete this.patient.tasksCollection;

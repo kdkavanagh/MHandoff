@@ -1,5 +1,3 @@
-//Filename: main.js
-
 //Require.js allows us to configure shortcut alias
 require.config({
     paths: {
@@ -7,17 +5,14 @@ require.config({
         underscore: '../libs/underscore',
         backbone: '../libs/backbone',
         bootstrap: '../libs/bootstrap.min',
-        gridster: '../libs/gridster',
-        gridster_ext: '../libs/gridster-ext',
         moment : '../libs/moment.min',
         bootstrap_editable : '../libs/bootstrap-editable.min',
         bootstrap_select : "../bootstrap-select.min",
         text:"../libs/text",
         domReady:"../libs/domReady",
         bootstrap_slider:'../libs/bootstrap-slider',
-
+        isotope:'../libs/isotope.pkgd',
     },
-
     shim: {
         'backbone': {
             //These script dependencies should be loaded before loading
@@ -33,10 +28,6 @@ require.config({
         'bootstrap':{
             deps:['jquery'],
             exports:'Bootstrap'
-        },
-        "gridster": {
-            deps:['jquery'],
-            "exports": "Gridster"
         },
         "bootstrap_editable": {
             deps:['jquery', 'bootstrap'],
@@ -60,13 +51,20 @@ require([
          'bootstrap',
          'bootstrap_editable',
          'MHandoff',
+         'isotope',
          'domReady',
-         ], function($, _, Bootstrap, Bootstrap_editable, App, dom){
+         ], function($, _, Bootstrap, Bootstrap_editable, App,Isotope, dom){
 
     dom(function () {
         //This function is called once the DOM is ready.
         //It will be safe to query the DOM and manipulate
         //DOM nodes in this function.
+        require( [ 'jquery-bridget/jquery.bridget' ],
+                function() {
+                  // make Isotope a jQuery plugin
+                  $.bridget( 'isotope', Isotope );
+                }
+              );
         App.initialize();
     });
 

@@ -38,7 +38,7 @@ define([
                 $(this).tab('show');
             });
               
-            var theView = new PatientMasterView({patient:patientModel, username:MHandoffCore.loggedInUser.uniqname, el:$patientTab});
+            
             var $closeButton = $patientNavTabLi.find("button#closeTab");
             $closeButton.tooltip({ container: 'body'});
             $closeButton.click(function() {
@@ -53,6 +53,8 @@ define([
             
 
             patientModel.$tabObject = $patientNavTabLi.find("a");
+           
+            var theView = new PatientMasterView({patient:patientModel, username:MHandoffCore.loggedInUser.uniqname, el:$patientTab});
             patientModel.$tabObject.tab('show');
             this.patients.push(theView.render());
         }
