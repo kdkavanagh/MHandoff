@@ -54,6 +54,9 @@ define([
 
             this.taskGrid.listenTo(this.info, 'filter', this.taskGrid.filter);
             this.noteGrid.listenTo(this.info, 'filter', this.noteGrid.filter);
+            
+            this.taskGrid.listenTo(this.info, 'sort', this.taskGrid.sort);
+            this.noteGrid.listenTo(this.info, 'sort', this.noteGrid.sort);
 
             this.taskGrid.listenTo(this.info, 'filtersReset', this.taskGrid.resetFilters);
             this.noteGrid.listenTo(this.info, 'filtersReset', this.noteGrid.resetFilters);

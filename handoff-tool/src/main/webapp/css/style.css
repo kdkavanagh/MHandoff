@@ -225,6 +225,7 @@
 .filterLabelLeft,
 .filterLabelRight {
 	width:20%;
+	padding-right:5px;
 }
 
 .page-footer {

@@ -19,6 +19,8 @@ define([
             "click button#resetFilters":"resetFilters",
             "click label#nonExpiredNotes" : "nonExpiredNotes",
             "click label#allNotes" : "allNotes",
+            "click label#prioritySort" : "prioritySort",
+            "click label#dateSort" : "dateSort",
         },
 
         initialize : function (options) {
@@ -33,13 +35,22 @@ define([
             this.sliderMin = 0;
             this.$priorityFilterSlider.slider('setValue', [0,200], true);
             this.$nonExpiredNotes.button('toggle');
+            this.$sortByPriority.button('toggle');
             this.trigger('filtersReset');
         },
 
         triggerFilter : function(filter) {
             this.trigger('filter', filter);
         },
+        
+        dateSort : function() {
+            this.trigger('sort', 'sortByDate');
+        },
 
+        prioritySort : function() {
+            this.trigger('sort', 'sortByPriority');
+        },
+        
         nonExpiredNotes : function() {
            this.triggerFilter( Filter.ExcludeExpiredNotesFilter);
         },
@@ -54,6 +65,7 @@ define([
             this.sliderMin =0; this.sliderMax=200;
             var self = this;
             this.$nonExpiredNotes=this.$el.find("#nonExpiredNotes");
+            this.$sortByPriority = this.$el.find("#prioritySort");
             this.$nonExpiredNotes.tooltip({ container: 'body'});
             this.$priorityFilterSlider.slider({
                 min : 0,

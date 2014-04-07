@@ -4,16 +4,38 @@ define([
         'Models/Note'
         ], function($,Moment, NoteModel){
 
-    var CompoundFilter = function() {
-        this.filters = {};
+    var dateSortPackage = {
+            sortBy:'date',
+            sortAscending:false,
     };
+
+    var prioritySortPackage = {
+            sortBy:'priority',
+            sortAscending:false,
+    };
+
     var Filter = function(name, filterFn) {
         this.name = name;
         this.filterFn = filterFn;
     };
 
     Filter.priorityCache= {};
-
+    
+    var CompoundFilter = function() {
+        this.filters = {};
+        this.sortPackage = prioritySortPackage;
+    };
+    
+    CompoundFilter.prototype.sortByDate = function() {
+        this.sortPackage = dateSortPackage;
+        return this;
+    };
+    
+    CompoundFilter.prototype.sortByPriority = function() {
+        this.sortPackage = prioritySortPackage;
+        return this;
+    };
+    
     CompoundFilter.prototype.addFilter = function(filter) {
         this.filters[filter.name] = filter.filterFn;
         return this;

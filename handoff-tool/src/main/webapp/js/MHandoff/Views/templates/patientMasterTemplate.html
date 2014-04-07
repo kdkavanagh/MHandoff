@@ -8,14 +8,15 @@
     <div class="well">
      Filter items:<br>
      <div class="filter">
-     <div class="filterLabelLeft">
+      <div class="filterLabelLeft">
        <b>Show</b>
       </div>
       <div class="btn-group" data-toggle="buttons">
-       <label class="btn btn-primary" id="allNotes"> <input type="radio"
-        name="expiredOptions" > All Items
-       </label> <label title="Show only non-expired items" id="nonExpiredNotes" class="btn btn-primary active" > <input type="radio"
-        name="expiredOptions"  > Current Items
+       <label class="btn btn-primary" id="allNotes"> <input
+        type="radio" name="expiredOptions"> All Items
+       </label> <label title="Show only non-expired items" id="nonExpiredNotes"
+        class="btn btn-primary active"> <input type="radio"
+        name="expiredOptions"> Current Items
        </label>
       </div>
      </div>
@@ -31,6 +32,19 @@
        <b>Critical</b>
       </div>
      </div>
+     <div class="filter">
+      <div class="filterLabelLeft">
+       <b>Sort by</b>
+      </div>
+      <div class="btn-group" data-toggle="buttons">
+       <label class="btn btn-primary active" id="prioritySort">
+        <input type="radio" name="sort"> Priority
+       </label> <label title="Show only non-expired items" id="dateSort"
+        class="btn btn-primary "> <input type="radio"
+        name="sort"> Date Reported
+       </label>
+      </div>
+     </div>
      <button type="button" class="btn btn-primary" id="resetFilters"
       style="margin-top: 10px;">Reset Filters</button>
     </div>
@@ -43,12 +57,11 @@
     <span class="glyphicon glyphicon-plus"></span> Add Note
    </button>
    <button type="button" id="undoButton"
-    class="btn btn-primary newButton" style="display:none">
+    class="btn btn-primary newButton" style="display: none">
     <span class="glyphicon"></span> Undo Last Action
    </button>
 
-   <div id="noteGrid">
-   </div>
+   <div id="noteGrid"></div>
   </div>
   <div id="patientTasks" class="col-md-2 patientPanel">
    <span style="display: inline-block"><h3>Tasks</h3></span>
@@ -56,7 +69,7 @@
     class="btn btn-primary newButton">
     <span class="glyphicon glyphicon-plus"></span> Add Task
    </button>
-   <div  id="taskGrid">
+   <div id="taskGrid">
     <ul></ul>
    </div>
   </div>

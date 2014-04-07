@@ -26,7 +26,7 @@ define([
             'click #undoButton' : "undoRemove",
             'click #addNewTileInner' :"addItem",
             'keyup[Ctrl+m]' : "addItem",
-        
+
         },
 
         initialize: function (options) {
@@ -72,8 +72,14 @@ define([
                 filter: function( itemElem ) {
                     return self.currentFilter.filter($(this).data('model'));
                 },
-
+                sortBy:self.currentFilter.sortPackage.sortBy,
+                sortAscending: self.currentFilter.sortPackage.sortAscending,
             });
+        },
+        
+        sort : function(sortFnName) {
+            this.currentFilter[sortFnName]();            
+            this.doFilter();
         },
 
         filter: function(newFilter) {
@@ -183,6 +189,14 @@ define([
             this.isotopeObj = this.$el.find(this.options.gridId).isotope({
                 layoutMode:'masonry',
                 itemSelector:'.note',
+                getSortData: {
+                    date: function (itemElem) {
+                        return $( itemElem ).data('model').get('reportedDate');
+                    },
+                    priority: function( itemElem ) {
+                        return $( itemElem ).data('model').get('priorityCode');
+                    }
+                }
             }).data('isotope');
             for (var i = 0; i < this.activeNoteViews.length; i++) {
                 this.activeNoteViews[i].render(this.isotopeObj);
