@@ -46,3 +46,5 @@
 2. Running this configuration will start the server at `https://localhost:8443` 
 	* It will continue to run until you kill it from the eclipse console or the command line
 	* The server checks for code updates every 10 seconds and will hotswap in your new code.
+3. When you first visit the site, you will see a warning regarding unsigned SSL certificates. This is okay, the site is still secure.  (This is a result of us not paying/sending our SSL certificate to verification sites like VeraSign)
+4. You can login to the server with the credentials username="user", password="password"

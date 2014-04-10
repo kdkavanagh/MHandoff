@@ -18,6 +18,7 @@ VALUES ('collsain', 'Colleen', 'Sain', 'password'),
 ('mcspeak', 'Matt', 'Speakman', 'password'),
 ('kdkav', 'Kyle', 'Kavanagh', 'password'),
 ('chesneyd', 'Dr. David', 'Chesney', 'password');
+('user', 'EECS481', 'User', 'password');
 
 INSERT INTO user_roles (user_id, role_id)
 SELECT users.id, 2 FROM users;

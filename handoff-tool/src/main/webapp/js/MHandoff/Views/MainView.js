@@ -22,6 +22,14 @@ define([
             $('#tabs a').click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
+                if(dashboard.isotopeObj != null) {
+                    console.log("Isotope Relayout");
+                  //Delay generating views till Isotope has loaded (shitty fix)
+                    setTimeout(function() {
+                        dashboard.isotopeObj.layout();
+                    }, 250);
+                
+                } 
             });
                        
             //this.addPatientTab("1", "Kyle Kavanagh");
@@ -33,9 +41,11 @@ define([
             var $patientTab = $('<div class="tab-pane fade" id="'+patientModel.get("basicInfo").patientId+'"></div>').appendTo(this.$tabContents);
             var $patientNavTabLi = $('<li><a href="#'+patientModel.get("basicInfo").patientId+'">'+patientModel.get("basicInfo").name+'<button class="close closeTab" id="closeTab" type="button" title="Close patient">×</button></a></li>').appendTo(this.$tabs);
             
+            var theView = new PatientMasterView({patient:patientModel, username:MHandoffCore.loggedInUser.uniqname, el:$patientTab});
             $patientNavTabLi.find("a").click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
+                //may need to relayout the grids here
             });
               
             
@@ -54,7 +64,7 @@ define([
 
             patientModel.$tabObject = $patientNavTabLi.find("a");
            
-            var theView = new PatientMasterView({patient:patientModel, username:MHandoffCore.loggedInUser.uniqname, el:$patientTab});
+            
             patientModel.$tabObject.tab('show');
             this.patients.push(theView.render());
         }
