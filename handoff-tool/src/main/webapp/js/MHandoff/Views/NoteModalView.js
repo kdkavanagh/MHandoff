@@ -32,12 +32,12 @@ define([
             _.bindAll(this, 'render', 'saveItem');
             this.options = options || {};
             this.noteModel = this.options.noteModel;
-            this.template = this.options.template;    
+            this.template = this.options.template;   
+            this.tempModel = {};
             return this;
         },
 
         render:function() {
-
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
             this.setElement(tmpl(this.noteModel.toJSON()));
             this.$el.modal('show');
@@ -52,6 +52,7 @@ define([
                 mode:'inline',
                 onblur:'submit',
                 success: function (response, newValue) {
+                    console.log("Trying async set");
                     self.tempModel.text = newValue;
                     self.hasChanged = true;
                     // this.$noteText.trigger('blur');
@@ -142,26 +143,27 @@ define([
         },
 
         saveItem:function() {
-            console.log("Saving item")
-
+            console.log("Saving item");
+             this.$el.modal('hide');
             // this.$el.find("a#noteText").trigger('blur');
             // this.$el.find("a#noteText").blur();
             // this.trigger('blur');
             // $('a').trigger('blur');
-            this.noteModel.save(this.tempModel);
-
-            this.$editables.submit();
+            this.$editables.each(function(index, element) {
+                console.log($(element).editable('getValue'));
+            });
             
+            console.log(this.tempModel);
+            this.noteModel.save(this.tempModel);            
             this.tempModel = {};
+            
             this.hasChanged = false;
-            // this.$el.modal('hide');
+            
             this.trigger('noteSaved');
             // this.destroy_full();
         },
 
         destroy_full: function(event) {
-            // console.log("Submitting all")
-            // this.$editables.submit();
             console.log("Destroying item");
             this.unbind(); // Unbind all local event bindings
             this.noteModel.unbind( 'change', this.render, this ); // Unbind reference to the model

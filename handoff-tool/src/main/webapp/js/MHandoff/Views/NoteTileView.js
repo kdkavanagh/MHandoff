@@ -67,7 +67,7 @@ define([
             var modal = new NoteModalView({parent:this,el:$("modalContainer"), noteModel:this.noteModel, template:this.templates.modal});
             modal.render();
             var self = this;
-            modal.on('noteSaved',function() { console.log("redraw");self.isotopeObj.layout();}, this);
+            modal.on('noteSaved',function() {self.isotopeObj.layout();} );
             return modal;
         },
 
