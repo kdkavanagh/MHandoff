@@ -18,7 +18,7 @@ CREATE TABLE Patient
 CREATE TABLE BasicInfo
 (
   id SERIAL,
-  name VARCHAR(255) not NULL, 
+  name VARCHAR not NULL, 
   dateOfBirth TIMESTAMP not NULL,
   gender VARCHAR(1)  not NULL,
   patientId VARCHAR(255),
@@ -81,7 +81,7 @@ GRANT ALL PRIVILEGES ON TABLE PriorityLevel TO handoffUser;
 CREATE TABLE Task 
 (
   noteId SERIAL, 
-  text VARCHAR(255),  
+  text VARCHAR,  
   reporter VARCHAR(255), 
   assignee VARCHAR(255),
   status INTEGER, 
@@ -103,7 +103,7 @@ GRANT ALL PRIVILEGES ON TABLE Task TO handoffUser;
 CREATE TABLE BaseNote 
 (
   noteId SERIAL, 
-  text VARCHAR(255),  
+  text VARCHAR,  
   reporter VARCHAR(255),  
   reportedDate TIMESTAMP,  
   expiration TIMESTAMP,  
