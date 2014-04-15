@@ -1,5 +1,6 @@
 package org.umich.mott.peds.innovation.handoff.persistence;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,8 +10,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.umich.mott.EMRConnector.EMRDriver;
+import org.umich.mott.EMRConnector.EMRDriverManager;
 import org.umich.mott.peds.innovation.handoff.common.BaseNote;
 import org.umich.mott.peds.innovation.handoff.common.Pair;
 import org.umich.mott.peds.innovation.handoff.common.Patient;
@@ -26,25 +30,49 @@ public class PersistenceServiceImpl implements PersistenceService {
 
   private static final Logger logger = Logger.getLogger(PersistenceServiceImpl.class);
 
-  private static final String JDBC = "jdbc:postgresql://127.0.0.1:5432/handoff";
+  private static final EMRDriver emr;
 
-  private static final String dbUser = "handoffuser";
-
-  private static final String dbPass = "mottinnovate";
+  private static final String JDBC, dbUser, dbPass;
 
   private static final String NOTE_SELECT = "SELECT BaseNote.noteId, BaseNote.text, BaseNote.reporter, extract(epoch from BaseNote.reportedDate) as reportedDate, extract(epoch from BaseNote.expiration) as expiration, BaseNote.priority, BaseNote.patientId FROM BaseNote ";
 
   private static final String TASK_SELECT = "SELECT Task.noteId, Task.text, Task.reporter, Task.assignee, extract(epoch from Task.reportedDate) as reportedDate, extract(epoch from Task.expiration) as expiration, Task.priority, Task.status, Task.patientId FROM Task ";
 
-  @Inject
-  public PersistenceServiceImpl() {
+  private static final Properties properties = new Properties();
+
+  static {
+
     try {
-      Class.forName("org.postgresql.Driver");
+      properties.load(PersistenceServiceImpl.class.getResourceAsStream("/MHandoff.properties"));
+    } catch (IOException e) {
+      throw new RuntimeException("Failed to find MHandoff.properties file");
+    }
+
+    dbUser = properties.getProperty("database.user");
+    dbPass = properties.getProperty("database.password");
+    JDBC = properties.getProperty("database.jdbc.url");
+
+    // register our EMR Connector
+    try {
+      Class.forName(properties.getProperty("emr.driver.class"));
+      emr = EMRDriverManager.getDriver();
+    } catch (ClassNotFoundException e1) {
+      logger.fatal("No EMR Connector Driver found.");
+      throw new RuntimeException(e1);
+    }
+
+    // Register our JDBC driver
+    try {
+      Class.forName(properties.getProperty("database.jdbc.driver", "org.postgresql.Driver"));
     } catch (ClassNotFoundException e) {
       logger.fatal("No PostgreSQL Driver found.");
       throw new RuntimeException(e);
     }
 
+  }
+
+  @Inject
+  public PersistenceServiceImpl() {
   }
 
   private BaseNote noteFromResults(ResultSet noteResults) throws SQLException {
@@ -149,7 +177,7 @@ public class PersistenceServiceImpl implements PersistenceService {
       query.append(" LEFT JOIN Task ON Patient.patientId=Task.patientId ");
       query.append("WHERE Patient.patientId='" + id + "' ");
       query.append("GROUP BY Patient.patientId");
-      logger.info(query.toString());
+      logger.trace(query.toString());
       resultSet = statement.executeQuery(query.toString());
 
       while (resultSet.next()) {
@@ -174,13 +202,14 @@ public class PersistenceServiceImpl implements PersistenceService {
       connection = DriverManager.getConnection(JDBC, dbUser, dbPass);
       statement = connection.createStatement();
       StringBuilder query = new StringBuilder();
-      query.append("SELECT Patient.patientId, COUNT(DISTINCT BaseNote.noteId) AS noteCount, COUNT(DISTINCT Task.noteId) AS taskCount, BasicInfo.name, BasicInfo.location, BasicInfo.dateofbirth FROM Patient");
+      query
+          .append("SELECT Patient.patientId, COUNT(DISTINCT BaseNote.noteId) AS noteCount, COUNT(DISTINCT Task.noteId) AS taskCount, BasicInfo.name, BasicInfo.location, BasicInfo.dateofbirth FROM Patient");
       query.append(" LEFT JOIN BaseNote ON Patient.patientId=BaseNote.patientId ");
       query.append(" LEFT JOIN Task ON Patient.patientId=Task.patientId ");
       query.append(" LEFT JOIN BasicInfo ON Patient.patientId=BasicInfo.patientId ");
       query.append("WHERE Patient.active='" + Boolean.toString(activePatientsOnly) + "' ");
       query.append("GROUP BY Patient.patientId, BasicInfo.location, BasicInfo.dateofbirth, BasicInfo.name");
-      logger.info(query.toString());
+      logger.trace(query.toString());
       resultSet = statement.executeQuery(query.toString());
 
       while (resultSet.next()) {
@@ -201,12 +230,11 @@ public class PersistenceServiceImpl implements PersistenceService {
     int taskCount = resultSet.getInt("taskCount");
     String id = resultSet.getString("patientId");
 
-    String name = resultSet.getString("name");    
+    String name = resultSet.getString("name");
     String loc = resultSet.getString("location");
     Timestamp time = resultSet.getTimestamp("dateofbirth");
     String dob = time.toString().substring(0, 10);
-    
-    
+
     return new PatientTile(new Patient.BasicInfo(id, name, dob, loc), "nopic", noteCount, taskCount);
 
   }
@@ -504,7 +532,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     deleteNoteOrTask(noteId, "task");
   }
 
-  private void closeDBConnection(Connection connection, Statement statement, ResultSet resultSet) {
+  private static void closeDBConnection(Connection connection, Statement statement, ResultSet resultSet) {
     if (resultSet != null)
       try {
         resultSet.close();

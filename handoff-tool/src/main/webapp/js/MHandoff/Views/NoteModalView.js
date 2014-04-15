@@ -16,12 +16,10 @@ define([
     var NoteModalView = Backbone.View.extend({
 
         template: null,
-        editing: false,
         $saveButton: null,
         $editables: null,
         $priorityBadge: null,
         tempModel: {},
-        hasChanged: false,
 
         events : {
             'click button#saveButton' : 'saveItem',
@@ -54,7 +52,7 @@ define([
                 success: function (response, newValue) {
                     console.log("Trying async set");
                     self.tempModel.text = newValue;
-                    self.hasChanged = true;
+                    
                     // this.$noteText.trigger('blur');
                     // self.noteModel.set("text", newValue);
                 },
@@ -72,7 +70,7 @@ define([
                 template: "MMM D YYYY  hh:mm A",
                 success: function (response, newValue) {
                     self.tempModel.expiration = newValue/1000;
-                    self.hasChanged = true;
+                    
                     //self.noteModel.set("expiration", newValue/1000);
                 },
             });
@@ -94,7 +92,7 @@ define([
 
                     self.$priorityBadge.html(self.tempModel.priority);
                     self.$priorityBadge.attr("class", "badge "+self.tempModel.badgeLevel+" pull-right");
-                    self.hasChanged = true;
+                    
 
                 },
             });
@@ -110,7 +108,7 @@ define([
                     source: MHandoffCore.handoffUsers,
                     success: function (response, newValue) {
                         self.tempModel.assignee = newValue;
-                        self.hasChanged = true;
+                        
                         //self.noteModel.set("assignee", newValue);
                     },
                 });
@@ -128,7 +126,7 @@ define([
                     source: MHandoffCore.taskStatuses,
                     success: function (response, newValue) {
                         self.tempModel.status = newValue;
-                        self.hasChanged = true;
+                        
                         //self.noteModel.set("status", newValue);
                     },
                 });
@@ -157,7 +155,6 @@ define([
             this.noteModel.save(this.tempModel);            
             this.tempModel = {};
             
-            this.hasChanged = false;
             
             this.trigger('noteSaved');
             // this.destroy_full();
