@@ -3,6 +3,7 @@ define([
         'underscore', 
         'backbone',
         'isotope',
+        'UndoStack',
         'Models/Note',
         'Collections/NoteCollection',
         'Collections/TaskCollection',
@@ -10,7 +11,7 @@ define([
         'Collections/filters',
         'backbone_hotkeys',
         'keymaster',
-        ], function($, _, Backbone, Isotope, Note, NoteCollection,TaskCollection, NoteTileView, Filter, Backbone_hotkeys, Keymaster){
+        ], function($, _, Backbone, Isotope, UndoStack,Note, NoteCollection,TaskCollection, NoteTileView, Filter, Backbone_hotkeys, Keymaster){
 
 
     var NoteGridView = Backbone.View.extend({
@@ -41,6 +42,7 @@ define([
             this.listenTo(this.notes, 'reset', this.generateViews);
             this.listenTo(this.notes, 'add', this.newItemAdded);
             var self = this;
+            this.undoStack = new UndoStack();
             //Delay generating views till Isotope has loaded (shitty fix)
             setTimeout(function() {
                 self.generateViews();
@@ -49,14 +51,12 @@ define([
             //this.listenTo(this.notes, 'pushAdd', this.newItemPushed);
         },
 
-        createView: function(note, row, col, self) {
-            var noteView = new NoteTileView({parent : self, noteModel:note,templates:this.templates, row:row, col:col});
+        createView: function(note, self) {
+            var noteView = new NoteTileView({parent : self, noteModel:note,templates:this.templates});
             self.noteViews.push(noteView);
             self.activeNoteViews.push(noteView);
-            self.listenTo(noteView, 'remove', self.updateUndoAndRemove);
 
             return noteView;
-
         },
 
 
@@ -114,11 +114,7 @@ define([
             var row = 0;
             var self = this;
             this.notes.each(function(note, index) { 
-                col = index % 4;
-                if(col == 0) {
-                    row += 1;
-                }
-                self.createView(note, row, col, self);
+                self.createView(note, self);
             });
             this.render();
         },
@@ -131,7 +127,7 @@ define([
 
         newItemAdded:function(note, fromEvent) {
 
-            var newView = this.createView(note, 0, 0, this);//.render();
+            var newView = this.createView(note, this);//.render();
             if(!fromEvent) {
                 var modal = newView.openNote();
                 //Once we save the note for the first time, render the tile
@@ -146,28 +142,18 @@ define([
 
 
         undoRemove:function() {
-            if(this.mostRecentlyDeletedView != null) {
-                $('#undoAlert').alert('close'); 
-                this.noteViews.push(this.mostRecentlyDeletedView);
-                this.mostRecentlyDeletedView.render();
-                this.mostRecentlyDeletedView = null;
-                this.trigger('gridchange');
-                var undoButton = document.getElementById("undoButton");
-                undoButton.style.display = 'none';
-            }
+        	this.undoStack.undo('save');
+//            if(this.mostRecentlyDeletedView != null) {
+//                $('#undoAlert').alert('close'); 
+//                this.noteViews.push(this.mostRecentlyDeletedView);
+//                this.mostRecentlyDeletedView.render();
+//                this.mostRecentlyDeletedView = null;
+//                this.trigger('gridchange');
+//                var undoButton = document.getElementById("undoButton");
+//                undoButton.style.display = 'none';
+//            }
         },  
 
-        updateUndoAndRemove:function(event) {
-            if(this.mostRecentlyDeletedView != null) {
-                //There was a previously deleted note, lets get rid of it for good
-                console.log("Permanently deleting note");
-                console.log("Testing stuff");
-                this.mostRecentlyDeletedView.destroy_full(null);                
-            }
-
-            this.mostRecentlyDeletedView = event;
-            this.noteRemove(event);
-        },
 
         noteRemove:function(event) {
             //remove the view from our list of views to render
