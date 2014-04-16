@@ -47,7 +47,7 @@ define([
     };
 
     CompoundFilter.prototype.hasFilter = function(filter) {
-        return this.filters[filter.name] !== undefined;
+        return this.filters[filter.name] !== undefined  && this.filters[filter.name] !== null && this.filters[filter.name] ===filter.filterFn;
     };
 
     CompoundFilter.prototype.toString = function() {
