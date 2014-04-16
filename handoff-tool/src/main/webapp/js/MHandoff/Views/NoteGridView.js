@@ -55,7 +55,7 @@ define([
             var noteView = new NoteTileView({parent : self, noteModel:note,templates:this.templates});
             self.noteViews.push(noteView);
             self.activeNoteViews.push(noteView);
-
+            self.listenTo(noteView, 'remove', self.noteRemoved);
             return noteView;
         },
 
@@ -142,28 +142,17 @@ define([
 
 
         undoRemove:function() {
-        	this.undoStack.undo('save');
-//            if(this.mostRecentlyDeletedView != null) {
-//                $('#undoAlert').alert('close'); 
-//                this.noteViews.push(this.mostRecentlyDeletedView);
-//                this.mostRecentlyDeletedView.render();
-//                this.mostRecentlyDeletedView = null;
-//                this.trigger('gridchange');
-//                var undoButton = document.getElementById("undoButton");
-//                undoButton.style.display = 'none';
-//            }
+        	var theModel = this.undoStack.undo('save');
+        	var newView = this.createView(theModel, this).render( this.isotopeObj);
+        	if(this.undoStack.isEmpty()) {
+        	    this.$el.find('#undoButton').prop('disabled', true);
+        	}
         },  
 
 
-        noteRemove:function(event) {
+        noteRemoved:function(event) {
             //remove the view from our list of views to render
-            var undoButton = document.getElementById("undoButton");
-            undoButton.style.display = '';
-            this.mostRecentlyDeletedView = event;
-            var index = this.activeNoteViews.indexOf(event);
-            if (index > -1) {
-                this.activeNoteViews.splice(index, 1);
-            }
+            this.$el.find('#undoButton').prop('disabled', false);
             var index = this.noteViews.indexOf(event);
             if (index > -1) {
                 this.noteViews.splice(index, 1);
@@ -184,12 +173,13 @@ define([
                     }
                 }
             }).data('isotope');
-            for (var i = 0; i < this.activeNoteViews.length; i++) {
-                this.activeNoteViews[i].render(this.isotopeObj);
+            for (var i = 0; i < this.noteViews.length; i++) {
+                this.noteViews[i].render(this.isotopeObj);
             }
             this.resetFilters();
             this.isotopeObj.layout();
-            $(window).resize();
+            this.$el.find('#undoButton').prop('disabled', true);
+            //$(window).resize();
 
             return this;
         },

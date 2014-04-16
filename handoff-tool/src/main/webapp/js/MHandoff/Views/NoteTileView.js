@@ -21,7 +21,8 @@ define([
 
         initialize : function (options) {
             this.options = options || {};
-
+            this.parent = this.options.parent;
+            _.bindAll(this, 'removeClickHandler');
             this.noteModel = this.options.noteModel;
             this.templates = this.options.templates;
             this.template = this.templates.tile;
@@ -72,10 +73,11 @@ define([
         },
 
         removeClickHandler : function(event){
-            console.log("Removing...");
-            this.$closeIcon.tooltip('hide');
-            this.parent.undoStack.push(this.noteModel, 'destroy');
+            this.$closeIcon.tooltip('hide'); 
             this.remove();
+            this.parent.undoStack.push(this.noteModel, 'destroy');
+            //Unset the id because if we redo this, we need to recreate it on the server
+            this.noteModel.unset('noteId', {silent:true});
             this.trigger('remove', this);
             return false;
         },

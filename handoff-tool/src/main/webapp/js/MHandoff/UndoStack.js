@@ -24,7 +24,11 @@ define([], function(){
     
     UndoStack.prototype.empty = function() {
     	this.stack = new Array();
-    }
+    };
+    
+    UndoStack.prototype.isEmpty = function() {
+        return this.stack.length == 0;
+    };
     
     return UndoStack;
 });
