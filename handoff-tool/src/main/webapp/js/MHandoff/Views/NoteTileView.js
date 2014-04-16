@@ -74,6 +74,7 @@ define([
         removeClickHandler : function(event){
             console.log("Removing...");
             this.$closeIcon.tooltip('hide');
+            this.parent.undoStack.push(this.noteModel, 'destroy');
             this.remove();
             this.trigger('remove', this);
             return false;
