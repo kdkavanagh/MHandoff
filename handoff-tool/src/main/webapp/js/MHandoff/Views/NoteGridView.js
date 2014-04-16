@@ -136,7 +136,7 @@ define([
                 var modal = newView.openNote();
                 //Once we save the note for the first time, render the tile
                 var self = this;
-                newView.listenToOnce( modal,'noteSaved',function() { newView.render( self.isotopeObj);});
+                newView.listenToOnce( modal,'noteSaved',function() {newView.render( self.isotopeObj);});
             } else {
                 newView.render( this.isotopeObj);
 
@@ -201,6 +201,7 @@ define([
             for (var i = 0; i < this.activeNoteViews.length; i++) {
                 this.activeNoteViews[i].render(this.isotopeObj);
             }
+            this.resetFilters();
             this.isotopeObj.layout();
             $(window).resize();
 
