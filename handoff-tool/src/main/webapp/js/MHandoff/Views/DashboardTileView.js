@@ -23,7 +23,6 @@ define([
 
         render : function(isotopeObj) {
             var tmpl = _.template(this.template); //tmpl is a function that takes a JSON and returns html
-            console.log(this.patientModel.toJSON());
             this.setElement(tmpl(this.patientModel.toJSON()));
             isotopeObj.insert(this.el);
             

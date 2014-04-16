@@ -23,6 +23,7 @@ define([
 
         events : {
             'click button#saveButton' : 'saveItem',
+            'click button#expireNow' : 'expireNoteNow',
             'hidden.bs.modal':'destroy_full',
         },
 
@@ -50,15 +51,14 @@ define([
                 mode:'inline',
                 onblur:'submit',
                 success: function (response, newValue) {
-                    console.log("Trying async set");
                     self.tempModel.text = newValue;
                     
                     // this.$noteText.trigger('blur');
                     // self.noteModel.set("text", newValue);
                 },
             });
-
-            this.$el.find("a#expiration").editable({
+            var expir = this.$el.find("a#expiration");
+            expir.editable({
                 type:'combodate',
                 disabled: false,
                 showbuttons: false,
@@ -69,11 +69,20 @@ define([
                 viewformat: "MMM D, YYYY, hh:mm A",
                 template: "MMM D YYYY  hh:mm A",
                 success: function (response, newValue) {
+                    console.log("new value= "+newValue);
                     self.tempModel.expiration = newValue/1000;
-                    
                     //self.noteModel.set("expiration", newValue/1000);
                 },
             });
+            var $expireNowButton = $(self.$el.find("button#expireNow"));
+            $(expir).click(function() {
+                //hide our expireNow button
+                $expireNowButton.hide();
+            });
+            $(expir).on('hidden', function(e, reason) {
+                $expireNowButton.show();
+            });
+            
 
             this.$el.find("a#priority").editable({
                 type: 'select',
@@ -139,6 +148,14 @@ define([
             this.$priorityBadge = this.$el.find("#priorityBadge");
             this.$noteText = this.$el.find("#noteText");
         },
+        
+        expireNoteNow:function() {
+            var obj = this.$el.find("a#expiration");
+            var unix = moment().unix();
+            obj.editable('setValue', unix, true);
+            //call success method because setValue doesnt, and I dont wanna edit the xeditable code
+            $(obj).data('editable').options.success(null, unix*1000);
+        },
 
         saveItem:function() {
             console.log("Saving item");
@@ -147,9 +164,6 @@ define([
             // this.$el.find("a#noteText").blur();
             // this.trigger('blur');
             // $('a').trigger('blur');
-            this.$editables.each(function(index, element) {
-                console.log($(element).editable('getValue'));
-            });
             
             console.log(this.tempModel);
             this.noteModel.save(this.tempModel);            

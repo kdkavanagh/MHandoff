@@ -14,14 +14,12 @@
    <div class="modal-body modalNoteBody">
     <p id="noteTextModal"><a id="noteText"><%=text%></a></p>
     <p>Priority: <a id="priority"><%= _.template.getPriorityStringFromCode(priorityCode)%></a></p>
-    <p>Expires: <a id="expiration"></a></p>
+    <p>Expires: <a id="expiration"></a>   <button id="expireNow" type="button" class="btn btn-default btn-sm" >Expire Now</button></p>
     <p id="reportingInfo">Reported by <%=_.template.getUser(reporter)%> on <%= _.template.formatdate(reportedDate) %></p>
    </div>
    <div class="modal-footer modalNoteFooter" >
     <button id="closeButton" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
     <button id="saveButton" type="button" class="btn btn-primary" data-dismiss="modal">Save & Close</button>
-
-    <!-- <button id="saveButton" type="button" class="btn btn-primary" data-dismiss="modal">Save & Close</button> -->
    </div>
   </div>
  </div>

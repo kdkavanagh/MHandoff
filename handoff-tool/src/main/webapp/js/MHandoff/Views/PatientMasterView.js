@@ -13,12 +13,11 @@ define([
         'text!Views/templates/noteModal.html',
         'text!Views/templates/taskModal.html',
         "Views/PatientInfoView",
-        'text!Views/templates/patientInfoModal.html',
         'text!Views/templates/patientMasterTemplate.html',
         'backbone_hotkeys',
         'keymaster',
 	'isotope',
-        ], function($, _, Backbone, Bootstrap, Patient, TaskCollection, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientInfoModal, patientMasterTemplate, Backbone_hotkeys, Keymaster, Isotope){
+        ], function($, _, Backbone, Bootstrap, Patient, TaskCollection, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientMasterTemplate, Backbone_hotkeys, Keymaster, Isotope){
 
     var PatientMasterView = Backbone.View.extend({
 
