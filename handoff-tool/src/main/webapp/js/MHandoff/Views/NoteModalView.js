@@ -69,7 +69,6 @@ define([
                 viewformat: "MMM D, YYYY, hh:mm A",
                 template: "MMM D YYYY  hh:mm A",
                 success: function (response, newValue) {
-                    console.log("new value= "+newValue);
                     self.tempModel.expiration = newValue/1000;
                     //self.noteModel.set("expiration", newValue/1000);
                 },
@@ -155,6 +154,7 @@ define([
             obj.editable('setValue', unix, true);
             //call success method because setValue doesnt, and I dont wanna edit the xeditable code
             $(obj).data('editable').options.success(null, unix*1000);
+            //TODO: Investigate why submit() doesnt work (it doesnt seem to call success() with newValue, but idk)
         },
 
         saveItem:function() {
