@@ -138,7 +138,7 @@
         }
 
         if (tooltip === 'show') {
-            this.picker.on({
+            this.picker.find(".slider-track").on({
                 mouseenter: $.proxy(this.showTooltip, this),
                 mouseleave: $.proxy(this.hideTooltip, this)
             });
