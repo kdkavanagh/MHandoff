@@ -58,18 +58,23 @@ define([
                 },
             });
             var expir = this.$el.find("a#expiration");
+            var myFormat = "MMM D, YYYY, hh:mm A";
             expir.editable({
                 type:'combodate',
                 disabled: false,
                 showbuttons: false,
                 mode:'inline',
                 onblur:'submit',
-                value: moment.unix(this.noteModel.get("expiration")),
-                format:"X",
-                viewformat: "MMM D, YYYY, hh:mm A",
-                template: "MMM D YYYY  hh:mm A",
+                combodate:{minuteStep:15},
+                
+                value:moment.utc(self.noteModel.get("expiration")*1000).local().format(myFormat),
+                format:myFormat,
+                viewformat:myFormat,
+                template:myFormat,
                 success: function (response, newValue) {
-                    self.tempModel.expiration = newValue/1000;
+                    var m = moment(newValue, myFormat);
+                    //convert new value to UTC
+                    self.tempModel.expiration = m.unix();
                     //self.noteModel.set("expiration", newValue/1000);
                 },
             });
@@ -150,10 +155,10 @@ define([
         
         expireNoteNow:function() {
             var obj = this.$el.find("a#expiration");
-            var unix = moment().unix();
+            var unix = moment().format("MMM D, YYYY, hh:mm A");
             obj.editable('setValue', unix, true);
             //call success method because setValue doesnt, and I dont wanna edit the xeditable code
-            $(obj).data('editable').options.success(null, unix*1000);
+            $(obj).data('editable').options.success(null, unix);
             //TODO: Investigate why submit() doesnt work (it doesnt seem to call success() with newValue, but idk)
         },
 
