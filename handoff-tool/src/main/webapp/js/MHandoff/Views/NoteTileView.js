@@ -59,11 +59,12 @@ define([
             this.$closeIcon.tooltip({ container: 'body'});
             this.$el.data('model', this.noteModel);
             isotopeObj.insert( this.el );
-            
+            var self = this;
             this.listenTo(this.noteModel, 'change:text', this.updateView);
             this.listenTo(this.noteModel, 'change:badgeLevel', this.updateBadge);
             this.listenTo(this.noteModel, 'change:priorityCode', this.updateBadge);
             this.listenTo(this.noteModel, 'change:status', this.updateStatusBadge);
+            this.listenTo(this.noteModel, 'change', function() {self.isotopeObj.updateSortData();self.parent.doFilter();});
 
             this.trigger('render', this);
             return this;

@@ -110,8 +110,6 @@ define([
             while (this.noteViews.length > 0) {
                 this.noteViews.pop().destroy_full(null);
             }
-
-            var row = 0;
             var self = this;
             this.notes.each(function(note, index) { 
                 self.createView(note, self);
