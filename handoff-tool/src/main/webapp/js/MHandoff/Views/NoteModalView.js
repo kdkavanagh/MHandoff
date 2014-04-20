@@ -87,7 +87,7 @@ define([
                 $expireNowButton.show();
             });
             
-
+            
             this.$el.find("a#priority").editable({
                 type: 'select',
                 disabled: false,
@@ -95,6 +95,7 @@ define([
                 onblur: 'submit',
                 source: MHandoffCore.priorityLevels,
                 showbuttons: false,
+                value:self.noteModel.get('priorityCode'),
                 success: function (response, newValue) {
                     self.tempModel.priorityCode = newValue;
                     self.tempModel.priority = _.template.getPriorityStringFromCode(newValue);
@@ -119,6 +120,7 @@ define([
                     onblur:'submit',
                     showbuttons: false ,
                     source: MHandoffCore.handoffUsers,
+                    value:self.noteModel.get('assignee'),
                     success: function (response, newValue) {
                         self.tempModel.assignee = newValue;
                         
@@ -137,6 +139,7 @@ define([
                     onblur:'submit',
                     showbuttons: false ,
                     source: MHandoffCore.taskStatuses,
+                    value:self.noteModel.get('status'),
                     success: function (response, newValue) {
                         self.tempModel.status = newValue;
                         
