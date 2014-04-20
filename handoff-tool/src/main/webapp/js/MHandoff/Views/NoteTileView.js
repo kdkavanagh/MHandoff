@@ -35,6 +35,10 @@ define([
             this.$notePriorityBadge.html( _.template.getPriorityStringFromCode(this.noteModel.get("priorityCode")));
             this.$notePriorityBadge.attr("class", "badge "+this.noteModel.get("badgeLevel")+" pull-right");
         },
+        
+        updateStatusBadge:function() {
+            this.$el.find("#taskStatus").html("Currently: "+_.template.getTaskStatusStringFromCode(this.noteModel.get("status")));
+        },
 
         updateView:function() {
             this.$noteText.html(this.noteModel.get("text"));
@@ -59,6 +63,7 @@ define([
             this.listenTo(this.noteModel, 'change:text', this.updateView);
             this.listenTo(this.noteModel, 'change:badgeLevel', this.updateBadge);
             this.listenTo(this.noteModel, 'change:priorityCode', this.updateBadge);
+            this.listenTo(this.noteModel, 'change:status', this.updateStatusBadge);
 
             this.trigger('render', this);
             return this;
