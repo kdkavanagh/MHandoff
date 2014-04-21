@@ -41,7 +41,7 @@
 
         var tooltip = this.element.data('slider-tooltip')||options.tooltip;
 
-        this.tooltip = $('<div class="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>')//this.picker.find('.tooltip');
+        this.tooltip = $('<div class="tooltip in"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>')//this.picker.find('.tooltip');
         this.tooltipInner = this.tooltip.find('div.tooltip-inner');
 
         this.orientation = this.element.data('slider-orientation')||options.orientation;
@@ -157,7 +157,7 @@
             showTooltip: function(){
                 this.tooltip.insertAfter(this.picker.find('.slider-track'));
                 
-                this.tooltip.addClass('in');
+                //this.tooltip.addClass('in');
                 //var left = Math.round(this.percent*this.width);
                 //this.tooltip.css('left', left - this.tooltip.outerWidth()/2);
                 this.over = true;
@@ -165,9 +165,9 @@
 
             hideTooltip: function(){
                 if (this.inDrag === false) {
-                    this.tooltip.removeClass('in');
+                    //this.tooltip.removeClass('in');
+                    this.tooltip.remove();
                 }
-                this.tooltip.remove();
                 this.over = false;
             },
 

@@ -1,18 +1,13 @@
 <div class="modal fade" tabindex="-1" role="dialog"
- aria-labelledby="myModalLabel" aria-hidden="true">
+ aria-labelledby="Error" aria-hidden="true">
  <div class="modal-dialog modalNote">
   <div class="modal-content">
-   <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal"
-     aria-hidden="true">&times;</button>
-    <h4 class="modal-title">Error</h4>
+   <div class="modal-header modal-header-error">
+    <h4 class="modal-title"><span class="glyphicon glyphicon-warning-sign"></span> Oops. Something went wrong.</h4>
    </div>
    <div class="modal-body modalNoteBody">
-    <p><%=text%></p>
-   </div>
-   <div class="modal-footer modalNoteFooter">
-    <button id="editButton" type="button" class="btn btn-primary">Edit</button>
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <p>MHandoff is having trouble communicating with the server. You can try <a href="/">reloading MHandoff</a><p>
+    <p>If you continue to receive this error, please contact MCIT<p>
    </div>
   </div>
  </div>

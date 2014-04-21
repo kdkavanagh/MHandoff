@@ -1,5 +1,4 @@
 define([
-        // These are path alias that we configured in our bootstrap
         'jquery',     
         'underscore', 
         'backbone',
@@ -20,8 +19,6 @@ define([
         },
 
         pullItems:function() {
-            console.log("Pulling patient Items");
-            console.log(this);
             this.notesCollection = new NoteCollection(MHandoffCore.loggedInUser.uniqname, this.get("basicInfo").patientId);
             this.tasksCollection = new TaskCollection(MHandoffCore.loggedInUser.uniqname, this.get("basicInfo").patientId);
             return $.when(this.notesCollection.fetch({reset:true}),

@@ -31,7 +31,6 @@ define([
 
         render : function() {
             this.$el.html(patientMasterTemplate);
-            console.log(this.$el.find("#patientInfo"));
             this.info = new PatientInfoView({el:this.$el.find("#patientInfo")});
             this.noteGrid = new NoteGridView({el:this.$el.find("#patientNotes"),
                 gridId:"#noteGrid", 

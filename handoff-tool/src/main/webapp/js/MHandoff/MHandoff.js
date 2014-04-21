@@ -23,9 +23,15 @@ define([
         $("#logoutLink").click(function() {
             MHandoffCore.logout();
         });
-        console.log(MHandoffCore);
+        $( document ).ajaxError(function( event, jqxhr, settings, exception ) {
+            var modalContainer = $("#modalContainer");
+            modalContainer.html(errorModal);
+            modalContainer.find(".modal").modal({keyboard:false});
+            console.log("AJAX error");
+            console.log(event);
+       });
         MHandoffCore.load(function() {
-            
+
             _.template.getPriorityStringFromCode = function (code) {
                 return MHandoffCore.getPriorityDisplayName(code);
             };
@@ -36,11 +42,11 @@ define([
             _.template.getUser = function(user) {
                 return MHandoffCore.getUserDisplayName(user);
             };
-            
+
             $("#username").html(MHandoffCore.loggedInUser.first + " "+  MHandoffCore.loggedInUser.last);
             Router.initialize();
             stream.connect();
-            
+
         });
     };
 

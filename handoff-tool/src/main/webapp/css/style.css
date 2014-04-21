@@ -24,6 +24,14 @@
 	width: 570px;
 }
 
+.modal-header-error {
+	background-color: #d2322d;
+}
+
+.modal-header-error > *{
+    color: #FFFFFF;
+}
+
 .modalNoteFooter {
 	padding-top: 10px;
 	padding-bottom: 10px;
