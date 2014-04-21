@@ -17,7 +17,6 @@ define([
 
         template: null,
         $saveButton: null,
-        $editables: null,
         $priorityBadge: null,
         tempModel: {},
 
@@ -151,7 +150,6 @@ define([
 
             this.$saveButton = this.$el.find("button#saveButton");
             this.$closeButton = this.$el.find("button#closeButton");
-            this.$editables = this.$el.find(".editable");
             this.$priorityBadge = this.$el.find("#priorityBadge");
             this.$noteText = this.$el.find("#noteText");
         },
