@@ -5,7 +5,7 @@ define([
         'bootstrap',
         'isotope',
         'Collections/PatientCollection',
-        'Views/DashboardTileView',
+        'Views/DashboardTileView'
         ], function($, _, Backbone,Bootstrap,Isotope, PatientCollection, DashboardTileView){
 
     var DashboardView = Backbone.View.extend({        
@@ -16,7 +16,7 @@ define([
             this.patients = new PatientCollection();
             this.listenTo(this.patients, 'reset', this.generateViews);
             this.patients.fetch({reset:true});
-            this.tiles = new Array();
+            this.tiles = [];
             this.isotopeObj = this.$el.find("#dashboardGrid").isotope({
                 
             }).data('isotope');
@@ -25,9 +25,8 @@ define([
 
         render : function() {
             //Render all the tiles
-            for (var i = 0; i < this.tiles.length; i++) {
-                this.tiles[i].render(this.isotopeObj);
-            }
+            var self = this;
+            $.each(this.tiles, function(index, tile) {tile.render(self.isotopeObj);});
             return this;
         },
 
@@ -36,14 +35,8 @@ define([
             while (this.tiles.length > 0) {
                 this.tiles.pop().destroy_full(null);
             }
-
-            var row = 0;
             var self = this;
             this.patients.each(function(patient, index) { 
-                col = index % 4;
-                if(col == 0) {
-                    row += 1;
-                }
                 self.createView(patient);
             });
             this.render();
@@ -63,13 +56,8 @@ define([
                     });
                 }
             });
-
             return tile;
-
-        },
-
-
-
+        }
     });
 
 

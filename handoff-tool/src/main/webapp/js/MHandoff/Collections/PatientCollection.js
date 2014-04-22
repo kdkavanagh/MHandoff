@@ -3,7 +3,7 @@ define([
         'jquery',     
         'underscore', 
         'backbone',
-        'Models/Patient',
+        'Models/Patient'
         ], function($, _, Backbone, Patient){
 
 
@@ -13,7 +13,7 @@ define([
         
         url : function() {
             return "/dashboard/tiles/list.do?activeOnly="+this.activeOnly;
-        },
+        }
     });
 
 

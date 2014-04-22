@@ -9,9 +9,9 @@ define([
         'bootstrap_editable',
         'utils',
         'Models/Note',
-        "Collections/NoteCollection",
-
-        ], function(MHandoffCore, $, _, Backbone,Bootstrap,Moment, Bootstrap_editable,Utils, Note, NoteCollection){
+        'Models/Task',
+        "Collections/NoteCollection"
+        ], function(MHandoffCore, $, _, Backbone,Bootstrap,Moment, Bootstrap_editable,Utils, Note,Task, NoteCollection){
 
     var NoteModalView = Backbone.View.extend({
 
@@ -23,7 +23,7 @@ define([
         events : {
             'click button#saveButton' : 'saveItem',
             'click button#expireNow' : 'expireNoteNow',
-            'hidden.bs.modal':'destroy_full',
+            'hidden.bs.modal':'destroy_full'
         },
 
         initialize : function (options) {
@@ -51,10 +51,10 @@ define([
                 onblur:'submit',
                 success: function (response, newValue) {
                     self.tempModel.text = newValue;
-                    
+
                     // this.$noteText.trigger('blur');
                     // self.noteModel.set("text", newValue);
-                },
+                }
             });
             var expir = this.$el.find("a#expiration");
             var myFormat = "MMM D, YYYY, hh:mm A";
@@ -65,7 +65,7 @@ define([
                 mode:'inline',
                 onblur:'submit',
                 combodate:{minuteStep:15},
-                
+
                 value:moment.utc(self.noteModel.get("expiration")*1000).local().format(myFormat),
                 format:myFormat,
                 viewformat:myFormat,
@@ -75,7 +75,7 @@ define([
                     //convert new value to UTC
                     self.tempModel.expiration = m.unix();
                     //self.noteModel.set("expiration", newValue/1000);
-                },
+                }
             });
             var $expireNowButton = $(self.$el.find("button#expireNow"));
             $(expir).click(function() {
@@ -85,8 +85,8 @@ define([
             $(expir).on('hidden', function(e, reason) {
                 $expireNowButton.show();
             });
-            
-            
+
+
             this.$el.find("a#priority").editable({
                 type: 'select',
                 disabled: false,
@@ -105,9 +105,9 @@ define([
 
                     self.$priorityBadge.html(self.tempModel.priority);
                     self.$priorityBadge.attr("class", "badge "+self.tempModel.badgeLevel+" pull-right");
-                    
 
-                },
+
+                }
             });
             var $taskAssignee = this.$el.find("a#assignee");
             if($taskAssignee.length !== 0) {
@@ -122,9 +122,9 @@ define([
                     value:self.noteModel.get('assignee'),
                     success: function (response, newValue) {
                         self.tempModel.assignee = newValue;
-                        
+
                         //self.noteModel.set("assignee", newValue);
-                    },
+                    }
                 });
             }
 
@@ -141,9 +141,9 @@ define([
                     value:self.noteModel.get('status'),
                     success: function (response, newValue) {
                         self.tempModel.status = newValue;
-                        
+
                         //self.noteModel.set("status", newValue);
-                    },
+                    }
                 });
             }
 
@@ -153,7 +153,7 @@ define([
             this.$priorityBadge = this.$el.find("#priorityBadge");
             this.$noteText = this.$el.find("#noteText");
         },
-        
+
         expireNoteNow:function() {
             var obj = this.$el.find("a#expiration");
             var unix = moment().format("MMM D, YYYY, hh:mm A");
@@ -164,20 +164,29 @@ define([
         },
 
         saveItem:function() {
+            this.$saveButton.button('loading');
+            if(this.saveError) {
+                this.saveError.remove();
+            }
+            var self = this;
             console.log("Saving item");
-             this.$el.modal('hide');
-            // this.$el.find("a#noteText").trigger('blur');
-            // this.$el.find("a#noteText").blur();
-            // this.trigger('blur');
-            // $('a').trigger('blur');
-            
             console.log(this.tempModel);
-            this.noteModel.save(this.tempModel);            
-            this.tempModel = {};
-            
-            
-            this.trigger('noteSaved');
-            // this.destroy_full();
+            this.noteModel.save(this.tempModel, {success : function() {
+                self.$el.modal('hide');
+                self.tempModel = {};
+                self.trigger('noteSaved');
+            },
+            error:function(err, xhr) {
+                //failed to save the note.  we need to tell the user this.
+                xhr.handled=true;
+                self.$saveButton.button('reset');
+                var text = '<b style="color:#d2322d">Failed to save the ';
+                text = text + (self.noteModel instanceof Note ? 'note' : 'task');
+                text = text + '</b> ';
+                self.saveError = $(text);
+                $("div.modalNoteFooter").prepend(self.saveError);
+            }});            
+           
         },
 
         destroy_full: function(event) {

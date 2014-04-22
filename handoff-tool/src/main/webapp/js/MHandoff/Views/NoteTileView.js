@@ -6,7 +6,7 @@ define([
         'Models/Note',
         'Collections/NoteCollection',
         'Views/NoteModalView',
-        'utils',
+        'utils'
         ], function($, _, Backbone, Isotope, Note, NoteCollection,NoteModalView, Utils){
 
     var NoteTileView = Backbone.View.extend({
@@ -16,7 +16,7 @@ define([
         events: {
             'click span#closeIcon': "removeClickHandler",
             'click button#openNoteButton' : "openNote",
-            'click' : "openNote",
+            'click' : "openNote"
         },
 
         initialize : function (options) {
@@ -74,7 +74,7 @@ define([
             var modal = new NoteModalView({parent:this,el:$("modalContainer"), noteModel:this.noteModel, template:this.templates.modal});
             modal.render();
             var self = this;
-            modal.on('noteSaved',function() {console.log("Relayout");if(self.isotopeObj != null) {self.isotopeObj.layout();}} );
+            modal.on('noteSaved',function() {console.log("Relayout");if(self.isotopeObj !== null) {self.isotopeObj.layout();}} );
             return modal;
         },
 

@@ -10,7 +10,7 @@ define([
         'Views/NoteTileView',
         'Collections/filters',
         'backbone_hotkeys',
-        'keymaster',
+        'keymaster'
         ], function($, _, Backbone, Isotope, UndoStack,Note, NoteCollection,TaskCollection, NoteTileView, Filter, Backbone_hotkeys, Keymaster){
 
 
@@ -22,12 +22,10 @@ define([
         isotopeObj:null,
 
         events: {
-
             'click button#addNewButton': "addItem",
             'click #undoButton' : "undoRemove",
             'click #addNewTileInner' :"addItem",
-            'keyup[Ctrl+m]' : "addItem",
-
+            'keyup[Ctrl+m]' : "addItem"
         },
 
         initialize: function (options) {
@@ -35,8 +33,8 @@ define([
             _.bindAll(this, 'render');
 
             this.notes = this.options.collection;
-            this.noteViews = new Array();
-            this.activeNoteViews = new Array();
+            this.noteViews = [];
+            this.activeNoteViews = [];
             this.templates = this.options.templates;
             this.currentFilter =  Filter.generateDefaultFilter();
             this.listenTo(this.notes, 'reset', this.generateViews);
@@ -73,10 +71,10 @@ define([
                     return self.currentFilter.filter($(this).data('model'));
                 },
                 sortBy:self.currentFilter.sortPackage.sortBy,
-                sortAscending: self.currentFilter.sortPackage.sortAscending,
+                sortAscending: self.currentFilter.sortPackage.sortAscending
             });
         },
-        
+
         sort : function(sortFnName) {
             this.currentFilter[sortFnName]();            
             this.doFilter();
@@ -140,11 +138,11 @@ define([
 
 
         undoRemove:function() {
-        	var theModel = this.undoStack.undo('save');
-        	var newView = this.createView(theModel, this).render( this.isotopeObj);
-        	if(this.undoStack.isEmpty()) {
-        	    this.$el.find('#undoButton').prop('disabled', true);
-        	}
+            var theModel = this.undoStack.undo('save');
+            var newView = this.createView(theModel, this).render( this.isotopeObj);
+            if(this.undoStack.isEmpty()) {
+                this.$el.find('#undoButton').prop('disabled', true);
+            }
         },  
 
 
@@ -159,6 +157,7 @@ define([
         },
 
         render: function(){
+            var self=this;
             this.isotopeObj = this.$el.find(this.options.gridId).isotope({
                 layoutMode:'masonry',
                 itemSelector:'.note',
@@ -171,14 +170,13 @@ define([
                     }
                 }
             }).data('isotope');
-            for (var i = 0; i < this.noteViews.length; i++) {
-                this.noteViews[i].render(this.isotopeObj);
-            }
+            $.each(this.noteViews, function(index, note) {
+                note.render(self.isotopeObj);
+            });
+            
             this.resetFilters();
             this.isotopeObj.layout();
             this.$el.find('#undoButton').prop('disabled', true);
-            //$(window).resize();
-
             return this;
         },
 
@@ -187,15 +185,15 @@ define([
 
             this.$el.removeData().unbind(); 
             //destroy the tiles
-            for (var i = 0; i < this.noteViews.length; i++) {
-                this.noteViews[i].destroy_full();
-            }
+            $.each(this.noteViews, function(index, note) {
+                note.destroy_full();
+            });
+            
             //Remove view from DOM
             this.remove();
-
             Backbone.View.prototype.remove.call(this);
 
-        },
+        }
     });
 
     return NoteGridView;

@@ -98,6 +98,6 @@ public class NoteAction extends CRUDAction {
       logger.info("Deleting task " + context.getParameterOrFail("noteId"));
       persistenceService.deleteTask(context.getParameterOrFail("noteId"));
     }
-    return null;
+    return "{}";
   }
 }

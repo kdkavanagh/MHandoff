@@ -6,12 +6,12 @@ define([
 
     var dateSortPackage = {
             sortBy:'date',
-            sortAscending:false,
+            sortAscending:false
     };
 
     var prioritySortPackage = {
             sortBy:'priority',
-            sortAscending:false,
+            sortAscending:false
     };
 
     var Filter = function(name, filterFn) {
@@ -52,9 +52,9 @@ define([
 
     CompoundFilter.prototype.toString = function() {
         var s = "{ ";
-        for(var key in this.filters) {
+        $.each( this.filters, function( key, value ) {
             s = s + " "+key;
-        }
+        });
         s = s+"}";
         return s;
     };
@@ -64,7 +64,8 @@ define([
      * @param noteModel
      */
     CompoundFilter.prototype.filter = function(noteModel) {
-        for (var key in this.filters) {
+        var key;
+        for (key in this.filters) {
 
             if(!this.filters[key](noteModel)) {
                 //Doesnt pass the filter
@@ -76,7 +77,7 @@ define([
 
     Filter.createPriorityFilter =  function(sliderMin, sliderMax) {
         //Check if weve already created this filter
-        if(sliderMin in Filter.priorityCache && sliderMax in Filter.priorityCache[sliderMin]) {
+        if(Filter.priorityCache.hasOwnProperty(sliderMin) && Filter.priorityCache[sliderMin].hasOwnProperty(sliderMax)) {
             //We have it in the cache
             return Filter.priorityCache[sliderMin][sliderMax];
         } else {
@@ -85,7 +86,7 @@ define([
                 return (noteModel.get("priorityCode") >= sliderMin && noteModel.get("priorityCode") <= sliderMax);
             });
 
-            if(sliderMin in Filter.priorityCache == false){
+            if(!Filter.priorityCache.hasOwnProperty(sliderMin)){
                 Filter.priorityCache[sliderMin] = {}; // must initialize the sub-object, otherwise will get 'undefined' errors
             }
             Filter.priorityCache[sliderMin][sliderMax] = obj;
@@ -111,6 +112,6 @@ define([
         "ExcludeExpiredNotesFilter" : Filter.ExcludeExpiredNotesFilter,
         "DefaultPriorityFilter" : Filter.DefaultPriorityFilter,
         "generateDefaultFilter" : CompoundFilter.generateDefaultFilter,
-        "createPriorityFilter" : Filter.createPriorityFilter,
+        "createPriorityFilter" : Filter.createPriorityFilter
     };
 });

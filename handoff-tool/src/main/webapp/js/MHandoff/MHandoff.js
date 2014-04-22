@@ -5,9 +5,8 @@ define([
         'bootstrap',
         'router', // Request router.js
         'stream',
-        'text!Views/templates/errorModal.html',
         'MHandoffCore'
-        ], function($, _, Backbone,Bootstrap, Router, stream, errorModal, MHandoffCore){    
+        ], function($, _, Backbone,Bootstrap, Router, stream, MHandoffCore){    
 
 
     var initialize = function(){
@@ -23,13 +22,16 @@ define([
         $("#logoutLink").click(function() {
             MHandoffCore.logout();
         });
-        $( document ).ajaxError(function( event, jqxhr, settings, exception ) {
-            var modalContainer = $("#modalContainer");
-            modalContainer.html(errorModal);
-            modalContainer.find(".modal").modal({keyboard:false});
-            console.log("AJAX error");
-            console.log(event);
-       });
+        $( document ).ajaxError(function( event, xhr, settings, exception ) {
+            if(!xhr.handled) {
+                MHandoffCore.showErrorText();
+                console.log("AJAX error");
+                console.log(event);
+                console.log(xhr);
+                console.log(exception);
+            }
+
+        });
         MHandoffCore.load(function() {
 
             _.template.getPriorityStringFromCode = function (code) {
@@ -49,8 +51,8 @@ define([
 
         });
     };
-
+   
     return {
-        initialize: initialize,
+        initialize: initialize
     };
 });

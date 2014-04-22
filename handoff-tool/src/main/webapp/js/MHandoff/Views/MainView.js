@@ -5,13 +5,13 @@ define([
         'backbone',
         'bootstrap',
         "Views/PatientMasterView",
-        'Views/DashboardView',
+        'Views/DashboardView'
         ], function(MHandoffCore, $, _, Backbone,Bootstrap, PatientMasterView, DashboardView){
 
     var MainView = Backbone.View.extend({        
 
         initialize:function() {
-            this.patients = new Array();
+            this.patients = [];
             this.$tabs = $("#tabs");
             this.$tabContents = $("#tabContents");
             this.visiblePatients = {};
@@ -22,7 +22,7 @@ define([
             $('#tabs a').click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
-                if(dashboard.isotopeObj != null) {
+                if(dashboard.isotopeObj !== null) {
                     console.log("Isotope Relayout");
                   //Delay generating views till Isotope has loaded (shitty fix)
                     setTimeout(function() {

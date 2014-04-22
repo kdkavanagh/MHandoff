@@ -13,7 +13,7 @@ require.config({
         bootstrap_slider:'../libs/bootstrap-slider',
         backbone_hotkeys:'../libs/backbone-hotkeys',
         keymaster:"../libs/keymaster",
-        isotope:'../libs/isotope.pkgd',
+        isotope:'../libs/isotope.pkgd'
     },
 
     shim: {
@@ -41,7 +41,7 @@ require.config({
             exports: "Bootstrap_slider"
         }
 
-    },
+    }
 
     
 });
@@ -55,7 +55,7 @@ require([
          'bootstrap_editable',
          'MHandoff',
          'isotope',
-         'domReady',
+         'domReady'
          ], function($, _, Bootstrap, Bootstrap_editable, App,Isotope, dom){
 
     dom(function () {

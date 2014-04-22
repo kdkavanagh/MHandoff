@@ -43,11 +43,11 @@
 1. Import Existing Maven Project and do that for each folders. "handoff-tool", "EMRConnector", "MiChartConnector"
 2. Right click on the projects and go to Maven-> update project
 3. A. From "EMRConnector" select Run > Run Configuartions…** and create a `new maven build configuration with goals "clean install"
-3. B. If you did not install eclipse, run from the command line "mvm clean install"
+3. B. If you did not install eclipse, run from the command line "mvn clean install"
 4. A. From "MiChartConnector" select Run > Run Configuartions…** and create a `new maven build configuration with goals "clean install"
-4. B. If you did not install eclipse, run from the command line "mvm clean install"
+4. B. If you did not install eclipse, run from the command line "mvn clean install"
 5. A. From Eclipse, select **Run > Run Configuartions…** and create a `new maven build configuration` with the goals `clean install jetty:run` 
-5. B. If you did not install eclipse, run from the command line "mvm clean install jetty:run"
+5. B. If you did not install eclipse, run from the command line "mvn clean install jetty:run"
 6. Running this configuration will start the server at `https://localhost:8443` 
 	* It will continue to run until you kill it from the eclipse console or the command line
 	* The server checks for code updates every 10 seconds and will hotswap in your new code.

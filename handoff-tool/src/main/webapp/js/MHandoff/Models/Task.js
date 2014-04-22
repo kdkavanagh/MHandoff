@@ -6,7 +6,7 @@ define([
   'backbone',
   'Models/Note',
   'utils',
-  'moment',
+  'moment'
 ], function(require,$, _, Backbone, Note, Utils, moment){
     
     
@@ -22,7 +22,7 @@ define([
             badgeLevel:"",
             text:"",
             assignee:"kminchan",
-            status:0,
+            status:0
         },
 
         baseUrl:"/patient/task.do",
@@ -49,7 +49,7 @@ define([
                 + "&text="+this.get("text");
             }
             return  Backbone.sync(method, model, options);
-        },
+        }
 
     });
     

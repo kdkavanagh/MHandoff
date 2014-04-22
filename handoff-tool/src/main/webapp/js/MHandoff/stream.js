@@ -1,7 +1,7 @@
 define([
         'jquery',
         'backbone',
-        'bootstrap',
+        'bootstrap'
         ], function($,Backbone,Bootstrap){
     var Stream = function () {
         _.extend(this, Backbone.Events);
@@ -12,7 +12,7 @@ define([
         var self = this;
         self.$streamingIcon.html('<span id="streamingBadge" class="badge">Not streaming</span>');
         
-        if ("WebSocket" in window) {
+        if (window.hasOwnProperty("WebSocket")) {
             var url= "wss://" + window.location.host+"/streaming";
             this.socket = new WebSocket(url);
             console.log("Connecting to steam "+url);

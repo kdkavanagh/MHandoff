@@ -4,7 +4,7 @@ define([
         'underscore', 
         'backbone',
         'utils',
-        'moment',
+        'moment'
         ], function($, _, Backbone, Utils, moment) {
 
     var Note = Backbone.Model.extend({
@@ -17,7 +17,7 @@ define([
             reportedDate:moment().valueOf()/1000,
             expiration:moment().add('days', 1).valueOf()/1000,
             badgeLevel:"",
-            text:"",
+            text:""
         },
 
         baseUrl:"/patient/note.do",
@@ -43,7 +43,7 @@ define([
             }
  
             return  Backbone.sync(method, model, options);
-        },
+        }
     });
 
     return Note;

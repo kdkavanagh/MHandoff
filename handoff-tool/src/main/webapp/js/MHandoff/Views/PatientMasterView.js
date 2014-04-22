@@ -16,7 +16,7 @@ define([
         'text!Views/templates/patientMasterTemplate.html',
         'backbone_hotkeys',
         'keymaster',
-	'isotope',
+        'isotope'
         ], function($, _, Backbone, Bootstrap, Patient, TaskCollection, NoteCollection,NoteGridView, noteTile, taskTile, noteModal, taskModal, PatientInfoView, patientMasterTemplate, Backbone_hotkeys, Keymaster, Isotope){
 
     var PatientMasterView = Backbone.View.extend({
@@ -36,23 +36,23 @@ define([
                 gridId:"#noteGrid", 
                 templates:{
                     tile:noteTile,
-                    modal:noteModal,
+                    modal:noteModal
                 }, 
-                collection:this.patient.notesCollection,
+                collection:this.patient.notesCollection
             });
 
             this.taskGrid = new NoteGridView({el:this.$el.find("#patientTasks"),
                 gridId:"#taskGrid",
                 templates:{
                     tile:taskTile,
-                    modal:taskModal,
+                    modal:taskModal
                 }, 
-                collection:this.patient.tasksCollection,
+                collection:this.patient.tasksCollection
             });
 
             this.taskGrid.listenTo(this.info, 'filter', this.taskGrid.filter);
             this.noteGrid.listenTo(this.info, 'filter', this.noteGrid.filter);
-            
+
             this.taskGrid.listenTo(this.info, 'sort', this.taskGrid.sort);
             this.noteGrid.listenTo(this.info, 'sort', this.noteGrid.sort);
 
@@ -77,11 +77,8 @@ define([
             //Remove view from DOM
             this.remove();  
             Backbone.View.prototype.remove.call(this);
-        },
-
-
+        }
     });
-
 
     return PatientMasterView;
 });

@@ -4,9 +4,9 @@ define([
         'backbone',
         'MHandoffCore',
         'Collections/TaskCollection',
-        'Collections/NoteCollection',
+        'Collections/NoteCollection'
         ], function($, _, Backbone, MHandoffCore, TaskCollection, NoteCollection){
-
+    
     var Patient = Backbone.Model.extend({
         idAttribute: 'basicInfo.patientId',
         notesCollection: undefined,
@@ -24,7 +24,7 @@ define([
             return $.when(this.notesCollection.fetch({reset:true}),
                     this.tasksCollection.fetch({reset:true})
             );
-        },
+        }
     });
 
 

@@ -8,7 +8,7 @@ define([
 
     var TaskCollection = NoteCollection.extend({
         model:Task,
-        itemType:"task",
+        itemType:"task"
     });
 
     return TaskCollection;

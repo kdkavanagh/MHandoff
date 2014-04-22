@@ -10,7 +10,6 @@ define([
         'Models/Patient',
         'MHandoffCore',
         'Collections/filters'
-
         ], function($, _, Backbone,Bootstrap,Moment, Bootstrap_editable, Bootstrap_slider, Patient, MHandoffCore, Filter){
 
     var PatientInfoView = Backbone.View.extend({
@@ -20,7 +19,7 @@ define([
             "click label#nonExpiredNotes" : "nonExpiredNotes",
             "click label#allNotes" : "allNotes",
             "click label#prioritySort" : "prioritySort",
-            "click label#dateSort" : "dateSort",
+            "click label#dateSort" : "dateSort"
         },
 
         initialize : function (options) {
@@ -79,7 +78,7 @@ define([
                     } else {
                         return MHandoffCore.priorityLevels[first] +" only";
                     }
-                },
+                }
             }).on('slide',  function(e){
                 //only filter if we need to
                 if(!(self.sliderMin === e.value[0] && self.sliderMax === e.value[1])) {

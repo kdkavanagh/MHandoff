@@ -27,7 +27,7 @@ define([
             var self = this;
             stream.subscribe(this,patientId+":"+this.itemType+":create", function(e) {
                 console.log("Received create "+self.itemType+" topic message");
-                var newNote = new self.model({noteId:e,});
+                var newNote = new self.model({noteId:e});
                 newNote.fetch({
                     success: function(){
                         self.add(newNote);
@@ -54,7 +54,7 @@ define([
 
         createNewItem : function(options) {
             var note = new this.model({patientId:this.patientId, reporter:this.user,  reportedDate:moment().valueOf()/1000,
-                expiration:moment().add('days', 1).valueOf()/1000,});
+                expiration:moment().add('days', 1).valueOf()/1000});
             this.add(note, options);
             return note;
         },
@@ -64,7 +64,7 @@ define([
 
         url : function() {
             return "/patient/items/list.do?type=" + this.itemType+"&patient="+this.patientId+"&getExpired="+this.getExpired;
-        },
+        }
     });
 
 

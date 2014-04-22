@@ -148,6 +148,10 @@
 				<artifactId>jslint-maven-plugin</artifactId>
 				<version>1.0.1</version>
 				<configuration>
+					<assumeABrowser>true</assumeABrowser>
+					<assumeConsoleAlertEtc>true</assumeConsoleAlertEtc>
+					<predefinedVars>define,_,moment,require,window,WebSocket</predefinedVars>
+					<allowOneVarStatementPerFunction>false</allowOneVarStatementPerFunction>
 					<sourceJsFolder>${basedir}/src/main/webapp/js/MHandoff</sourceJsFolder>
 				</configuration>
 			</plugin>

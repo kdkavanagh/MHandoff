@@ -5,13 +5,13 @@ define([
         'bootstrap',
         'isotope',
         'Models/Patient',
-        'text!Views/templates/dashboardTile.html',
+        'text!Views/templates/dashboardTile.html'
         ], function($, _, Backbone,Bootstrap,Isotope, Patient, dashboardTile){
 
     var DashboardTileView = Backbone.View.extend({        
 
         events : {
-            "click" : "openPatient",
+            "click" : "openPatient"
         },
         
         initialize:function(options) {
@@ -30,7 +30,7 @@ define([
         
         openPatient : function() {
             this.trigger('patientOpenRequest', this.patientModel);
-        },
+        }
 
     });
 
