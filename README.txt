@@ -1,6 +1,6 @@
 # MHandOff Tool for Pediatric Surgeons at Mott
 
-#### Beta Release
+#### Final Release
 * Repository: https://github.com/johntyu/EECS481_EPIC
 	* The private repository has been shared with Chris (chriscm2006) & David (davidjns)
 * There is **no executable file** for this project. Please follow the setup instructions below.
