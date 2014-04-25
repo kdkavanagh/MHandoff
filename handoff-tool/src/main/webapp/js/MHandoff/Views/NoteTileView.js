@@ -74,7 +74,7 @@ define([
             var modal = new NoteModalView({parent:this,el:$("modalContainer"), noteModel:this.noteModel, template:this.templates.modal});
             modal.render();
             var self = this;
-            modal.on('noteSaved',function() {console.log("Relayout");if(self.isotopeObj !== null) {self.isotopeObj.layout();}} );
+            modal.on('noteSaved',function() {console.log("Relayout");if(self.isotopeObj !== undefined) {self.isotopeObj.layout();}} );
             return modal;
         },
 

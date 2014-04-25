@@ -25,7 +25,6 @@ define([
             modalContainer.find(".modal").modal({keyboard:false, backdrop:'static'});
         } else {
             modalContainer.find(".modal").modal({keyboard:true, backdrop:true});
-
         }
     };
 

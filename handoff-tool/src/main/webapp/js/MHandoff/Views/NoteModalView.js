@@ -147,7 +147,6 @@ define([
                 });
             }
 
-
             this.$saveButton = this.$el.find("button#saveButton");
             this.$closeButton = this.$el.find("button#closeButton");
             this.$priorityBadge = this.$el.find("#priorityBadge");

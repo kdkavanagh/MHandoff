@@ -30,7 +30,6 @@ define([
                 console.log(xhr);
                 console.log(exception);
             }
-
         });
         MHandoffCore.load(function() {
 

@@ -46,6 +46,15 @@ define([
                 e.preventDefault();
                 $(this).tab('show');
                 //may need to relayout the grids here
+                if(theView.noteGrid.isotopeObj !== null) {
+                    console.log("Isotope Relayout");
+                  //Delay generating views till Isotope has loaded (shitty fix)
+                    setTimeout(function() {
+                        theView.noteGrid.isotopeObj.layout();
+                        theView.taskGrid.isotopeObj.layout();
+                    }, 250);
+                
+                } 
             });
               
             
